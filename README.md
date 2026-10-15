@@ -16,6 +16,8 @@ Proyecto académico de **Desarrollo de Aplicaciones Móviles (DSY1105)**. Primer
 - [Entorno y ejecución](#entorno-y-ejecución)
 - [Organización del código](#organización-del-código)
 - [Documentación del desarrollo](#documentación-del-desarrollo)
+  - [Checklist de tareas y dependencias](docs/tareas-y-dependencias.md)
+  - [Entorno de desarrollo](docs/entorno-desarrollo.md)
 - [Privacidad y contenido](#privacidad-y-contenido)
 
 ## Objetivo del proyecto
@@ -46,11 +48,15 @@ Ambos participan en decisiones de alcance, contratos entre componentes, contenid
 - Revisión inicial de exclusiones en `.gitignore`, incluida `.kotlin/`.
 - Nombre acordado para el repositorio: `EspaLearn_GameApp`.
 - README inicial.
+- Primer commit publicado en [GitHub](https://github.com/FernandezfIT/EspaLearn_GameApp), según confirmación de Felipe.
+- Ramas `main` y `develop` publicadas.
+- Invitaciones enviadas a Claudio y al docente; aceptación pendiente de comprobar.
+- Documentación local de seguimiento y entorno creada; publicación de esta actualización pendiente.
 
 ### Pendiente
 
-- Inicializar el repositorio Git y publicarlo en GitHub.
-- Configurar accesos del equipo y docente y enlazar el tablero de tareas.
+- Confirmar aceptación de invitaciones y ejecución por Claudio.
+- Publicar y mantener el checklist Markdown que reemplaza el tablero externo.
 - Documentar y acordar contratos de estados, acciones y datos entre ambas rutas.
 - Resolver consulta pedagógica, revisión lingüística y decisiones de alcance pendientes.
 - Implementar las pantallas y funcionalidades del MVP.
@@ -106,7 +112,7 @@ Este objetivo técnico describe **cómo se construirá y consolidará el product
 
 | Etapa | Resultado previsto | Situación |
 |---|---|---|
-| **E0 — Base compartible** | Entorno reproducible, repositorio, tablero y contratos iniciales acordados. | En preparación. |
+| **E0 — Base compartible** | Entorno reproducible, repositorio, seguimiento Markdown y contratos iniciales acordados. | Base publicada; ejecución de Claudio y contratos pendientes. |
 | **E1 — Flujo en memoria** | UI base, navegación, formulario y transiciones conectados; datos de prueba identificados como tales. | Pendiente. |
 | **E2 — MVP con persistencia** | Recorrido del módulo y recuperación de perfil/progreso mediante almacenamiento real. | Pendiente. |
 | **E3 — Interacción y robustez** | Gestos, animaciones, recursos aceptados, adaptabilidad y recuperación ante fallos. | Pendiente. |
@@ -143,7 +149,7 @@ Los valores anteriores documentan la configuración observada; no constituyen un
 
 ### Ejecución desde Android Studio
 
-1. Obtener una copia del proyecto. El enlace del repositorio se añadirá cuando esté publicado.
+1. Obtener una copia de [EspaLearn_GameApp](https://github.com/FernandezfIT/EspaLearn_GameApp) y seleccionar `develop` para integración. Consultar la [guía del entorno](docs/entorno-desarrollo.md) para la primera ejecución.
 2. Abrir la carpeta raíz que contiene `settings.gradle.kts`.
 3. Revisar el SDK y la JVM requeridos por el proyecto y completar la sincronización de Gradle.
 4. Seleccionar el módulo `app` y un emulador o dispositivo compatible.
@@ -178,15 +184,25 @@ Los paquetes iniciales aún sin implementación se completarán al abordar las t
 
 ## Documentación del desarrollo
 
-La futura carpeta `docs/` concentrará decisiones, contratos y evidencias del proyecto.
+La carpeta `docs/` concentra el seguimiento y las instrucciones del equipo; los documentos adicionales se crearán cuando se trabaje su contenido.
 
-> **Índice previsto:** los documentos enlazados a continuación todavía no han sido creados. Sus enlaces se habilitarán conforme se escriba y revise cada documento. Este README no implica que esos contenidos ya estén disponibles.
+**Seguimiento acordado:** según la indicación docente comunicada por Felipe el 15/10/2026, no se requiere Trello ni otra plataforma. Se utilizará un checklist Markdown actualizado por ambos integrantes, manteniendo evidencia real de participación.
+
+### Documentos disponibles
+
+| Documento | Contenido |
+|---|---|
+| [Checklist de tareas y dependencias](docs/tareas-y-dependencias.md) | Etapas E0–E4, reparto A/B, dependencias, criterios de cierre y casillas de avance. |
+| [Entorno de desarrollo](docs/entorno-desarrollo.md) | Configuración observada, primera ejecución, archivos compartidos y comprobaciones pendientes por integrante. |
+
+### Documentos previstos — todavía no creados
+
+Los enlaces siguientes son destinos previstos; no representan documentos disponibles.
 
 | Documento previsto | Contenido |
 |---|---|
 | [Alcance y decisiones](docs/alcance-y-decisiones.md) | Recorrido, límites del MVP, decisiones aprobadas y propuestas pendientes. |
 | [Contratos](docs/contratos.md) | Estados, acciones, errores e interfaces que conectan las rutas A y B. |
-| [Tareas y dependencias](docs/tareas-y-dependencias.md) | Reparto, etapas, bloqueos y criterios observables de término. |
 | [Criterios pedagógicos](docs/criterios-pedagogicos.md) | Síntesis depurada de la consulta real y criterios que orientan la experiencia. |
 | [Contenido y licencias](docs/contenido-y-licencias.md) | Origen, autorización y revisión lingüística de textos e imágenes. |
 | [Matriz EV2](docs/matriz-ev2.md) | Relación entre requisitos, guías EA2, tareas y evidencias de cumplimiento. |
@@ -194,7 +210,7 @@ La futura carpeta `docs/` concentrará decisiones, contratos y evidencias del pr
 
 La guía 7 fundamenta la organización y colaboración; las guías 8–10 orientan componentes, adaptabilidad y navegación; la guía 11, formularios y estado; la guía 12, persistencia y animaciones; y la guía 13, integración de cámara. La pauta EV2 determina las exigencias de entrega: repositorio público, documentación, participación real y funcionalidades verificadas.
 
-**Tablero de tareas y repositorio remoto:** enlaces pendientes de configuración.
+**Seguimiento:** [checklist Markdown](docs/tareas-y-dependencias.md). **Repositorio:** [EspaLearn_GameApp](https://github.com/FernandezfIT/EspaLearn_GameApp).
 
 ## Privacidad y contenido
 
