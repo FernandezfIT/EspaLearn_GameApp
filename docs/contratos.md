@@ -63,12 +63,12 @@ No habrá botón Cancelar ni selector de múltiples avatares en EV2.
 
 ### Reglas acordadas del nick
 
-- Longitud: **3–20 caracteres**, ambos límites incluidos.
+- Normalizar con NFC y contar **3–20 puntos de código Unicode**, ambos límites incluidos; no unidades Char ni promesa de contar grafemas visibles.
 - Letras Unicode, incluidas letras españolas y turcas, y dígitos **ASCII `0–9`**.
 - Sin espacios, guiones, símbolos ni emojis.
 - No aplicar silenciosamente otras restricciones, unicidad o reglas de mayúsculas/minúsculas que no se hayan acordado.
 
-**Detalle técnico pendiente:** precisar normalización Unicode y criterio de conteo de caracteres antes de escribir el validador y sus casos de prueba. No asumir que cualquier expresión regular o longitud de cadena materializa automáticamente esta regla de producto.
+**Regla técnica aprobada por Felipe:** NFC antes de validar/persistir; cada punto de código debe ser letra Unicode según Character.isLetter(int) o dígito ASCII 0–9. No recortar espacios automáticamente. Marcas combinantes que permanezcan separadas y no sean letras se rechazan. Se permite nick sólo numérico. Verificar casos representativos en JVM/Android; no se promete aceptación de todas las escrituras.
 
 ### Regla acordada de la edad simulada
 
@@ -107,7 +107,7 @@ No habrá botón Cancelar ni selector de múltiples avatares en EV2.
 - **Captura cancelada:** no tratarla como error ni perder el borrador.
 - **Guardado fallido:** mostrar el fallo y permitir reintentar sin descartar datos ni navegar como si hubiera éxito.
 
-Momento exacto de aparición/desaparición de errores y textos finales: pendientes de concretar antes de implementar el formulario.
+**Momento aprobado:** no mostrar errores al abrir; pulsar Guardar activa la validación y, después, actualizar errores al corregir campos. Los textos finales se concretarán al implementar, sin cambiar las causas de error acordadas.
 
 ### Atrás — comportamiento aprobado
 
@@ -116,12 +116,12 @@ Momento exacto de aparición/desaparición de errores y textos finales: pendient
 | Crear perfil | Descartar borrador y salir de la actividad, sin guardar un perfil incompleto. |
 | Editar perfil | Descartar cambios y volver a Inicio, conservando perfil y progreso guardados. |
 
-**Pendiente técnico:** definir qué ocurre si se pulsa Atrás durante una escritura ya iniciada, para no prometer cancelación de un guardado que pudiera haber finalizado. No decidirlo silenciosamente al implementar.
+**Durante guardado:** bloquear temporalmente Atrás y nuevos envíos hasta recibir resultado. Fallo conserva borrador y vuelve a habilitar reintento/Atrás; éxito continúa al destino previsto. Bloquear salida no crea atomicidad conjunta entre archivo y preferencias ni evita muerte del proceso.
 
 ### Criterios de verificación futuros
 
 - [ ] Nick válido en los límites 3 y 20; rechazo fuera de límites y de caracteres excluidos.
-- [ ] Letras españolas/turcas admitidas conforme a normalización/conteo que se acuerden.
+- [ ] Letras españolas/turcas y formas equivalentes comprobadas conforme a la regla NFC/conteo de puntos de código ya aprobada.
 - [ ] Edad 7 y 10 aceptadas conforme a propuesta; 6, 11, vacío, texto y fracciones rechazados.
 - [ ] Avatar predeterminado disponible sin selector múltiple.
 - [ ] Errores por campo y borrador conservado ante fallo.
@@ -151,7 +151,11 @@ Momento exacto de aparición/desaparición de errores y textos finales: pendient
 - Ilustración autorizada.
 - Dos opciones identificadas y respuesta esperada para los pasos de práctica.
 
-Textos, traducciones, imágenes, alternativas y diferencia concreta de ayudas entre las dos etapas de práctica siguen pendientes de revisión pedagógica/lingüística y concreción. Aprobar el volumen no acredita contenido validado.
+**Unidades aprobadas:** Hola, Adiós, Pan y Manzana.
+
+**Ayudas aprobadas:** Descubrir muestra ilustración, español y equivalente turco. Con apoyo muestra ilustración y equivalente turco con dos opciones escritas en español. Menos apoyo mantiene ilustración y opciones, oculta turco y permite revelarlo mediante Ver ayuda inline. Saludos utiliza escenas ilustradas. Sin audio ni pantallas extra.
+
+Traducciones, imágenes y parejas de alternativas concretas siguen pendientes de verificar; propuesta mínima de parejas en contenido-y-licencias.md. No se ha realizado consulta pedagógica. Felipe decide priorizar demostración técnica para EV2; ver criterios-pedagogicos.md. Aprobar mecánica y volumen no acredita contenido validado.
 
 ### Criterios de verificación futuros
 
@@ -270,9 +274,9 @@ La implementación deberá respetar ajustes/capacidades del dispositivo y evitar
 ## Pendientes antes de la implementación compartida
 
 - Revisar los contratos con Claudio y fijar tipos, firmas y scopes de ViewModels.
-- Resolver normalización/conteo del nick, momento de los errores y Atrás durante guardado.
-- Completar contenido autorizado y revisión pedagógica/lingüística; concretar las ayudas de las etapas.
+- Implementar y probar las reglas ya aprobadas de NFC/conteo, errores tras Guardar y bloqueo de Atrás durante escritura.
+- Completar contenido autorizado y verificación lingüística; ayudas y cuatro expresiones ya acordadas. Consulta pedagógica no realizada ni prevista por Felipe para EV2; discrepancia explícita con el caso, sin inventar dispensa.
 - Confirmar con el docente la ampliación de edad propuesta 7–10.
 - Definir detalles técnicos de persistencia, captura y consumo de señales, con pruebas de fallos.
 
-**Cierre actual:** siete contratos de comportamiento aprobados por Felipe; no siete funcionalidades implementadas ni contratos técnicos compilables ya entregados.
+**Cierre actual:** siete contratos de comportamiento aprobados por Felipe; no siete funcionalidades implementadas ni contratos técnicos compilables ya entregados. Base técnica, orden B1–B9 y convención inicial de tipos documentados en [ruta-b-claudio.md](ruta-b-claudio.md). PR pequeños desde ramas feature hacia develop con revisión del otro integrante; main sólo estable revisada.

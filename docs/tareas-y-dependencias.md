@@ -36,19 +36,24 @@ Este documento reemplaza el tablero externo. Según la indicación del docente c
 - [ ] Confirmar aceptación de las invitaciones.
 - [ ] Claudio obtiene una copia, sincroniza, compila y ejecuta. Registrar el resultado en la guía del entorno.
 - [ ] Revisar juntos alcance y reparto; confirmar disponibilidad real.
-- [ ] Realizar y documentar consulta previa con especialista antes de desarrollar la experiencia infantil.
+- [ ] Resolver diferencia con la consulta previa exigida por el caso: no realizada y no prevista por Felipe para EV2 por tiempo. Se prioriza técnica; Felipe comunica que pedagogía no se evaluará. Sin dispensa documentada ni validación; ver criterios-pedagogicos.md.
 - [x] Confirmar aceptación docente de cámara + háptica como pareja de recursos. Evidencia: confirmación del docente relatada por Felipe; implementación y pruebas pendientes.
 - [ ] Confirmar con el docente el rango propuesto 7–10: el caso escrito indica menores de 10. Se avanzará con 7–10 como propuesta y se ajustará si corresponde.
 - [ ] Definir contenido, procedencia y revisión lingüística.
 - [x] Aprobar con Felipe los comportamientos K0–K6; ver [contratos](contratos.md). Esto no acredita revisión de Claudio ni implementación.
 - [x] Reducir EV2 a un módulo de saludos/alimentos: cuatro unidades, 12 pasos y 8 elecciones, sin selector de temática.
-- [ ] Revisar K0–K6 con Claudio y concretar tipos, firmas, conteo/normalización del nick, momento de errores y Atrás durante guardado.
+- [x] Aprobar reglas técnicas con Felipe: nick NFC/3–20 puntos de código/letras Unicode o 0–9, errores al Guardar y luego al corregir, y bloqueo de Atrás/envíos durante escritura.
+- [x] Aprobar base mínima: StateFlow/ViewModel, repositorio, Preferences DataStore, fotos privadas, conexión manual y JUnit4 disponible; sin Hilt, Room ni backend.
+- [x] Aprobar cuatro expresiones (Hola, Adiós, Pan, Manzana) y apoyos de etapas, con ayuda turca inline en Menos apoyo.
+- [x] Acordar PR pequeños desde feature hacia develop, revisión del otro integrante y main estable.
+- [x] Confirmar disponibilidad de teléfono físico de ambos; modelos/versiones y pruebas pendientes.
+- [ ] Revisar K0–K6 con Claudio y concretar firmas/owners en el primer PR B1; seguir ruta-b-claudio.md.
 - [ ] Materializar los contratos técnicos iniciales compilables.
 - [ ] Concretar fronteras técnicas K5/K6: archivo/captura pendiente, recuperación/limpieza e identidad/consumo de señal háptica.
 - [ ] Acordar scopes de ViewModels y conexión entre pantallas y estado.
-- [ ] Acordar flujo de PR, revisión y validación antes de integrar cambios.
+- [ ] Aplicar el flujo de PR acordado y registrar pruebas/revisión reales al implementar.
 
-**Salida E0:** base ejecutable por ambos y contratos iniciales compilables. Hasta resolver consulta y alcance, avanzar sólo con organización, entorno y pruebas neutrales; crear el repositorio no valida por sí solo la experiencia educativa.
+**Salida técnica E0:** base ejecutable por ambos y contratos iniciales compilables; aún pendiente. Consulta pedagógica no realizada: Felipe decide avanzar técnicamente para EV2 y no prevé realizarla por tiempo. Esa decisión no elimina el requisito escrito ni acredita adecuación educativa. La documentación registra la diferencia en alcance-y-decisiones.md y criterios-pedagogicos.md.
 
 ## E1 — Interfaz base y comportamiento en memoria
 
@@ -74,7 +79,7 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 - [ ] **A5 — A:** implementar presentación y dos configuraciones de práctica del único módulo: cuatro unidades (dos saludos/dos alimentos), 12 pasos, 8 elecciones y feedback con avance manual; sin selector de temática.
 - [ ] **A7 — A:** implementar resumen, mapa, logro final y marco opcional, consumiendo progreso confirmado.
 - [ ] **B4 — B:** implementar repositorio y persistencia local de perfil, etapas, etapa activa y preferencia de marco; acceso secuencial, repetición sin duplicados y errores de lectura/escritura. Confirmar escritura antes de anunciar éxito; sin historial de respuestas ni estadísticas.
-- [ ] **Compartida:** concretar y revisar cuatro unidades de saludos/alimentos, textos español/turco, imágenes y dos opciones identificadas para práctica, con respuesta esperada y procedencia autorizada. Definir ayudas concretas de ambas etapas; sin ampliar el volumen EV2.
+- [ ] **Compartida:** verificar traducciones e ilustraciones de Hola, Adiós, Pan y Manzana; concretar pares de opciones identificadas/respuesta esperada y permisos. Aplicar ayudas ya aprobadas; sin ampliar volumen EV2.
 - [ ] **Compartida:** verificar que editar perfil conserva progreso y que repetir no duplica etapas completadas.
 - [ ] **Compartida:** verificar reapertura: conservar etapas completas y reiniciar desde el comienzo la etapa interrumpida.
 
@@ -97,7 +102,9 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 - [ ] **A10 — A:** ejecutar pruebas de UI/navegación/formulario/gestos y corregir fallos visuales.
 - [ ] **B8 — B:** ejecutar pruebas de validación/transiciones/datos y registrar pruebas físicas/restauración.
 - [ ] **B9 — B:** corregir fallos técnicos y completar instrucciones de versiones, almacenamiento y permisos.
-- [ ] **Ambos:** completar documentos de decisiones, contratos, criterios pedagógicos, contenido/licencias, matriz EV2 y pruebas con información real.
+- [x] Redactar base documental de decisiones, contratos, situación pedagógica, contenido/licencias, matriz EV2, plan de pruebas y guía de Claudio. No equivale a traducciones verificadas, licencias resueltas, tests ejecutados ni revisión de Claudio.
+- [x] Revisar documentación de cierre con Felipe; aprobación explícita recibida. No acredita revisión de Claudio.
+- [ ] **Ambos:** publicar esta actualización y mantener documentos con resultados de implementación y evidencia real.
 - [ ] **Ambos:** comprobar requisitos de la pauta y participación de ambos con evidencia de cambios.
 - [ ] **Ambos:** comprobar una copia limpia del proyecto y ensayar explicación de aportes.
 - [ ] **Ambos:** confirmar fecha/hora AVA, entrega grupal, activación individual y restricciones de cambios posteriores.
@@ -133,3 +140,4 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 - **15/10/2026:** seguimiento Markdown en lugar de plataforma externa, conforme a indicación docente comunicada por Felipe. Rutas confirmadas: A Felipe / B Claudio. Checklist inicial basado en la planificación E0–E4, sin prometer fechas ni funciones adicionales.
 - **15/10/2026, acuerdos K0/K1:** Felipe aprueba arranque y perfil, nick 3–20 con letras Unicode/dígitos 0–9, edad simulada propuesta 7–10 pendiente de confirmación docente, avatar predeterminado y captura sin selector múltiple en EV2. Atrás descarta creación y sale de la actividad, o descarta edición y vuelve a Inicio conservando datos previos. Felipe comunica aceptación docente de cámara + háptica. Selector de avatares queda para evolución futura.
 - **15/10/2026, acuerdos K2–K6:** Felipe aprueba alcance mínimo (cuatro unidades, saludos/alimentos, 12 pasos/8 elecciones), feedback y avance manual, progreso secuencial/reanudación por etapa/logro único, foto candidata confirmada al guardar y pulso neutral sólo por elección admitida. Reitera validaciones y mensajes de error del formulario. Ampliación de contenido para EV3 como intención del equipo. Tipos compartidos, revisión de Claudio, implementación y pruebas pendientes.
+- **15/10/2026, cierre documental en revisión:** reglas de validación, guardado, contenido/apoyos, base técnica y PR aprobadas; ambos con teléfono físico. Felipe decide omitir consulta pedagógica por tiempo y priorizar técnica, con discrepancia visible. Próxima sesión: ruta A, empezando A1/A2 y revisando entrega B1; no repetir planificación K0–K6. Documentación revisada y aprobada por Felipe al cierre de sesión. Publicación de esta última actualización pendiente; próxima sesión dedicada a ruta A.

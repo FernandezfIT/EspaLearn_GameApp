@@ -4,7 +4,7 @@ Aplicación Android educativa para apoyar el aprendizaje inicial de español de 
 
 Proyecto académico de **Desarrollo de Aplicaciones Móviles (DSY1105)**. Primera entrega funcional orientada a la **Evaluación Parcial 2 (EV2)**.
 
-> **Estado de la documentación:** este README se actualizará durante el desarrollo. Las funciones planificadas no deben interpretarse como implementadas. El alcance educativo y sus detalles pendientes requieren revisión del equipo y consulta con un especialista, según el caso semestral.
+> **Estado de la documentación:** este README se actualizará durante el desarrollo. Las funciones planificadas no deben interpretarse como implementadas. La consulta educativa que exige el caso no se realizó y Felipe no prevé realizarla para EV2 por tiempo: se prioriza la demostración técnica. No se afirma validación pedagógica ni dispensa documentada de ese requisito. Ver [alcance y discrepancias](docs/alcance-y-decisiones.md).
 
 ## Índice
 
@@ -19,6 +19,12 @@ Proyecto académico de **Desarrollo de Aplicaciones Móviles (DSY1105)**. Primer
   - [Checklist de tareas y dependencias](docs/tareas-y-dependencias.md)
   - [Entorno de desarrollo](docs/entorno-desarrollo.md)
   - [Contratos A/B](docs/contratos.md)
+  - [Guía de trabajo de Claudio — ruta B](docs/ruta-b-claudio.md)
+  - [Alcance y decisiones](docs/alcance-y-decisiones.md)
+  - [Contenido y licencias](docs/contenido-y-licencias.md)
+  - [Situación pedagógica](docs/criterios-pedagogicos.md)
+  - [Matriz EV2](docs/matriz-ev2.md)
+  - [Plan y registro de pruebas](docs/pruebas.md)
 - [Privacidad y contenido](#privacidad-y-contenido)
 
 ## Objetivo del proyecto
@@ -53,7 +59,8 @@ Ambos participan en decisiones de alcance, contratos entre componentes, contenid
 - Ramas `main` y `develop` publicadas.
 - Invitaciones enviadas a Claudio y al docente; aceptación pendiente de comprobar.
 - Checklist y guía del entorno publicados en `develop`, según confirmación de Felipe.
-- Comportamientos de los siete contratos K0–K6 aprobados por Felipe y documentados localmente; revisión de Claudio, tipos compartidos e implementación pendientes.
+- Comportamientos K0–K6 aprobados por Felipe y publicados en `develop` en el commit `1ce1867`; esta ampliación documental posterior aún no se publica.
+- Guía de ruta B, alcance, catálogo pendiente, matriz y plan de pruebas redactados localmente y revisados/aprobados por Felipe; sin código de funcionalidades añadido. Revisión de Claudio y publicación de esta ampliación pendientes.
 - Alcance mínimo EV2 acordado: un módulo de saludos y alimentos, cuatro unidades, 12 pasos y 8 elecciones.
 - Cámara + háptica aceptadas como pareja de recursos por el docente, según confirmación de Felipe.
 
@@ -63,7 +70,8 @@ Ambos participan en decisiones de alcance, contratos entre componentes, contenid
 - Mantener el checklist Markdown que reemplaza el tablero externo.
 - Publicar la actualización K0–K6 y del alcance mínimo; concretar tipos, firmas y detalles técnicos con Claudio.
 - Confirmar con el docente la ampliación propuesta a 7–10 años.
-- Resolver consulta pedagógica, revisión lingüística y decisiones de alcance pendientes.
+- Verificar traducciones y permisos de recursos. Consulta pedagógica no realizada ni prevista para EV2 según Felipe; mantener visible el desajuste con el caso.
+- Claudio revisa la guía de ruta B y entrega B1 para desbloquear los consumidores de A.
 - Implementar las pantallas y funcionalidades del MVP.
 - Integrar y probar persistencia y recursos nativos.
 - Verificar ejecución reproducible en el entorno de ambos integrantes.
@@ -93,7 +101,8 @@ La propuesta utiliza tarjetas con elecciones sencillas inspiradas en la interacc
 - Acceso secuencial a las tres etapas; repetir una etapa completada no duplica ni borra progreso.
 - Conservar las etapas completadas; al reabrir una etapa interrumpida, comenzar esa etapa desde el inicio.
 - Persistir localmente perfil, progreso y preferencia del marco.
-- Validaciones separadas de los componentes visuales: nick vacío/corto/largo/inválido y edad vacía/no entera/fuera de rango, con mensajes e indicadores por campo, no sólo color.
+- Validaciones separadas de los componentes visuales: nick vacío/corto/largo/inválido y edad vacía/no entera/fuera de rango, con mensajes e indicadores por campo, no sólo color. Mostrar errores al pulsar Guardar y actualizarlos después al corregir.
+- Nick normalizado NFC, 3–20 puntos de código, letras Unicode o dígitos ASCII; sin trim automático. Durante guardado bloquear Atrás y nuevos envíos hasta obtener resultado.
 - Foto capturada como candidata del borrador, confirmada al guardar el perfil válido; sin galería, filtros, recorte ni confirmación adicional.
 - Fallos de captura/guardado con mensajes y reintento, conservando datos anteriores y borrador según corresponda; cancelar cámara no se trata como error.
 - Finalización de etapa y guardado de perfil sólo se muestran como exitosos tras confirmar la escritura.
@@ -113,7 +122,8 @@ La propuesta utiliza tarjetas con elecciones sencillas inspiradas en la interacc
 - Sin login, cuentas múltiples, backend ni servicios externos de traducción.
 - Sin tienda, monedas, ranking, vidas ni adaptación automática de dificultad.
 - Sin cursos adicionales ni pantallas de anuncios de funciones futuras.
-- Volumen y acceso secuencial acordados; contenido concreto y diferencia de ayudas entre etapas pendientes de revisión y concreción.
+- Unidades acordadas: Hola, Adiós, Pan y Manzana. Descubrir: imagen/español/turco; Con apoyo: imagen/turco y dos opciones en español; Menos apoyo: imagen/opciones y turco mediante Ver ayuda inline.
+- Traducciones, ilustraciones autorizadas y pares concretos de opciones pendientes de verificar; sin atribuir validación pedagógica.
 
 ## Objetivo técnico final y roadmap
 
@@ -212,18 +222,16 @@ La carpeta `docs/` concentra el seguimiento y las instrucciones del equipo; los 
 | [Checklist de tareas y dependencias](docs/tareas-y-dependencias.md) | Etapas E0–E4, reparto A/B, dependencias, criterios de cierre y casillas de avance. |
 | [Entorno de desarrollo](docs/entorno-desarrollo.md) | Configuración observada, primera ejecución, archivos compartidos y comprobaciones pendientes por integrante. |
 | [Contratos A/B](docs/contratos.md) | Comportamientos K0–K6 aprobados por Felipe, criterios de prueba futuros, discrepancias y detalles técnicos pendientes. |
+| [Guía de trabajo de Claudio — ruta B](docs/ruta-b-claudio.md) | Primeros pasos, B1–B9, convención de tipos, almacenamiento, recursos y entregas a Felipe. |
+| [Alcance y decisiones](docs/alcance-y-decisiones.md) | MVP, acuerdos, discrepancias y punto de reanudación de la ruta A. |
+| [Situación de criterios pedagógicos](docs/criterios-pedagogicos.md) | Declaración de consulta no realizada y límites; no contiene entrevista ni validación inventada. |
+| [Contenido y licencias](docs/contenido-y-licencias.md) | Cuatro unidades acordadas y registro de traducciones, imágenes y permisos todavía pendientes. |
+| [Matriz EV2](docs/matriz-ev2.md) | Indicadores, tareas, evidencia pendiente y diferencias académicas. |
+| [Plan y registro de pruebas](docs/pruebas.md) | Casos futuros y ficha de resultados; no presenta pruebas no ejecutadas como superadas. |
 
-### Documentos previstos — todavía no creados
+Los documentos están redactados; su contenido distingue decisiones, propuestas técnicas y verificaciones pendientes. Documentación disponible no significa implementación o revisión externa completada.
 
-Los enlaces siguientes son destinos previstos; no representan documentos disponibles.
-
-| Documento previsto | Contenido |
-|---|---|
-| [Alcance y decisiones](docs/alcance-y-decisiones.md) | Recorrido, límites del MVP, decisiones aprobadas y propuestas pendientes. |
-| [Criterios pedagógicos](docs/criterios-pedagogicos.md) | Síntesis depurada de la consulta real y criterios que orientan la experiencia. |
-| [Contenido y licencias](docs/contenido-y-licencias.md) | Origen, autorización y revisión lingüística de textos e imágenes. |
-| [Matriz EV2](docs/matriz-ev2.md) | Relación entre requisitos, guías EA2, tareas y evidencias de cumplimiento. |
-| [Pruebas](docs/pruebas.md) | Casos, entornos, resultados y limitaciones, distinguiendo pruebas simuladas de integración real. |
+**Para Claudio:** empezar por la guía de ruta B y el entorno. **Próxima sesión de Felipe:** iniciar A1/A2 según el punto de reanudación de alcance-y-decisiones.md, sin volver a decidir K0–K6.
 
 La guía 7 fundamenta la organización y colaboración; las guías 8–10 orientan componentes, adaptabilidad y navegación; la guía 11, formularios y estado; la guía 12, persistencia y animaciones; y la guía 13, integración de cámara. La pauta EV2 determina las exigencias de entrega: repositorio público, documentación, participación real y funcionalidades verificadas.
 

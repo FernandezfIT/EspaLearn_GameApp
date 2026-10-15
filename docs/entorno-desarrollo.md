@@ -10,7 +10,7 @@
 - Nombre del repositorio: `EspaLearn_GameApp`.
 - Nombre local original del proyecto: `EspaLearn_turco_espaniol`; no necesita coincidir con la carpeta creada al clonar.
 - `main`: base estable. `develop`: integración. Ambas publicadas según confirmación de Felipe.
-- Ramas `feature/...` para tareas concretas: nombres y protocolo de PR por acordar antes del desarrollo paralelo.
+- Ramas cortas `feature/...` desde develop por tarea; PR hacia develop con revisión del otro integrante antes de integrar. main recibe versión estable revisada, según acuerdo con Felipe.
 - Invitaciones enviadas a Claudio y docente; aceptación aún pendiente de comprobación.
 - Seguimiento: [checklist Markdown](tareas-y-dependencias.md), en reemplazo de Trello por indicación docente comunicada por Felipe.
 
@@ -46,7 +46,7 @@ El mínimo SDK 33 no implica compilar ni ejecutar exclusivamente en API 33. Ejec
 | JVM efectiva de Gradle | Pendiente de registrar; criterio 25 configurado | Pendiente |
 | Dispositivo de prueba | Pixel 6a emulado, Android 17 / API 37.1, según Felipe | Pendiente |
 | Pantalla base ejecutada | Sí, confirmado por Felipe | Pendiente |
-| Dispositivo físico para recursos | Pendiente | Pendiente |
+| Dispositivo físico para recursos | Disponible según Felipe; modelo/API por registrar | Disponible según Felipe; modelo/API por registrar |
 
 No copiar rutas absolutas de un equipo al otro. Completar esta tabla con comprobaciones reales.
 
@@ -116,7 +116,7 @@ En Windows utilizar `gradlew.bat` en lugar de `./gradlew`. Las tareas de build/p
 - Felipe informó ejecución de la aplicación base en emulador, primer commit, publicación de `main`/`develop` e invitaciones enviadas.
 - Se revisaron configuración local, exclusiones y comprobación de whitespace del primer commit; esta última terminó sin mensajes según Felipe.
 - No se ha verificado ejecución por Claudio, pruebas automatizadas ni recursos físicos.
-- La documentación recién creada aún debe guardarse en Git y publicarse mediante acciones explícitas del equipo.
+- K0–K6 y alcance mínimo publicados en develop en commit 1ce1867. La ampliación documental de cierre posterior está local y pendiente de revisión/publicación; no se ejecuta Git automáticamente al redactarla.
 
 **Cierre del entorno compartido:** ambos integrantes ejecutan la misma base y registran sus resultados. Esto no cierra por sí solo E0: también faltan los contratos y acuerdos indicados en el checklist.
 
