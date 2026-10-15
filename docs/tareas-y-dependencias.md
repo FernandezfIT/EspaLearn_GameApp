@@ -27,8 +27,9 @@ Este documento reemplaza el tablero externo. Según la indicación del docente c
 - [x] Inicializar Git, realizar el primer commit y publicar el proyecto. Evidencia: resultado comunicado por Felipe; [repositorio](https://github.com/FernandezfIT/EspaLearn_GameApp).
 - [x] Publicar `main` y `develop`. Evidencia: confirmación de Felipe.
 - [x] Enviar invitaciones a Claudio y al docente. Evidencia: confirmación de Felipe; aceptación pendiente.
-- [x] Preparar seguimiento Markdown y guía del entorno. Archivos locales creados; commit y publicación de esta actualización pendientes.
-- [ ] Publicar esta documentación mediante el flujo de revisión que acuerde el equipo.
+- [x] Preparar seguimiento Markdown y guía del entorno.
+- [x] Publicar checklist y guía del entorno en `develop`. Evidencia: push confirmado por Felipe.
+- [ ] Publicar la nueva actualización de contratos y alcance.
 
 ### Validación y acuerdos — ambos
 
@@ -36,10 +37,14 @@ Este documento reemplaza el tablero externo. Según la indicación del docente c
 - [ ] Claudio obtiene una copia, sincroniza, compila y ejecuta. Registrar el resultado en la guía del entorno.
 - [ ] Revisar juntos alcance y reparto; confirmar disponibilidad real.
 - [ ] Realizar y documentar consulta previa con especialista antes de desarrollar la experiencia infantil.
-- [ ] Confirmar aceptación docente de cámara + háptica sin galería.
+- [x] Confirmar aceptación docente de cámara + háptica como pareja de recursos. Evidencia: confirmación del docente relatada por Felipe; implementación y pruebas pendientes.
+- [ ] Confirmar con el docente el rango propuesto 7–10: el caso escrito indica menores de 10. Se avanzará con 7–10 como propuesta y se ajustará si corresponde.
 - [ ] Definir contenido, procedencia y revisión lingüística.
-- [ ] Acordar contratos iniciales K0–K4: arranque, perfil, contenido, sesión y progreso.
-- [ ] Acordar fronteras K5–K6: captura y háptica.
+- [x] Aprobar con Felipe los comportamientos K0–K6; ver [contratos](contratos.md). Esto no acredita revisión de Claudio ni implementación.
+- [x] Reducir EV2 a un módulo de saludos/alimentos: cuatro unidades, 12 pasos y 8 elecciones, sin selector de temática.
+- [ ] Revisar K0–K6 con Claudio y concretar tipos, firmas, conteo/normalización del nick, momento de errores y Atrás durante guardado.
+- [ ] Materializar los contratos técnicos iniciales compilables.
+- [ ] Concretar fronteras técnicas K5/K6: archivo/captura pendiente, recuperación/limpieza e identidad/consumo de señal háptica.
 - [ ] Acordar scopes de ViewModels y conexión entre pantallas y estado.
 - [ ] Acordar flujo de PR, revisión y validación antes de integrar cambios.
 
@@ -54,22 +59,22 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 - [ ] **A1:** revisar flujo de Perfil, Inicio, Sesión y Resumen, incluyendo carga, errores, Atrás y cancelación.
 - [ ] **A2:** preparar tema y componentes reutilizables con estados y callbacks.
 - [ ] **A3:** implementar navegación e Inicio, distinguiendo carga inicial de ausencia de perfil.
-- [ ] **A4:** implementar un formulario reutilizable para crear/editar perfil, mostrando errores por campo y estado de guardado.
+- [ ] **A4:** implementar un formulario reutilizable según K1, con mensajes e indicadores por nick vacío/corto/largo/inválido y edad vacía/no entera/fuera de rango. Mostrar guardado/fallos sin perder borrador. Sin botón Cancelar ni selector múltiple; Atrás descarta el borrador según el modo.
 
 ### B — Claudio
 
 - [ ] **B1:** implementar modelos, estados, interfaz de repositorio y ejemplos sintéticos acordados.
-- [ ] **B2:** implementar ViewModels y transiciones: inicio, elección, feedback, continuación y salida; controlar eventos duplicados o de otra tarjeta.
+- [ ] **B2:** implementar ViewModels y transiciones según K3: Descubrir sin pregunta; una elección por botón/swipe, feedback y Continuar manual en práctica. Controlar eventos duplicados o de otra tarjeta; sin temporizador, vidas ni puntuación mínima.
 - [ ] **B3:** centralizar validaciones del perfil con reglas acordadas y pruebas de límites.
 
 **Salida E1:** formulario, Inicio y esqueleto de Sesión conectados a lógica real en memoria. Si el repositorio es simulado, debe indicarse expresamente. El formulario no navega como exitoso antes de recibir confirmación de guardado.
 
 ## E2 — Recorrido y persistencia real
 
-- [ ] **A5 — A:** implementar las configuraciones de tarjetas y feedback del recorrido acordado.
+- [ ] **A5 — A:** implementar presentación y dos configuraciones de práctica del único módulo: cuatro unidades (dos saludos/dos alimentos), 12 pasos, 8 elecciones y feedback con avance manual; sin selector de temática.
 - [ ] **A7 — A:** implementar resumen, mapa, logro final y marco opcional, consumiendo progreso confirmado.
-- [ ] **B4 — B:** implementar repositorio y persistencia local de perfil, etapas, etapa activa y preferencia de marco; tratar errores de lectura/escritura.
-- [ ] **Compartida:** incorporar catálogo e imágenes autorizadas con identificadores estables y revisión lingüística registrada.
+- [ ] **B4 — B:** implementar repositorio y persistencia local de perfil, etapas, etapa activa y preferencia de marco; acceso secuencial, repetición sin duplicados y errores de lectura/escritura. Confirmar escritura antes de anunciar éxito; sin historial de respuestas ni estadísticas.
+- [ ] **Compartida:** concretar y revisar cuatro unidades de saludos/alimentos, textos español/turco, imágenes y dos opciones identificadas para práctica, con respuesta esperada y procedencia autorizada. Definir ayudas concretas de ambas etapas; sin ampliar el volumen EV2.
 - [ ] **Compartida:** verificar que editar perfil conserva progreso y que repetir no duplica etapas completadas.
 - [ ] **Compartida:** verificar reapertura: conservar etapas completas y reiniciar desde el comienzo la etapa interrumpida.
 
@@ -78,14 +83,14 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 ## E3 — Interacción, recursos y robustez
 
 - [ ] **A6 — A:** implementar swipe y animaciones útiles, con botones alternativos y una sola elección admitida por paso.
-- [ ] **A8 — A:** integrar presentación de cámara/háptica, cancelación, error y alternativa de avatar.
+- [ ] **A8 — A:** integrar presentación de cámara/háptica, cancelación y error; partir de avatar predeterminado y conservar el anterior ante captura cancelada/fallida. Sin selector múltiple en EV2.
 - [ ] **A9 — A:** verificar adaptabilidad, texto ampliado, teclado, etiquetas y accesibilidad de acciones.
-- [ ] **B5 — B:** integrar háptica neutral sólo para elecciones admitidas, evitando duplicación por recomposición/restauración y conservando feedback visual.
-- [ ] **B6 — B:** integrar captura de ilustración, archivo/URI, FileProvider y limpieza segura sin perder el avatar vigente.
+- [ ] **B5 — B:** integrar un pulso neutral e igual para acierto/error por elección admitida, con botón o swipe. Sin pulso por Continuar, duplicados o nueva presentación; respetar disponibilidad/ajustes y mantener feedback visual, sin configuración extra.
+- [ ] **B6 — B:** integrar captura de ilustración como candidata del borrador, confirmada al guardar perfil válido; archivo/URI, FileProvider, recuperación y limpieza segura. Cancelación sin error; fallo con mensaje/reintento y avatar anterior conservado. Sin galería, recorte, filtros ni confirmación adicional.
 - [ ] **B7 — B:** verificar rotación, muerte de proceso, escritura fallida, captura pendiente y archivo ausente.
 - [ ] **Compartida:** probar los recursos aceptados en dispositivo físico y registrar entorno y resultados.
 
-**Salida E3:** funciones integradas y verificadas, incluidos fallos y cancelaciones. La cámara/háptica están condicionadas a la aceptación docente pendiente; si cambia la pareja de recursos, revisar tareas y alcance antes de implementarla.
+**Salida E3:** funciones integradas y verificadas, incluidos fallos y cancelaciones. Cámara + háptica aceptadas por el docente según confirmación de Felipe; no confundir esa aceptación con implementación ni pruebas superadas.
 
 ## E4 — Pruebas, documentación y entrega
 
@@ -107,7 +112,7 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 | A4: formulario | B1/B3: estado y errores; B4: guardado duradero | UI con estados sintéticos identificados | Validación y persistencia sin integración. |
 | A5/A6: tarjetas | B2: identidades y transiciones; contenido revisado | Presentación con datos de prueba | Recorrido real y control de duplicados. |
 | A7: resumen | B4: progreso confirmado | Estado completado de ejemplo | Recuperación o logro persistido. |
-| A8: recursos | B5/B6 y aceptación docente | Botones, mensajes y callbacks | Recursos reales sin pruebas. |
+| A8: recursos | B5/B6 y contratos K5/K6; pareja aceptada según confirmación de Felipe | Botones, mensajes y callbacks | Recursos reales sin pruebas. |
 | B: lógica/datos | Contratos y reglas acordadas | Validadores, repositorio y tests sin UI final | Experiencia integrada sin recorrido real. |
 
 ## Relación con EA2
@@ -120,9 +125,11 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 | Guía 10: navegación | A3 y pruebas de recorrido. |
 | Guía 11: formulario, validación y estado | A4, B1, B2 y B3. Transferir conceptos al perfil ficticio; no copiar datos personales del ejercicio. |
 | Guía 12: estado, persistencia y animaciones | B4, A6 y recuperación. |
-| Guía 13: recurso nativo/cámara | B6 y A8; pareja final de recursos pendiente de aceptación. |
+| Guía 13: recurso nativo/cámara | B6 y A8; cámara + háptica aceptadas según confirmación de Felipe, implementación y pruebas pendientes. |
 | Pauta EV2 | Verificación transversal y E4; prevalece para entrega, salvo excepción docente expresamente registrada. |
 
 ## Registro de cambios de planificación
 
 - **15/10/2026:** seguimiento Markdown en lugar de plataforma externa, conforme a indicación docente comunicada por Felipe. Rutas confirmadas: A Felipe / B Claudio. Checklist inicial basado en la planificación E0–E4, sin prometer fechas ni funciones adicionales.
+- **15/10/2026, acuerdos K0/K1:** Felipe aprueba arranque y perfil, nick 3–20 con letras Unicode/dígitos 0–9, edad simulada propuesta 7–10 pendiente de confirmación docente, avatar predeterminado y captura sin selector múltiple en EV2. Atrás descarta creación y sale de la actividad, o descarta edición y vuelve a Inicio conservando datos previos. Felipe comunica aceptación docente de cámara + háptica. Selector de avatares queda para evolución futura.
+- **15/10/2026, acuerdos K2–K6:** Felipe aprueba alcance mínimo (cuatro unidades, saludos/alimentos, 12 pasos/8 elecciones), feedback y avance manual, progreso secuencial/reanudación por etapa/logro único, foto candidata confirmada al guardar y pulso neutral sólo por elección admitida. Reitera validaciones y mensajes de error del formulario. Ampliación de contenido para EV3 como intención del equipo. Tipos compartidos, revisión de Claudio, implementación y pruebas pendientes.

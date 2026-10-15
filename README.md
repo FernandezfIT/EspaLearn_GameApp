@@ -18,6 +18,7 @@ Proyecto académico de **Desarrollo de Aplicaciones Móviles (DSY1105)**. Primer
 - [Documentación del desarrollo](#documentación-del-desarrollo)
   - [Checklist de tareas y dependencias](docs/tareas-y-dependencias.md)
   - [Entorno de desarrollo](docs/entorno-desarrollo.md)
+  - [Contratos A/B](docs/contratos.md)
 - [Privacidad y contenido](#privacidad-y-contenido)
 
 ## Objetivo del proyecto
@@ -51,13 +52,17 @@ Ambos participan en decisiones de alcance, contratos entre componentes, contenid
 - Primer commit publicado en [GitHub](https://github.com/FernandezfIT/EspaLearn_GameApp), según confirmación de Felipe.
 - Ramas `main` y `develop` publicadas.
 - Invitaciones enviadas a Claudio y al docente; aceptación pendiente de comprobar.
-- Documentación local de seguimiento y entorno creada; publicación de esta actualización pendiente.
+- Checklist y guía del entorno publicados en `develop`, según confirmación de Felipe.
+- Comportamientos de los siete contratos K0–K6 aprobados por Felipe y documentados localmente; revisión de Claudio, tipos compartidos e implementación pendientes.
+- Alcance mínimo EV2 acordado: un módulo de saludos y alimentos, cuatro unidades, 12 pasos y 8 elecciones.
+- Cámara + háptica aceptadas como pareja de recursos por el docente, según confirmación de Felipe.
 
 ### Pendiente
 
 - Confirmar aceptación de invitaciones y ejecución por Claudio.
-- Publicar y mantener el checklist Markdown que reemplaza el tablero externo.
-- Documentar y acordar contratos de estados, acciones y datos entre ambas rutas.
+- Mantener el checklist Markdown que reemplaza el tablero externo.
+- Publicar la actualización K0–K6 y del alcance mínimo; concretar tipos, firmas y detalles técnicos con Claudio.
+- Confirmar con el docente la ampliación propuesta a 7–10 años.
 - Resolver consulta pedagógica, revisión lingüística y decisiones de alcance pendientes.
 - Implementar las pantallas y funcionalidades del MVP.
 - Integrar y probar persistencia y recursos nativos.
@@ -67,38 +72,48 @@ Ambos participan en decisiones de alcance, contratos entre componentes, contenid
 
 ## Descripción del MVP — EV2
 
-El alcance previsto para esta primera versión es **un módulo educativo breve**, no un juego completo ni una plataforma de cursos. La propuesta utiliza tarjetas con elecciones sencillas inspiradas en la interacción de Reigns, sin motores de videojuegos externos.
+El alcance aprobado por Felipe para esta primera versión es **un módulo educativo breve de saludos y alimentos**, no un juego completo ni una plataforma de cursos. Incluye **cuatro unidades de contenido, dos por temática**, reutilizadas en las tres etapas: **12 pasos totales, 8 con elección**. Sin selector de temática ni cursos separados. Los textos, traducciones, imágenes y ayudas concretos siguen pendientes de revisión pedagógica/lingüística.
+
+La propuesta utiliza tarjetas con elecciones sencillas inspiradas en la interacción de Reigns, sin motores de videojuegos externos. El volumen se limita a demostrar la mecánica y más de una temática.
 
 ### Recorrido previsto
 
-1. **Perfil ficticio:** crear o editar un único perfil local con nick inventado, edad simulada y avatar ilustrado. Se reutiliza el mismo formulario.
+1. **Perfil ficticio:** crear o editar un único perfil local con nick inventado de 3–20 caracteres (letras Unicode y dígitos 0–9), edad simulada de 7–10 años como propuesta pendiente de confirmación docente y un avatar ilustrado predeterminado reemplazable mediante cámara. Sin selector múltiple en EV2; se reutiliza el mismo formulario y Atrás descarta el borrador. Ver [K1](docs/contratos.md#k1--perfil-ficticio) para el comportamiento de crear y editar.
 2. **Inicio:** consultar un camino estático con tres etapas del módulo y el progreso registrado.
 3. **Sesión de tarjetas:** recorrer las etapas Descubrir → Practicar con apoyo → Intentar con menos apoyo, reutilizando la pantalla de sesión. Las elecciones tendrán una alternativa mediante botones al gesto de deslizamiento.
 4. **Resumen:** mostrar el recorrido completado y la siguiente acción disponible. Al finalizar el módulo, ofrecer un único logro y un marco opcional para el avatar.
 
 ### Comportamiento previsto
 
-- Retroalimentación comprensible tras las elecciones.
+- Descubrir presenta contenido sin preguntas; las dos etapas de práctica ofrecen dos opciones por paso.
+- Una elección admitida por botón o swipe bloquea nuevas respuestas y muestra feedback; Continuar avanza manualmente.
+- Feedback háptico neutral e igual para acierto/error, sólo por elección admitida; sin pulso por Continuar, duplicados o volver a mostrar la pantalla.
+- Retroalimentación visual comprensible aun sin vibración disponible.
 - Completar una etapa significa recorrer sus tarjetas y recibir feedback, sin exigir una nota mínima.
+- Acceso secuencial a las tres etapas; repetir una etapa completada no duplica ni borra progreso.
 - Conservar las etapas completadas; al reabrir una etapa interrumpida, comenzar esa etapa desde el inicio.
 - Persistir localmente perfil, progreso y preferencia del marco.
-- Validaciones separadas de los componentes visuales y errores visibles por campo.
+- Validaciones separadas de los componentes visuales: nick vacío/corto/largo/inválido y edad vacía/no entera/fuera de rango, con mensajes e indicadores por campo, no sólo color.
+- Foto capturada como candidata del borrador, confirmada al guardar el perfil válido; sin galería, filtros, recorte ni confirmación adicional.
+- Fallos de captura/guardado con mensajes y reintento, conservando datos anteriores y borrador según corresponda; cancelar cámara no se trata como error.
+- Finalización de etapa y guardado de perfil sólo se muestran como exitosos tras confirmar la escritura.
 - Animaciones vinculadas a la interacción y diseños adaptables a los tamaños de ventana que se prueben.
 
-### Recursos nativos propuestos
+### Recursos nativos previstos
 
-- **Cámara:** fotografiar una ilustración autorizada para utilizarla como avatar ficticio, manteniendo el banco de avatares como alternativa.
+- **Cámara:** fotografiar una ilustración autorizada para reemplazar el avatar ficticio. El avatar predeterminado o la imagen anterior se conservan si se cancela o falla la captura.
 - **Háptica:** confirmación neutral de una elección admitida, sin que la comprensión dependa de la vibración.
 
-**Pendiente de confirmación docente:** aceptación de cámara + háptica como pareja de recursos para EV2 sin incorporar galería. La propuesta no acredita aún funcionamiento ni aprobación evaluativa; requiere integración y pruebas, incluidas las físicas pertinentes.
+**Aceptación docente comunicada por Felipe:** cámara + feedback háptico sirven como pareja de recursos para EV2. Su implementación e integración segura y las pruebas, incluidas las físicas pertinentes, siguen pendientes; aceptación del alcance no equivale a funcionamiento verificado.
 
 ### Límites de esta versión
 
-- Un perfil local y un módulo breve.
+- Un perfil local, un módulo y cuatro unidades de saludos/alimentos; sin selector de temas.
+- Sin historial de respuestas ni estadísticas; sólo progreso básico y preferencia del marco.
 - Sin login, cuentas múltiples, backend ni servicios externos de traducción.
 - Sin tienda, monedas, ranking, vidas ni adaptación automática de dificultad.
 - Sin cursos adicionales ni pantallas de anuncios de funciones futuras.
-- Contenido, cantidad exacta de tarjetas, reglas de acceso y ayudas concretas pendientes de revisión y acuerdo.
+- Volumen y acceso secuencial acordados; contenido concreto y diferencia de ayudas entre etapas pendientes de revisión y concreción.
 
 ## Objetivo técnico final y roadmap
 
@@ -112,7 +127,7 @@ Este objetivo técnico describe **cómo se construirá y consolidará el product
 
 | Etapa | Resultado previsto | Situación |
 |---|---|---|
-| **E0 — Base compartible** | Entorno reproducible, repositorio, seguimiento Markdown y contratos iniciales acordados. | Base publicada; ejecución de Claudio y contratos pendientes. |
+| **E0 — Base compartible** | Entorno reproducible, repositorio, seguimiento Markdown y contratos iniciales acordados. | Base publicada y K0–K6 de comportamiento aprobados por Felipe; ejecución de Claudio y contratos técnicos compilables pendientes. |
 | **E1 — Flujo en memoria** | UI base, navegación, formulario y transiciones conectados; datos de prueba identificados como tales. | Pendiente. |
 | **E2 — MVP con persistencia** | Recorrido del módulo y recuperación de perfil/progreso mediante almacenamiento real. | Pendiente. |
 | **E3 — Interacción y robustez** | Gestos, animaciones, recursos aceptados, adaptabilidad y recuperación ante fallos. | Pendiente. |
@@ -120,6 +135,8 @@ Este objetivo técnico describe **cómo se construirá y consolidará el product
 
 ### Posibles evoluciones posteriores — fuera de EV2
 
+- **Ampliación de contenido para EV3:** intención del equipo de incorporar más contenido tras demostrar la mecánica mínima en EV2; no se presenta como exigencia docente confirmada.
+- **Selección de avatares:** ampliar el avatar predeterminado con un banco seleccionable de ilustraciones autorizadas; no se implementa en EV2.
 - **Repaso mezclado:** explorar una modalidad de repaso del vocabulario trabajado.
 - **Mini diálogos:** explorar actividades con intercambios cotidianos breves.
 - Mejorar contenido, ayudas y experiencia según revisión pedagógica y retroalimentación.
@@ -194,6 +211,7 @@ La carpeta `docs/` concentra el seguimiento y las instrucciones del equipo; los 
 |---|---|
 | [Checklist de tareas y dependencias](docs/tareas-y-dependencias.md) | Etapas E0–E4, reparto A/B, dependencias, criterios de cierre y casillas de avance. |
 | [Entorno de desarrollo](docs/entorno-desarrollo.md) | Configuración observada, primera ejecución, archivos compartidos y comprobaciones pendientes por integrante. |
+| [Contratos A/B](docs/contratos.md) | Comportamientos K0–K6 aprobados por Felipe, criterios de prueba futuros, discrepancias y detalles técnicos pendientes. |
 
 ### Documentos previstos — todavía no creados
 
@@ -202,7 +220,6 @@ Los enlaces siguientes son destinos previstos; no representan documentos disponi
 | Documento previsto | Contenido |
 |---|---|
 | [Alcance y decisiones](docs/alcance-y-decisiones.md) | Recorrido, límites del MVP, decisiones aprobadas y propuestas pendientes. |
-| [Contratos](docs/contratos.md) | Estados, acciones, errores e interfaces que conectan las rutas A y B. |
 | [Criterios pedagógicos](docs/criterios-pedagogicos.md) | Síntesis depurada de la consulta real y criterios que orientan la experiencia. |
 | [Contenido y licencias](docs/contenido-y-licencias.md) | Origen, autorización y revisión lingüística de textos e imágenes. |
 | [Matriz EV2](docs/matriz-ev2.md) | Relación entre requisitos, guías EA2, tareas y evidencias de cumplimiento. |
