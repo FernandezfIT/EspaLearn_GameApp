@@ -2,7 +2,7 @@
 
 [Volver al README](../README.md) · [Entorno de desarrollo](entorno-desarrollo.md)
 
-**Actualización:** 15/10/2026. **A:** Felipe Fernández. **B:** Claudio Novoa.
+**Actualización:** 16/10/2026. **A:** Felipe Fernández. **B:** Claudio Novoa.
 
 ## Uso y acuerdos
 
@@ -15,6 +15,30 @@ Este documento reemplaza el tablero externo. Según la indicación del docente c
 - Un componente con datos de prueba no equivale a integración o persistencia real.
 - Los responsables son principales, no exclusivos; cualquier reasignación debe quedar anotada.
 - No se fijan fechas ni porcentajes ficticios. El calendario se acordará con capacidad real y plazos docentes confirmados.
+
+## Corte de avance — 16/10/2026
+
+**Base local inspeccionada:** `feature/base-ui`, commit `e2c8686`. Código incorporado por Felipe y funcionamiento/compilación reportados por él; sin afirmar PR, revisión o merge. Esta actualización sólo modifica documentación.
+
+| Tarea A | Avance preparado | Falta para cierre integrado |
+|---|---|---|
+| A1 | Flujo de cuatro pantallas y carga/error representados en UI/demo. | Revisar estados reales y salidas con B. |
+| A2 | Seis componentes reutilizables, avatar geométrico/marco y tema Material existente. | Ajustes necesarios al integrar; no se diseñó un tema de marca adicional. |
+| A3 | Navigation2.9.7, destinos, NavHost, Inicio y Atrás de demo. | Arranque de B, Routes/owners y MainActivity; crear/salir y bloquear Atrás al guardar. |
+| A4 | Formulario con texto, callbacks, errores recibidos, fallos y estado guardando. | B3/B4/B6, icono de error por campo y conservación/guardado reales. |
+| A5 | Configuraciones de tarjeta, ayuda inline, opciones, feedback y Continuar en snapshots. | Catálogo real de cuatro unidades y transiciones B2/B4. |
+| A6 | Swipe/retorno animado integrado a IDs de botones. | Admisión única por paso/sesión y rechazo de duplicados/tardíos en B2. |
+| A7 | Resumen/logro y representación de aplicar/quitar marco. | Progreso y preferencia confirmados por B4. |
+| A8 | Avatar predeterminado, entrada Painter y mensajes/callbacks de captura. | Captura/archivo, imagen real y háptica de B5/B6. |
+| A9 | Inicio en una/dos columnas; ventanas, fuente ampliada y teclado reportados funcionales. | Verificación final con el flujo real. TalkBack avanzado aplazado salvo obligación docente expresa. |
+| A10 | Comprobaciones manuales preliminares registradas en pruebas.md. | Pruebas automatizadas específicas e integración final. |
+
+- [x] Incorporar UI, navegación y fixtures de A en un commit local: `e2c8686`.
+- [x] Comprobar manualmente los escenarios preparados, según resultados comunicados por Felipe; ver registro R01–R08 de pruebas.md.
+- [x] Actualizar documentación de cierre del 16/10. No equivale a publicación ni merge.
+- [ ] Revisar/compartir esta rama y documentación mediante el flujo de PR acordado.
+
+Las tareas integradas A3–A8 no se marcan terminadas por una demo. **Felipe cierra la sesión y espera confirmación del avance B para continuar A**; no se afirma que se haya agotado todo trabajo independiente posible. Pruebas mínimas y básicos pendientes se retomarán con la integración, sin ampliar alcance ni insistir en TalkBack.
 
 ## E0 — Base reproducible y acuerdos
 
@@ -29,7 +53,7 @@ Este documento reemplaza el tablero externo. Según la indicación del docente c
 - [x] Enviar invitaciones a Claudio y al docente. Evidencia: confirmación de Felipe; aceptación pendiente.
 - [x] Preparar seguimiento Markdown y guía del entorno.
 - [x] Publicar checklist y guía del entorno en `develop`. Evidencia: push confirmado por Felipe.
-- [ ] Publicar la nueva actualización de contratos y alcance.
+- [x] Publicar la ampliación documental de contratos/alcance: comprobada en develop `59046f9` al inicio del 16/10. La actualización de cierre del 16/10 queda local hasta su publicación explícita.
 
 ### Validación y acuerdos — ambos
 
@@ -89,7 +113,7 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 
 - [ ] **A6 — A:** implementar swipe y animaciones útiles, con botones alternativos y una sola elección admitida por paso.
 - [ ] **A8 — A:** integrar presentación de cámara/háptica, cancelación y error; partir de avatar predeterminado y conservar el anterior ante captura cancelada/fallida. Sin selector múltiple en EV2.
-- [ ] **A9 — A:** verificar adaptabilidad, texto ampliado, teclado, etiquetas y accesibilidad de acciones.
+- [ ] **A9 — A:** **verificación básica de demo reportada** para tamaños, fuente ampliada y teclado; conservar etiquetas y botones alternativos. Verificación integrada pendiente. TalkBack/accesibilidad avanzada aplazados por decisión de Felipe salvo exigencia docente expresa; no marcar esa prueba como realizada.
 - [ ] **B5 — B:** integrar un pulso neutral e igual para acierto/error por elección admitida, con botón o swipe. Sin pulso por Continuar, duplicados o nueva presentación; respetar disponibilidad/ajustes y mantener feedback visual, sin configuración extra.
 - [ ] **B6 — B:** integrar captura de ilustración como candidata del borrador, confirmada al guardar perfil válido; archivo/URI, FileProvider, recuperación y limpieza segura. Cancelación sin error; fallo con mensaje/reintento y avatar anterior conservado. Sin galería, recorte, filtros ni confirmación adicional.
 - [ ] **B7 — B:** verificar rotación, muerte de proceso, escritura fallida, captura pendiente y archivo ausente.
@@ -104,7 +128,7 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 - [ ] **B9 — B:** corregir fallos técnicos y completar instrucciones de versiones, almacenamiento y permisos.
 - [x] Redactar base documental de decisiones, contratos, situación pedagógica, contenido/licencias, matriz EV2, plan de pruebas y guía de Claudio. No equivale a traducciones verificadas, licencias resueltas, tests ejecutados ni revisión de Claudio.
 - [x] Revisar documentación de cierre con Felipe; aprobación explícita recibida. No acredita revisión de Claudio.
-- [ ] **Ambos:** publicar esta actualización y mantener documentos con resultados de implementación y evidencia real.
+- [ ] **Ambos:** publicar la actualización del 16/10 y mantener documentos con evidencia real; la ampliación anterior ya estaba en develop59046f9.
 - [ ] **Ambos:** comprobar requisitos de la pauta y participación de ambos con evidencia de cambios.
 - [ ] **Ambos:** comprobar una copia limpia del proyecto y ensayar explicación de aportes.
 - [ ] **Ambos:** confirmar fecha/hora AVA, entrega grupal, activación individual y restricciones de cambios posteriores.
@@ -137,7 +161,9 @@ Dependencias: contratos y decisiones pertinentes de E0. Se permiten estados sint
 
 ## Registro de cambios de planificación
 
+- **16/10/2026:** UI y demo de A incorporadas en `e2c8686`; resultados manuales y compilación comunicados por Felipe, sin integración B. Avatar geométrico elegido; Inicio adaptable; MainActivity conserva plantilla. Se aplaza TalkBack avanzado y se prioriza funcionamiento por flexibilización de complejidad relatada, sin dispensa general documentada. Cierre de sesión: esperar avance B antes de continuar A. No hay tests automatizados nuevos ni recursos nativos verificados.
+
 - **15/10/2026:** seguimiento Markdown en lugar de plataforma externa, conforme a indicación docente comunicada por Felipe. Rutas confirmadas: A Felipe / B Claudio. Checklist inicial basado en la planificación E0–E4, sin prometer fechas ni funciones adicionales.
 - **15/10/2026, acuerdos K0/K1:** Felipe aprueba arranque y perfil, nick 3–20 con letras Unicode/dígitos 0–9, edad simulada propuesta 7–10 pendiente de confirmación docente, avatar predeterminado y captura sin selector múltiple en EV2. Atrás descarta creación y sale de la actividad, o descarta edición y vuelve a Inicio conservando datos previos. Felipe comunica aceptación docente de cámara + háptica. Selector de avatares queda para evolución futura.
 - **15/10/2026, acuerdos K2–K6:** Felipe aprueba alcance mínimo (cuatro unidades, saludos/alimentos, 12 pasos/8 elecciones), feedback y avance manual, progreso secuencial/reanudación por etapa/logro único, foto candidata confirmada al guardar y pulso neutral sólo por elección admitida. Reitera validaciones y mensajes de error del formulario. Ampliación de contenido para EV3 como intención del equipo. Tipos compartidos, revisión de Claudio, implementación y pruebas pendientes.
-- **15/10/2026, cierre documental en revisión:** reglas de validación, guardado, contenido/apoyos, base técnica y PR aprobadas; ambos con teléfono físico. Felipe decide omitir consulta pedagógica por tiempo y priorizar técnica, con discrepancia visible. Próxima sesión: ruta A, empezando A1/A2 y revisando entrega B1; no repetir planificación K0–K6. Documentación revisada y aprobada por Felipe al cierre de sesión. Publicación de esta última actualización pendiente; próxima sesión dedicada a ruta A.
+- **15/10/2026, cierre documental en revisión:** reglas de validación, guardado, contenido/apoyos, base técnica y PR aprobadas; ambos con teléfono físico. Felipe decide omitir consulta pedagógica por tiempo y priorizar técnica, con discrepancia visible. Próxima sesión: ruta A, empezando A1/A2 y revisando entrega B1; no repetir planificación K0–K6. Documentación revisada y aprobada por Felipe al cierre de esa sesión; entonces su publicación estaba pendiente. El 16/10 se comprobó publicada en develop59046f9.

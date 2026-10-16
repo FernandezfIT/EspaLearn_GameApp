@@ -6,7 +6,18 @@
 
 La lógica y datos del MVP, no otra aplicación: un perfil local, cuatro unidades (Hola, Adiós, Pan, Manzana), tres etapas y recursos cámara/háptica. Felipe prepara UI/navegación. No crear pantallas paralelas, backend ni selectores extra para probar tu ruta; usa fakes y tests identificados.
 
-**Estado inicial:** sólo existe la base Compose. Los contratos de comportamiento están aprobados por Felipe; necesitas revisarlos con él y materializar las firmas antes de desarrollar consumidores incompatibles. No se afirma que hayas aceptado invitación, clonado o compilado todavía.
+**Actualización16/10:** A ya tiene UI y demo debug en el commit local `e2c8686` de `feature/base-ui`. La ampliación documental anterior está en develop59046f9; no se afirma que la rama A esté publicada o integrada. Los contratos de comportamiento siguen aprobados por Felipe; falta revisar/materializar las firmas de B. No se afirma tu aceptación de invitación, clonación, compilación ni avance sin evidencia.
+
+## Qué tiene A y qué necesita ahora
+
+- Pantallas Perfil/Inicio/Sesión/Resumen, carga/error, mapa, feedback, avatar geométrico/marco, swipe y navegación reutilizable. Navigation Compose2.9.7 añadido al catálogo.
+- Fixtures y `NavegacionDemo` en `src/debug`; MainActivity todavía es plantilla. Las acciones de demo no guardan, admiten respuestas ni completan etapas.
+- Tipos de A bajo `ui`: `EtapaMapaUi`, `SesionPresentacion`, `OpcionRespuestaUi`, `FeedbackUi`, `ResumenPresentacion`, `LogroResumenUi`. Mantener tus modelos de negocio/estado y acordar adaptación; no convertir los tipos visuales en almacenamiento por defecto.
+- Prioridad de entrega: B1 compilable con ejemplos y firmas; después B2/B3 y B4 para cerrar comportamiento/persistencia. Avisar cambios de contratos/owners/factories antes de conectar. No hace falta esperar a cámara/háptica para revisar B1.
+- `clavePaso` de la tarjeta es identidad visual. Debes validar sesión/paso y deduplicar botón/swipe en B2, incluso si la UI se deshabilita.
+- Painter y marco dibujado no son archivo conservado ni preferencia guardada; B4/B6 siguen siendo necesarios.
+
+Felipe cierra el16/10 y espera confirmación de tus checks para continuar A. Comparte rama/commit, pruebas reales y qué está listo/pendiente; el flujo de PR acordado no cambia. Se prioriza funcionamiento; TalkBack avanzado se aplaza salvo exigencia expresa, sin retirar básicos ni inventar dispensa general.
 
 ## Primero: entorno e integración
 

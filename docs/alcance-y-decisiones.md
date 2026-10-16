@@ -4,7 +4,7 @@
 
 ## Alcance vigente
 
-Acuerdos con Felipe durante la sesión del 15/10/2026; no equivalen a revisión ya realizada por Claudio ni a funciones implementadas.
+**Actualización: 16/10/2026.** Acuerdos de alcance del15/10, complementados por el corte de implementación de A del16/10. No equivalen a revisión de Claudio ni a funcionalidades integradas con lógica/datos reales.
 
 - Un módulo local, un perfil ficticio y cuatro pantallas reutilizables: Perfil, Inicio, Sesión y Resumen.
 - Dos temáticas, sin menú de selección: saludos y alimentos.
@@ -13,8 +13,18 @@ Acuerdos con Felipe durante la sesión del 15/10/2026; no equivalen a revisión 
 - 12 pasos y 8 elecciones; sin nota mínima ni avance automático tras responder.
 - Persistir perfil, etapas completadas, etapa activa y preferencia de marco.
 - Un logro derivado de completar las tres etapas y marco opcional; sin pantalla adicional.
-- Avatar predeterminado, sustituible por captura de ilustración autorizada; sin banco seleccionable en EV2.
+- Avatar predeterminado geométrico elegido por Felipe el16/10, dibujado con Canvas y reutilizado en Perfil/Inicio/Resumen. Sustituible por captura de ilustración autorizada cuando se integre B6; sin banco seleccionable en EV2.
 - Cámara + háptica neutral: pareja aceptada por el docente según confirmación de Felipe; funcionamiento pendiente de pruebas.
+
+## Implementación A preparada — 16/10
+
+Base local `feature/base-ui`, commit `e2c8686`: cuatro pantallas, carga/error de arranque, componentes, swipe con retorno, avatar geométrico/marco, Navigation2.9.7 y demo debug. Inicio cambia entre una/dos columnas según ancho local disponible; no se añadió la API WindowSizeClasses.
+
+Felipe confirmó compilación y pruebas manuales de los escenarios; ver pruebas.md. El asistente no ejecutó build ni suite. MainActivity sigue plantilla, y la demo no guarda perfil, completa pasos, admite respuestas ni abre cámara: comunica solicitudes con datos prefijados. Los modelos `*Ui`/`*Presentacion` de A no sustituyen contratos de B.
+
+**Prioridad explícita:** funcionamiento y pruebas funcionales mínimas. TalkBack y accesibilidad avanzada se aplazan salvo exigencia docente expresa; no se probaron. Se conservan etiquetas, semántica básica, botones alternativos, mensajes y adaptación ya implementados. Felipe comunica flexibilización de complejidad por poco plazo, sin dispensa general documentada. La pauta menciona claridad/accesibilidad en formularios, no una obligación explícita de TalkBack en el texto revisado. Iconos de error por campo y demás básicos de la pauta siguen por revisar.
+
+**Corte de trabajo:** Felipe termina la sesión y espera confirmación de avances B para continuar A. No se agregan funciones para llenar la espera ni se declara toda A terminada.
 
 ## Perfil
 
@@ -62,10 +72,11 @@ Ampliar contenido para EV3 es intención del equipo; no se presenta como requisi
 
 ## Reanudación de Felipe — próxima sesión
 
-1. Abrir proyecto y leer checklist, contratos y esta nota; no reiniciar planificación K0–K6.
-2. Comprobar rama/base de integración y cambios reales antes de editar.
-3. Revisar si Claudio entregó B1: tipos, estados y firma del repositorio. Si no, preparar únicamente UI neutral con estado de ejemplo claramente identificado, sin duplicar la lógica de B.
-4. Iniciar A1/A2: concretar distribución de las cuatro pantallas y el componente de formulario; después A3/A4 según contratos disponibles.
-5. Guiar cada bloque con explicación y práctica; solicitar autorización antes de crear archivos. No añadir funciones fuera del MVP.
+1. Esperar el aviso de Felipe de que los checks B están completos o hay una entrega concreta lista. No inferir avances en otra rama ni requerir que B9 esté terminado para revisar un bloque B1 entregado.
+2. Comprobar rama, commits, cambios y resultados de B; no ejecutar pull/merge/commit/push sin instrucción. La rama A inspeccionada es feature/base-ui, código e2c8686.
+3. Revisar B1 y mapear sus tipos/estados hacia las pantallas existentes. Acordar owners/factories y conectar Routes; no crear otro validador/repositorio ni rehacer A1/A2.
+4. Integrar por bloques: K0 y Perfil, Inicio/Sesión, progreso/Resumen; navegación exitosa sólo tras confirmación. MainActivity se conecta a raíz real, no a fixtures debug. Probar Atrás creando/guardando y rechazo de duplicados/tardíos.
+5. Incorporar recursos nativos reales y contenido autorizado cuando estén listos, con pruebas de reapertura/captura/fallo pertinentes. No atribuirlas a las pruebas visuales ya hechas.
+6. Retomar básicos y pruebas funcionales mínimas pendientes, sin TalkBack avanzado salvo obligación expresa. Código explicado por bloques y añadido manualmente por Felipe; esta autorización al asistente corresponde a documentación, no a escribir la app.
 
-Esta sesión es exclusivamente de documentación; no se ha implementado la ruta A ni B.
+La sesión16/10 implementó preparación UI y cerró con actualización documental autorizada. No se integró lógica/datos de B ni se hicieron operaciones Git de escritura desde el asistente.

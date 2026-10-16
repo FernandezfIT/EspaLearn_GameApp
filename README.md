@@ -44,39 +44,35 @@ Ambos participan en decisiones de alcance, contratos entre componentes, contenid
 
 ## Estado actual
 
-**Última actualización: 15/10/2026.** Esta sección se irá actualizando a medida que avance el desarrollo.
+**Última actualización: 16/10/2026.** Ruta A preparada con datos de prueba; integración con B pendiente.
 
-### Realizado
+### Preparado en la ruta A
 
-- Proyecto Android creado con Jetpack Compose y Material 3.
-- Aplicación base ejecutada en el emulador, según la comprobación de Felipe.
-- Organización inicial de paquetes: `ui`, `viewmodel`, `model` y `repository`.
-- Subpaquetes `ui/screens` y `ui/components`, conservando el tema generado.
-- Revisión inicial de exclusiones en `.gitignore`, incluida `.kotlin/`.
-- Nombre acordado para el repositorio: `EspaLearn_GameApp`.
-- README inicial.
-- Primer commit publicado en [GitHub](https://github.com/FernandezfIT/EspaLearn_GameApp), según confirmación de Felipe.
-- Ramas `main` y `develop` publicadas.
-- Invitaciones enviadas a Claudio y al docente; aceptación pendiente de comprobar.
-- Checklist y guía del entorno publicados en `develop`, según confirmación de Felipe.
-- Comportamientos K0–K6 aprobados por Felipe y publicados en `develop` en el commit `1ce1867`; esta ampliación documental posterior aún no se publica.
-- Guía de ruta B, alcance, catálogo pendiente, matriz y plan de pruebas redactados localmente y revisados/aprobados por Felipe; sin código de funcionalidades añadido. Revisión de Claudio y publicación de esta ampliación pendientes.
-- Alcance mínimo EV2 acordado: un módulo de saludos y alimentos, cuatro unidades, 12 pasos y 8 elecciones.
-- Cámara + háptica aceptadas como pareja de recursos por el docente, según confirmación de Felipe.
+- Perfil reutilizable para crear/editar, campos, errores recibidos, fallos de operación y controles deshabilitados durante guardado representado.
+- Inicio y mapa de tres etapas; Sesión con Descubrir/Con apoyo/Menos apoyo, ayuda inline, opciones, feedback y Continuar; Resumen con logro y control del marco.
+- Vistas de carga y error de arranque. Todavía no consumen una lectura real de perfil.
+- Componentes reutilizables `CampoPerfil`, `MapaEtapas`, `TarjetaVocabulario`, `PanelFeedback`, `TarjetaDeslizable` y `AvatarImagen`.
+- Swipe horizontal con umbral del 25 % del ancho al soltar y retorno animado; conectado a los mismos IDs de opción que los botones. No supone admisión única de respuesta por paso.
+- Avatar geométrico predeterminado dibujado en código, marco opcional y entrada `Painter` para presentación futura de imágenes.
+- Navigation Compose 2.9.7, cuatro destinos y contenedor `AppNavigation`; demo navegable en `src/debug` con datos prefijados y Atrás de prueba.
+- Inicio con una o dos columnas según ancho disponible; escenarios compactos, amplios, horizontales y con fuente ampliada.
+- Felipe incorporó el código y confirmó compilación debug y comprobaciones manuales. Resultados y límites en [pruebas](docs/pruebas.md).
 
-### Pendiente
+**Base documental:** ampliación publicada en `develop` en `59046f9`, tras contratos `1ce1867`. **Base de código inspeccionada al cierre:** commit local `e2c8686` en `feature/base-ui`. No se afirma PR, revisión, merge ni publicación remota de esa rama.
 
-- Confirmar aceptación de invitaciones y ejecución por Claudio.
-- Mantener el checklist Markdown que reemplaza el tablero externo.
-- Publicar la actualización K0–K6 y del alcance mínimo; concretar tipos, firmas y detalles técnicos con Claudio.
-- Confirmar con el docente la ampliación propuesta a 7–10 años.
-- Verificar traducciones y permisos de recursos. Consulta pedagógica no realizada ni prevista para EV2 según Felipe; mantener visible el desajuste con el caso.
-- Claudio revisa la guía de ruta B y entrega B1 para desbloquear los consumidores de A.
-- Implementar las pantallas y funcionalidades del MVP.
-- Integrar y probar persistencia y recursos nativos.
-- Verificar ejecución reproducible en el entorno de ambos integrantes.
+### Pendiente de integración y verificación
 
-**La aplicación actual conserva la pantalla de ejemplo generada.** La estructura de paquetes no equivale a una implementación completa de MVVM.
+- Entrega/revisión de B1, tipos compartidos, ViewModels, owners/factories y repositorio. Los tipos bajo `ui` son de presentación, no los modelos de B.
+- Validación real, transiciones de sesión, control de duplicados/eventos tardíos y progreso confirmado.
+- Perfil/progreso/marco duraderos, captura de ilustraciones y háptica reales.
+- Conectar arranque y Routes a `MainActivity`, incluyendo lectura, errores, éxito de escritura y Atrás creando/guardando.
+- Contenido bilingüe y recursos del vocabulario revisados; diferencia de edad 7–10 y demás pendientes académicos documentados.
+- Confirmación de entorno/avances de Claudio, pruebas automatizadas y pruebas de integración, mínimo API 33 y recursos físicos.
+- Revisar el indicador de error con icono por campo exigido en la pauta; actualmente hay apariencia y mensajes, sin un icono específico añadido.
+
+**Run normal sigue mostrando la plantilla `Hello Android`.** Para inspeccionar la UI se usa **Run Preview → `NavegacionDemo`** en la variante debug. Guardar, Continuar, cámara y cambio de marco sólo comunican solicitudes en la demo; no simulan persistencia ni finalización exitosa.
+
+**Cierre del 16/10:** se actualiza documentación y se espera el avance confirmado de B antes de continuar A. Por decisión de Felipe se prioriza funcionamiento y se aplaza TalkBack/accesibilidad avanzada salvo exigencia docente expresa; no se retiran los básicos ya implementados ni se registra TalkBack como probado.
 
 ## Descripción del MVP — EV2
 
@@ -138,10 +134,10 @@ Este objetivo técnico describe **cómo se construirá y consolidará el product
 | Etapa | Resultado previsto | Situación |
 |---|---|---|
 | **E0 — Base compartible** | Entorno reproducible, repositorio, seguimiento Markdown y contratos iniciales acordados. | Base publicada y K0–K6 de comportamiento aprobados por Felipe; ejecución de Claudio y contratos técnicos compilables pendientes. |
-| **E1 — Flujo en memoria** | UI base, navegación, formulario y transiciones conectados; datos de prueba identificados como tales. | Pendiente. |
-| **E2 — MVP con persistencia** | Recorrido del módulo y recuperación de perfil/progreso mediante almacenamiento real. | Pendiente. |
-| **E3 — Interacción y robustez** | Gestos, animaciones, recursos aceptados, adaptabilidad y recuperación ante fallos. | Pendiente. |
-| **E4 — Verificación y entrega** | Pruebas, documentación, revisión de requisitos y ejecución desde una copia limpia. | Pendiente. |
+| **E1 — Flujo en memoria** | UI base, navegación, formulario y transiciones conectados; datos de prueba identificados como tales. | UI y navegación de demo preparadas; transiciones/validación de B y arranque real pendientes. |
+| **E2 — MVP con persistencia** | Recorrido del módulo y recuperación de perfil/progreso mediante almacenamiento real. | Presentación preparada; contenido y persistencia reales pendientes. |
+| **E3 — Interacción y robustez** | Gestos, animaciones, recursos aceptados, adaptabilidad y recuperación ante fallos. | Swipe/retorno, avatar y adaptabilidad probados manualmente con fixtures según Felipe; recursos y robustez integrados pendientes. |
+| **E4 — Verificación y entrega** | Pruebas, documentación, revisión de requisitos y ejecución desde una copia limpia. | Registro manual y docs actualizados; suites, revisión conjunta, copia limpia y entrega pendientes. |
 
 ### Posibles evoluciones posteriores — fuera de EV2
 
@@ -169,6 +165,7 @@ Estas ideas son propuestas de evolución, **no funcionalidades disponibles ni co
 | Gradle Wrapper | `9.5.0` |
 | Plugin Kotlin Compose | `2.2.10` |
 | Compose BOM | `2026.02.01` |
+| Navigation Compose | `2.9.7` |
 | Compatibilidad de fuentes/bytecode Java declarada | Java 11 |
 | Criterio de selección de JVM mostrado por Android Studio | Versión 25 |
 
@@ -182,7 +179,9 @@ Los valores anteriores documentan la configuración observada; no constituyen un
 4. Seleccionar el módulo `app` y un emulador o dispositivo compatible.
 5. Ejecutar la aplicación con **Run**.
 
-**Entorno de ejecución comunicado por Felipe:** emulador Pixel 6a con Android 17 / API 37.1. La ejecución base en ese emulador no demuestra todavía compatibilidad probada en API 33 ni funcionamiento de recursos físicos.
+**Entorno actual comunicado por Felipe:** Windows y emulador Pixel 6a con Android 17 / API 37.1. También reportó funcionamiento del swipe en ejecución real; modelo/API de ese equipo sin registrar. No implica pruebas de cámara/háptica ni compatibilidad comprobada en API 33.
+
+**Explorar el avance A:** abrir `app/src/debug/java/com/example/espalearn/preview/NavegacionDemo.kt` y ejecutar **Run Preview** en el emulador/dispositivo. Las demás previews aíslan errores, guardando, ayuda, marco y tamaños. No conectar la demo a la entrada release ni interpretar el botón «Abrir Resumen de prueba» como etapa completada. Véase [entorno](docs/entorno-desarrollo.md).
 
 No se deben versionar rutas locales, credenciales ni claves de firma. No se debe confundir `gradle/`, que contiene el Wrapper y configuración compartida, con `.gradle/`, que contiene datos generados.
 
@@ -192,22 +191,25 @@ Ubicación: `app/src/main/java/com/example/espalearn/`.
 
 ```text
 espalearn/
-├── MainActivity.kt
-├── ui/
-│   ├── theme/
-│   ├── screens/
-│   └── components/
-├── viewmodel/
-├── model/
-└── repository/
+├── MainActivity.kt                  # plantilla; conexión real pendiente
+├── navigation/
+│   ├── AppDestination.kt
+│   └── AppNavigation.kt
+└── ui/
+    ├── theme/
+    ├── screens/{arranque,perfil,inicio,sesion,resumen}/
+    └── components/
+
+app/src/debug/java/com/example/espalearn/preview/
+└── previews, DatosNavegacionDemo.kt y NavegacionDemo.kt
 ```
 
 - **ui:** presentación visual y comunicación de acciones.
-- **viewmodel:** estado y lógica de presentación.
-- **model:** tipos de datos y estados acordados entre las rutas.
-- **repository:** acceso a datos y persistencia.
+- **navigation:** destinos y contenedor reutilizable; no realiza validaciones ni guarda datos.
+- **viewmodel, model y repository:** responsabilidades previstas de B, aún sin implementación integrada en esta base.
+- **debug/preview:** escenarios sintéticos y navegación demostrativa; no son la entrada final del producto.
 
-Los paquetes iniciales aún sin implementación se completarán al abordar las tareas correspondientes; no se crean clases vacías para aparentar avance. La organización parte de la guía 7 de EA2 y se ampliará según las necesidades acordadas.
+`EtapaMapaUi`, `SesionPresentacion`, `OpcionRespuestaUi`, `FeedbackUi`, `ResumenPresentacion` y `LogroResumenUi` son proyecciones de UI. No sustituyen el modelo/estado compartido de B. No se crean clases vacías para aparentar avance. La organización parte de la guía 7 de EA2 y se ampliará según las necesidades acordadas.
 
 ## Documentación del desarrollo
 
@@ -231,7 +233,7 @@ La carpeta `docs/` concentra el seguimiento y las instrucciones del equipo; los 
 
 Los documentos están redactados; su contenido distingue decisiones, propuestas técnicas y verificaciones pendientes. Documentación disponible no significa implementación o revisión externa completada.
 
-**Para Claudio:** empezar por la guía de ruta B y el entorno. **Próxima sesión de Felipe:** iniciar A1/A2 según el punto de reanudación de alcance-y-decisiones.md, sin volver a decidir K0–K6.
+**Para Claudio:** revisar la guía de ruta B, los contratos y la UI ya preparada; entregar B1 y los checks correspondientes sin duplicar pantallas. **Próxima sesión de Felipe:** esperar su aviso de avance B, revisar lo entregado y conectar por bloques según [reanudación](docs/alcance-y-decisiones.md#reanudación-de-felipe--próxima-sesión), sin repetir A1/A2 ni redecidir K0–K6.
 
 La guía 7 fundamenta la organización y colaboración; las guías 8–10 orientan componentes, adaptabilidad y navegación; la guía 11, formularios y estado; la guía 12, persistencia y animaciones; y la guía 13, integración de cámara. La pauta EV2 determina las exigencias de entrega: repositorio público, documentación, participación real y funcionalidades verificadas.
 

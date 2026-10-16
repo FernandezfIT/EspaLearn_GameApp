@@ -2,7 +2,7 @@
 
 [Volver al README](../README.md) · [Checklist](tareas-y-dependencias.md)
 
-**Actualización:** 15/10/2026.
+**Actualización:** 16/10/2026.
 
 ## Estado y propósito
 
@@ -12,6 +12,17 @@ Este documento registra los comportamientos de **K0–K6 aprobados por Felipe** 
 - **B — Claudio Novoa:** produce estado, aplica validaciones y coordina acceso a datos.
 - Compartir estos contratos permite preparar UI y lógica sin decidir firmas por ensayo y error.
 - No incorporar reglas pendientes como si ya estuvieran aprobadas.
+
+## Preparación del consumidor A — corte16/10
+
+Código local en `feature/base-ui`, commit `e2c8686`. Se prepararon pantallas y representación de carga/error, borradores/errores, tarjetas, feedback, mapa, logro y marco. La demo debug usa fixtures y callbacks de solicitud; no implementa estos contratos completos ni sus criterios de integración.
+
+- `EtapaMapaUi`, `SesionPresentacion`, `OpcionRespuestaUi`, `FeedbackUi`, `ResumenPresentacion` y `LogroResumenUi` son proyecciones de presentación. No reemplazan `Perfil`, `Progreso`, `AppUiState`, `PerfilUiState` o `SesionUiState` de B.
+- `clavePaso` reinicia el estado visual del swipe; no valida identidad de sesión/paso ni garantiza admisión única. Botón y gesto envían el mismo ID de opción; la Route deberá aportar la identidad del evento que B defina.
+- `AvatarImagen` muestra geometría o un Painter recibido. No carga/persiste archivos ni implementa K5. El marco visual no acredita guardar su preferencia.
+- `AppNavigation` registra cuatro destinos y recibe slots. MainActivity, elección inicial según K0, owners y confirmación antes de navegar siguen pendientes.
+
+Felipe espera confirmación del avance B para revisar y conectar estas fronteras; no reabrir los comportamientos aprobados ni confundir fixtures con contratos de datos compilables.
 
 ## K0 — Arranque
 
