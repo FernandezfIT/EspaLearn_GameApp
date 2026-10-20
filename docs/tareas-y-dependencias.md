@@ -20,6 +20,24 @@ Este documento reemplaza el tablero externo. Según la indicación del docente c
 
 **Base local inspeccionada:** `feature/base-ui`, commit `e2c8686`. Código incorporado por Felipe y funcionamiento/compilación reportados por él; sin afirmar PR, revisión o merge. Esta actualización sólo modifica documentación.
 
+## Corte de avance B — 20/10/2026
+
+**Base:** rama `feature/logica-datos`, creada desde `feature/base-ui`. Modelos, estados, repositorio, validación, ViewModels, persistencia, háptica y cámara incorporados por Claudio. Compilación debug y suite de pruebas unitarias ejecutadas desde el asistente; se registran abajo. Sin PR ni revisión de Felipe todavía; no se declara integración con la UI de A.
+
+| Bloque B | Avance | Falta para cierre integrado |
+|---|---|---|
+| B1 | Modelos de dominio, estados de interfaz K0–K4, interfaz `AppRepository`, `Resultado` y `RepositorioFalso` con estados de ejemplo. | Revisar firmas con Felipe y adaptar tipos de presentación `*Ui`. |
+| B3 | `PerfilValidator` centralizado (NFC, 3–20 puntos de código, letras Unicode / dígitos ASCII, edad 7–10) con pruebas de límites. | Confirmar rango 7–10 con el docente; mensajes finales. |
+| B2 | `AppViewModel`, `PerfilViewModel`, `SesionViewModel`, factories y deduplicación de elecciones por sesión/paso; pruebas de transición K3. | Conectar Routes/owners reales; verificar owner global único con la UI. |
+| B4 | `AppPreferencesStore` sobre Preferences DataStore, `LocalAppRepository`, `AppContainer` y pruebas de reapertura/idempotencia. | Verificar en dispositivo; probar fallos de E/S reales. |
+| B5 | `AnswerHaptics` con `performHapticFeedback` neutral por elección admitida. | Probar físicamente; conectar al consumo real de la señal. |
+| B6 | `AvatarFileStore` + `AvatarCapture`, FileProvider, rutas restringidas y candidata del borrador. | Conectar launcher de Activity, recuperación tras recreación y limpieza segura. |
+
+- [x] Incorporar modelos, estados, repositorio, validación, ViewModels, persistencia, háptica y cámara de B en `feature/logica-datos`.
+- [x] Ejecutar la suite de pruebas unitarias de validación, transiciones y persistencia.
+- [ ] Revisar y compartir los bloques B mediante el PR acordado hacia `develop`.
+- [ ] Conectar la UI de A con los ViewModels y Routes reales.
+
 | Tarea A | Avance preparado | Falta para cierre integrado |
 |---|---|---|
 | A1 | Flujo de cuatro pantallas y carga/error representados en UI/demo. | Revisar estados reales y salidas con B. |

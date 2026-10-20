@@ -76,3 +76,16 @@ Copiar esta ficha dentro del documento por cada corrida significativa, sin marca
 - Limitaciones (fake, sin dispositivo, caso no ejecutado):
 
 No publicar rutas privadas, tokens o información personal en logs/capturas.
+
+## Registro B — pruebas unitarias
+
+**Fecha: 20/10/2026. Rama:** `feature/logica-datos`. **Ejecutado por:** asistente, a pedido de Claudio.
+
+- **Entorno:** Windows, Gradle Wrapper, comando `:app:testDebugUnitTest` del módulo `app`. Sin dispositivo/emulador: son pruebas de JVM.
+- **Resultado:** `BUILD SUCCESSFUL`. 49 pruebas, 0 fallos, 0 errores. Desglose: `PerfilValidatorTest` 23, `LocalAppRepositoryTest` 9, `SesionViewModelTest` 9, `PerfilViewModelTest` 7 y la prueba de plantilla 1.
+- **Casos cubiertos por suite:** validación de nick/edad (P03–P05), errores tras Guardar y reactividad (P06), transiciones de sesión y admisión única (P10/P11), finalización tras guardado e idempotencia, reapertura/repetición sin duplicados y conservación de progreso al editar (P12–P14), marco sólo con el módulo completo.
+- **Evidencia:** reporte HTML de Gradle en `app/build/reports/tests/testDebugUnitTest/`.
+- **Limitaciones:** no acredita persistencia real en DataStore de dispositivo, ni recursos de cámara/háptica, ni integración con la UI de A. Los casos P01/P02/P07/P08/P15–P22 siguen pendientes de integración y dispositivo.
+- **Compilación:** `:app:compileDebugKotlin` ejecutada con éxito antes de la suite.
+
+La aceptación de háptica/cámara por el docente, según confirmación relatada por Felipe, sigue sin prueba física registrada.

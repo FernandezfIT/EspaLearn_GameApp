@@ -2,7 +2,6 @@ package com.example.espalearn.platform
 
 import android.content.Context
 import android.net.Uri
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.espalearn.model.AvatarRef
 import java.io.File
@@ -69,11 +68,5 @@ class AvatarCapture(
     companion object {
         /** Contrato de captura de una imagen a un URI dado. */
         fun contrato(): ActivityResultContracts.TakePicture = ActivityResultContracts.TakePicture()
-
-        /** Registra el launcher del dueño de ciclo de vida (Activity/Fragment). */
-        fun launcherDe(
-            registro: androidx.activity.result.ActivityResultRegistry,
-            clave: String
-        ): ActivityResultLauncher<Uri> = registro.register(clave, contrato())
     }
 }
