@@ -47,6 +47,13 @@ class AvatarFileStore(private val context: Context) {
         return archivo.takeIf { it.exists() }
     }
 
+    /** Archivo correspondiente a un URI de FileProvider de esta app. */
+    fun archivoDeUri(uri: Uri): File? {
+        val nombre = uri.lastPathSegment ?: return null
+        val archivo = File(directorioAvatares(), nombre)
+        return archivo.takeIf { it.exists() }
+    }
+
     /**
      * Retira la imagen anterior y los candidatos huérfanos sin tocar la
      * referencia vigente. Se ejecuta después de confirmar el guardado.

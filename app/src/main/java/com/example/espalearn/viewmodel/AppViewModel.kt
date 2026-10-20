@@ -33,6 +33,9 @@ class AppViewModel(
     private val _guardandoMarco = MutableStateFlow(false)
     val guardandoMarco: StateFlow<Boolean> = _guardandoMarco.asStateFlow()
 
+    /** Etapa que el usuario pidió abrir; se pierde al recrear el proceso. */
+    private var etapaSolicitada: Etapa? = null
+
     init {
         recargar()
     }
@@ -68,6 +71,18 @@ class AppViewModel(
     fun perfilActual(): Perfil? {
         val estado = estadoAplicacion.value
         return (estado as? AppUiState.ListoConPerfil)?.perfil
+    }
+
+    /** Etapa que la sesión debe abrir: la solicitada o la activa persistida. */
+    fun etapaActivaActual(): Etapa =
+        etapaSolicitada ?: progresoActual()?.etapaActiva ?: Etapa.DESCUBRIR
+
+    /** Registra la etapa que el usuario eligió abrir y valida su acceso (K4). */
+    fun registrarEtapaActiva(etapa: Etapa) {
+        etapaSolicitada = etapa
+        viewModelScope.launch {
+            repositorio.iniciarEtapa(etapa)
+        }
     }
 
     /** Etapas disponibles ahora mismo según el acceso secuencial (K4). */
