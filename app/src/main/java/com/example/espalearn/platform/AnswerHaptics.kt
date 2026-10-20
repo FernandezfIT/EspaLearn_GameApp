@@ -15,22 +15,25 @@ import android.view.View
  * El recorrido debe seguir siendo comprensible sin vibración: la señal es un
  * refuerzo, no el canal principal de feedback.
  */
-class AnswerHaptics(private val vista: View?) {
+class AnswerHaptics internal constructor(private val emitirPulso: () -> Unit) {
 
-    private var ultimoContador: Int? = null
+    constructor(vista: View?) : this({
+        if (vista != null && vista.isHapticFeedbackEnabled) {
+            vista.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        }
+        Unit
+    })
+
+    private var ultimoContador: Int = 0
 
     /**
-     * Emite un único pulso neutral por elección admitida. [contadorSenales]
-     * es el recuento que expone el ViewModel; si no avanzó respecto de la
-     * última señal, no se repite por recomposición ni por restauración.
+     * Se invoca desde la acción de elegir, sólo si el ViewModel incrementó
+     * su contador. No se observa/reproduce el contador al montar la pantalla.
+     * Cero, duplicados y contadores anteriores no generan otro pulso.
      */
     fun notificarEleccionAdmitida(contadorSenales: Int) {
-        if (ultimoContador == contadorSenales) return
+        if (contadorSenales <= ultimoContador) return
         ultimoContador = contadorSenales
-
-        val destino = vista ?: return
-        if (!destino.isHapticFeedbackEnabled) return
-
-        destino.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        emitirPulso()
     }
 }

@@ -1,77 +1,80 @@
 package com.example.espalearn.platform
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.content.FileProvider
 import com.example.espalearn.model.AvatarRef
 import java.io.File
+import java.io.IOException
 
-/**
- * Gestión del archivo privado del avatar (K5/B6).
- *
- * La captura se delega mediante un URI de FileProvider con rutas
- * restringidas; no se accede a la cámara directamente ni se piden permisos
- * generalistas. Una foto nueva se guarda como archivo candidato y sólo
- * reemplaza al avatar vigente al confirmar un guardado válido.
- *
- * No existe una transacción única entre el archivo y las preferencias: por
- * eso la referencia candidata se conserva hasta el éxito y el archivo
- * anterior se retira después, dejando la limpieza de huérfanos explícita.
- */
-class AvatarFileStore(private val context: Context) {
+/** Archivos privados de avatar. Nunca se borra la referencia persistida vigente. */
+class AvatarFileStore internal constructor(
+    private val directorio: File,
+    private val autoridad: String,
+    private val contexto: Context? = null
+) {
+    constructor(context: Context) : this(
+        File(context.filesDir, "avatares"),
+        "${context.packageName}.fileprovider",
+        context.applicationContext
+    )
 
-    /** Nombre estable del archivo candidato del borrador actual. */
+    /** Cada intento debe recibir un ID nuevo para no sobrescribir una candidata previa. */
     fun crearArchivoCandidato(idBorrador: String): File {
-        val directorio = directorioAvatares().apply { mkdirs() }
-        return File(directorio, "candidato_$idBorrador.jpg")
+        require(idBorrador.matches(Regex("[A-Za-z0-9-]+")))
+        if (!directorio.isDirectory && !directorio.mkdirs()) {
+            throw IOException("No se pudo preparar el directorio del avatar.")
+        }
+        val archivo = File(directorio, "candidato_$idBorrador.jpg")
+        if (!archivo.createNewFile()) throw IOException("El archivo de captura ya existe.")
+        return archivo
     }
 
-    /** URI de FileProvider para delegar la captura sin exponer la ruta. */
     fun uriParaCaptura(archivo: File): Uri =
-        FileProvider.getUriForFile(context, authority(), archivo)
+        FileProvider.getUriForFile(contextoArchivo(archivo), autoridad, archivo)
 
-    /**
-     * Confirma una captura como avatar vigente: mueve el candidato a su
-     * nombre definitivo y devuelve su referencia persistible.
-     */
+    private fun contextoArchivo(archivo: File): Context {
+        require(archivo.parentFile?.canonicalFile == directorio.canonicalFile)
+        return checkNotNull(contexto) { "Se requiere un contexto Android para FileProvider." }
+    }
+
+    /** Movimiento opcional; la Route persiste directamente el nombre privado capturado. */
     fun confirmarCandidato(archivoCandidato: File, idBorrador: String): AvatarRef.ArchivoPrivado {
-        val destino = File(directorioAvatares().apply { mkdirs() }, "avatar_$idBorrador.jpg")
-        if (destino.exists()) destino.delete()
-        archivoCandidato.renameTo(destino)
+        require(idBorrador.matches(Regex("[A-Za-z0-9-]+")))
+        require(archivoCandidato.parentFile?.canonicalFile == directorio.canonicalFile)
+        val destino = File(directorio, "avatar_$idBorrador.jpg")
+        if (destino.exists() || !archivoCandidato.renameTo(destino)) {
+            throw IOException("No se pudo confirmar el archivo del avatar.")
+        }
         return AvatarRef.ArchivoPrivado(destino.name)
     }
 
-    /** Archivo real de un avatar confirmado, o null si ya no existe. */
-    fun archivoDe(avatar: AvatarRef.ArchivoPrivado): File? {
-        val archivo = File(directorioAvatares(), avatar.nombreArchivo)
-        return archivo.takeIf { it.exists() }
-    }
+    fun archivoDe(avatar: AvatarRef.ArchivoPrivado): File? = archivoPorNombre(avatar.nombreArchivo)
 
-    /** Archivo correspondiente a un URI de FileProvider de esta app. */
     fun archivoDeUri(uri: Uri): File? {
-        val nombre = uri.lastPathSegment ?: return null
-        val archivo = File(directorioAvatares(), nombre)
-        return archivo.takeIf { it.exists() }
+        if (uri.scheme != "content" || uri.authority != autoridad) return null
+        return uri.lastPathSegment?.let(::archivoPorNombre)
     }
 
-    /**
-     * Retira la imagen anterior y los candidatos huérfanos sin tocar la
-     * referencia vigente. Se ejecuta después de confirmar el guardado.
-     */
-    fun limpiarDespuesDelExito(referenciaVigente: AvatarRef.ArchivoPrivado?) {
-        val directorio = directorioAvatares()
-        if (!directorio.exists()) return
+    private fun archivoPorNombre(nombre: String): File? {
+        if (nombre.isBlank() || nombre != File(nombre).name || '/' in nombre || '\\' in nombre) return null
+        val archivo = File(directorio, nombre)
+        return archivo.takeIf { it.isFile && it.canonicalFile.parentFile == directorio.canonicalFile }
+    }
 
+    fun esImagenValida(archivo: File): Boolean {
+        if (!archivo.isFile || archivo.length() == 0L) return false
+        val opciones = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeFile(archivo.absolutePath, opciones)
+        return opciones.outWidth > 0 && opciones.outHeight > 0
+    }
+
+    /** Se llama al guardar con éxito o descartar, no durante una captura activa. */
+    fun limpiarDespuesDelExito(referenciaVigente: AvatarRef.ArchivoPrivado?) {
         directorio.listFiles().orEmpty().forEach { archivo ->
-            val esCandidatoHuerfano = archivo.name.startsWith("candidato_")
-            val esAnterior = referenciaVigente != null && archivo.name != referenciaVigente.nombreArchivo
-            if (esCandidatoHuerfano || esAnterior) {
-                archivo.delete()
-            }
+            val esAvatar = archivo.name.startsWith("candidato_") || archivo.name.startsWith("avatar_")
+            if (esAvatar && archivo.name != referenciaVigente?.nombreArchivo) archivo.delete()
         }
     }
-
-    private fun directorioAvatares(): File = File(context.filesDir, "avatares")
-
-    private fun authority(): String = "${context.packageName}.fileprovider"
 }

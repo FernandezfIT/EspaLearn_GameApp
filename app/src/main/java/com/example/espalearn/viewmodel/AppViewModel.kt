@@ -77,12 +77,11 @@ class AppViewModel(
     fun etapaActivaActual(): Etapa =
         etapaSolicitada ?: progresoActual()?.etapaActiva ?: Etapa.DESCUBRIR
 
-    /** Registra la etapa que el usuario eligió abrir y valida su acceso (K4). */
-    fun registrarEtapaActiva(etapa: Etapa) {
-        etapaSolicitada = etapa
-        viewModelScope.launch {
-            repositorio.iniciarEtapa(etapa)
-        }
+    /** Inicio y Resumen esperan este resultado; un fallo no cambia la etapa solicitada. */
+    suspend fun prepararEtapa(etapa: Etapa): Resultado<Progreso> {
+        val resultado = repositorio.iniciarEtapa(etapa)
+        if (resultado is Resultado.Exito) etapaSolicitada = etapa
+        return resultado
     }
 
     /** Etapas disponibles ahora mismo según el acceso secuencial (K4). */

@@ -138,6 +138,68 @@ class MapeoPresentacionTest {
     }
 
     @Test
+    fun `descubrir muestra la palabra y su apoyo sin elegir`() {
+        val presentacion = MapeoPresentacion.sesionParaPresentacion(
+            SesionUiState(
+                idSesion = "s",
+                etapa = Etapa.DESCUBRIR,
+                fase = FaseSesion.PRESENTACION,
+                palabraEspanol = "Hola",
+                apoyoTurco = "Merhaba"
+            )
+        )
+
+        assertEquals("Hola", presentacion.palabraEspanol)
+        assertEquals("Merhaba", presentacion.apoyoTurco)
+    }
+
+    @Test
+    fun `ambas practicas ocultan la respuesta incluso al pedir ayuda`() {
+        listOf(Etapa.CON_APOYO, Etapa.MENOS_APOYO).forEach { etapa ->
+            listOf(false, true).forEach { ayudaRevelada ->
+                val presentacion = MapeoPresentacion.sesionParaPresentacion(
+                    SesionUiState(
+                        idSesion = "s",
+                        etapa = etapa,
+                        fase = FaseSesion.PRACTICA,
+                        palabraEspanol = "Hola",
+                        apoyoTurco = "Merhaba",
+                        apoyoTurcoOculto = etapa == Etapa.MENOS_APOYO,
+                        ayudaRevelada = ayudaRevelada
+                    )
+                )
+
+                assertNull(presentacion.palabraEspanol)
+            }
+        }
+    }
+
+    @Test
+    fun `ambas practicas revelan la respuesta tras acierto o error`() {
+        listOf(Etapa.CON_APOYO, Etapa.MENOS_APOYO).forEach { etapa ->
+            listOf(false, true).forEach { acierto ->
+                val presentacion = MapeoPresentacion.sesionParaPresentacion(
+                    SesionUiState(
+                        idSesion = "s",
+                        etapa = etapa,
+                        fase = FaseSesion.PRACTICA,
+                        palabraEspanol = "Hola",
+                        eleccionAdmitida = true,
+                        feedbackVisible = true,
+                        acierto = acierto,
+                        continuarVisible = true
+                    )
+                )
+
+                assertEquals("Hola", presentacion.palabraEspanol)
+                assertTrue(presentacion.feedback != null)
+                assertFalse(presentacion.eleccionHabilitada)
+                assertTrue(presentacion.mostrarContinuar)
+            }
+        }
+    }
+
+    @Test
     fun `el resumen muestra el logro solo con el modulo completo`() {
         val parcial = MapeoPresentacion.resumenParaPresentacion(
             nick = "Deniz",

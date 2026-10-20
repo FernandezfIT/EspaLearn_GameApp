@@ -2,7 +2,9 @@
 
 [README](../README.md) · [Contratos K0–K6](contratos.md) · [Alcance](alcance-y-decisiones.md) · [Pruebas](pruebas.md)
 
-## Qué debes entregar
+> **Estado vigente:** la ruta B descrita aquí ya se incorporó en `develop` en `427f1ef` mediante PR #2. Esta guía conserva el encargo original y los cortes históricos; no es una lista actual de trabajo no iniciado. El cierre integrado está en la rama local `feature/cierre-ev2`, sin publicación/revisión de Claudio todavía. Consultar README, checklist vigente y pruebas.md (99 JVM, 6 instrumentadas).
+
+## Qué debes entregar — encargo original
 
 La lógica y datos del MVP, no otra aplicación: un perfil local, cuatro unidades (Hola, Adiós, Pan, Manzana), tres etapas y recursos cámara/háptica. Felipe prepara UI/navegación. No crear pantallas paralelas, backend ni selectores extra para probar tu ruta; usa fakes y tests identificados.
 

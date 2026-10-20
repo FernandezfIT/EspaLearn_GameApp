@@ -5,10 +5,9 @@ package com.example.espalearn.model
  * las tres etapas (12 pasos, 8 con elección).
  *
  * Los textos en español y turco y las parejas de opciones son la propuesta
- * acordada. La [Unidad.recursoIlustracion] apunta a una ilustración que
- * TODAVÍA NO existe en el proyecto: mientras no se incorpore material
- * autorizado, la interfaz dibuja un marcador de posición. Ver
- * `docs/contenido-y-licencias.md` antes de sustituirlo.
+ * acordada. [Unidad.recursoIlustracion] identifica un dibujo geométrico
+ * propio de `ui/components/IlustracionVocabulario`, no un archivo drawable.
+ * Ver `docs/contenido-y-licencias.md` para origen y límites de revisión.
  *
  * ADVERTENCIA: este catálogo no está validado lingüísticamente ni
  * pedagógicamente. No presentarlo como contenido revisado.
@@ -72,6 +71,6 @@ object ContenidoUnidades {
     /** Las cuatro unidades, en el orden en que se recorren en Descubrir. */
     val todas: List<Unidad> = listOf(HOLA, ADIOS, PAN, MANZANA)
 
-    /** Sin contenido real cargado, la referencia es un marcador vacío. */
+    /** Recupera una unidad por su ID estable; devuelve null si es desconocida. */
     fun unidadPorId(id: String): Unidad? = todas.firstOrNull { it.id == id }
 }

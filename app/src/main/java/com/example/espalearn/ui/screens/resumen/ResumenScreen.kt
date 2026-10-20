@@ -45,7 +45,9 @@ fun ResumenScreen(
     onVolverInicio: () -> Unit,
     onCambiarMarco: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    avatarPainter: Painter? = null
+    avatarPainter: Painter? = null,
+    abriendoEtapa: Boolean = false,
+    errorApertura: String? = null
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
@@ -109,7 +111,7 @@ fun ResumenScreen(
                             onClick = {
                                 onCambiarMarco(!logro.marcoAplicado)
                             },
-                            enabled = !logro.guardandoMarco,
+                            enabled = !logro.guardandoMarco && !abriendoEtapa,
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(
@@ -134,15 +136,22 @@ fun ResumenScreen(
             }
 
 
+            if (errorApertura != null) {
+                Text(text = errorApertura, color = MaterialTheme.colorScheme.error)
+            }
+
+            val accionesHabilitadas = !abriendoEtapa && presentacion.logro?.guardandoMarco != true
             Button(
                 onClick = onAccionPrincipal,
+                enabled = accionesHabilitadas,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = presentacion.textoAccionPrincipal)
+                Text(text = if (abriendoEtapa) "Abriendo etapa…" else presentacion.textoAccionPrincipal)
             }
 
             OutlinedButton(
                 onClick = onVolverInicio,
+                enabled = accionesHabilitadas,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Volver a Inicio")

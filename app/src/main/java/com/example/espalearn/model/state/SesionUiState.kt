@@ -42,5 +42,7 @@ data class SesionUiState(
     val continuarVisible: Boolean = false,
     val guardandoFinalizacion: Boolean = false,
     val etapaCompletada: Boolean = false,
-    val errorOperacion: String? = null
+    val errorOperacion: String? = null,
+    val recursoIlustracion: String? = null,
+    val moduloCompletadoPorPrimeraVez: Boolean = false
 )

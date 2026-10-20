@@ -2,7 +2,7 @@
 
 [README](../README.md) · [Alcance](alcance-y-decisiones.md) · [Contratos](contratos.md)
 
-**Actualización:20/10/2026.** Catálogo técnico de cuatro unidades implementado en código; traducciones e ilustraciones definitivas aún pendientes. Las ilustraciones del vocabulario se representan con un marcador de posición explícito hasta incorporar material autorizado.
+**Cierre EV2 — rama `feature/cierre-ev2`:** cuatro ilustraciones geométricas incorporadas en Compose por elección explícita de Felipe, creadas con asistencia de IA para este proyecto, sin imágenes externas. Compilación y revisión visual del recorrido en Xiaomi confirmadas por Felipe; ver R10 en pruebas.md. Traducciones y adecuación educativa aún no verificadas; incorporar dibujos no acredita revisión lingüística ni pedagógica.
 
 ## Catálogo técnico implementado — 20/10
 
@@ -10,30 +10,26 @@ El catálogo vive en `app/src/main/java/com/example/espalearn/model/ContenidoUni
 
 | ID | Temática | Español | Turco (propuesto) | Ilustración | Opciones (respuesta esperada en negrita) |
 |---|---|---|---|---|---|
-| hola | Saludos | Hola | Merhaba | Pendiente (placeholder) | **Hola** / Buenas noches |
-| adios | Saludos | Adiós | Hoşça kal | Pendiente (placeholder) | **Adiós** / Gracias |
-| pan | Alimentos | Pan | Ekmek | Pendiente (placeholder) | **Pan** / Agua |
-| manzana | Alimentos | Manzana | Elma | Pendiente (placeholder) | **Manzana** / Plátano |
+| hola | Saludos | Hola | Merhaba | Persona llegando a una casa; flecha hacia la entrada. | **Hola** / Buenas noches |
+| adios | Saludos | Adiós | Hoşça kal | Persona alejándose de una casa; flecha hacia fuera. | **Adiós** / Gracias |
+| pan | Alimentos | Pan | Ekmek | Pieza horneada dorada con cortes en la corteza. | **Pan** / Agua |
+| manzana | Alimentos | Manzana | Elma | Fruta roja con tallo y hoja verde. | **Manzana** / Plátano |
 
 Los equivalentes turcos son una propuesta técnica y **deben verificarse** con una fuente identificada antes de presentarlos como contenido revisado. Las parejas de opciones también requieren revisión para evitar ambigüedad.
 
-### Cómo sustituir los marcadores de posición
+### Conexión de las ilustraciones
 
-- La interfaz dibuja `ui/components/IlustracionPlaceholder` cuando no hay imagen real.
-- La referencia de cada unidad está en `Unidad.recursoIlustracion` (por ejemplo `ilustracion_hola`).
-- Para integrar el material definitivo: añadir el recurso a `res/drawable`, registrar su autoría/licencia en la tabla de abajo y reemplazar el placeholder por la imagen en la Route de Sesión.
+- `Unidad.recursoIlustracion` contiene un ID lógico (por ejemplo `ilustracion_hola`), no un archivo drawable.
+- `SesionViewModel` propaga esa referencia a `SesionUiState.recursoIlustracion` en cada paso.
+- La Route usa `ui/components/IlustracionVocabulario.kt`; `ui/mapping/IlustracionUnidadUi.kt` relaciona ID, dibujo y descripción accesible de la escena.
+- Los cuatro dibujos se escalan sin deformarse y no llevan rótulos con la respuesta española. El español se muestra en Descubrir y tras responder en práctica; pedir ayuda revela sólo el turco.
+- `IlustracionPlaceholder` se conserva como respaldo para una referencia ausente o desconocida, no como contenido de las cuatro unidades actuales.
+- Para sustituir un dibujo por un recurso externo, documentar primero autoría/licencia y cambiar el componente, manteniendo los IDs.
 - **No** fotografiar menores ni usar imágenes personales reales como material de prueba.
 
-## Catálogo mínimo acordado
+## Convención inicial — histórico
 
-Los IDs siguientes son la convención inicial propuesta para el catálogo técnico. No dependen del orden visual ni equivalen a recursos ya incorporados.
-
-| ID | Temática | Español aprobado por Felipe | Turco | Ilustración |
-|---|---|---|---|---|
-| saludo_hola | Saludos | Hola | Pendiente de verificar | Escena de saludo; recurso pendiente. |
-| saludo_adios | Saludos | Adiós | Pendiente de verificar | Escena de despedida; recurso pendiente. |
-| alimento_pan | Alimentos | Pan | Pendiente de verificar | Ilustración de pan; recurso pendiente. |
-| alimento_manzana | Alimentos | Manzana | Pendiente de verificar | Ilustración de manzana; recurso pendiente. |
+Los IDs inicialmente propuestos (`saludo_hola`, `saludo_adios`, `alimento_pan`, `alimento_manzana`) no se usan en el código integrado. Los vigentes son `hola`, `adios`, `pan`, `manzana`, según el catálogo de arriba. Las ilustraciones son dibujos creados para EV2, no evidencia de que sus escenas sean inequívocas para el público objetivo.
 
 No inventar traducciones ni atribuir revisión lingüística. Para pruebas de estado se permiten etiquetas sintéticas explícitas; no deben presentarse como contenido final verificado. B estructura el catálogo; ambos comprueban correspondencia texto/imagen/opciones.
 
@@ -47,7 +43,7 @@ No inventar traducciones ni atribuir revisión lingüística. Para pruebas de es
 
 ## Alternativas de práctica
 
-Pendiente concretar las parejas de opciones y revisarlas para evitar ambigüedad. Propuesta técnica mínima: reutilizar Hola/Adiós como pareja y Pan/Manzana como pareja, cambiando el objetivo de cada unidad. No confundir propuesta de distractores con revisión pedagógica ni agregar vocabulario sólo para fabricar opciones.
+Las parejas técnicas vigentes son las de la tabla del catálogo; la propuesta inicial de emparejar Hola/Adiós y Pan/Manzana no se materializó. Su revisión lingüística/pedagógica para evitar ambigüedad sigue pendiente. No confundir implementación de distractores con validación educativa.
 
 Cada opción tendrá un ID y texto; la respuesta esperada se expresa mediante ID, no por posición izquierda/derecha. Mantener relación explícita entre gesto/botón y opción visible. No se exige aleatorización para EV2.
 
@@ -55,21 +51,21 @@ Cada opción tendrá un ID y texto; la respuesta esperada se expresa mediante ID
 
 | Recurso | Archivo/ID | Autor y origen | Licencia/permiso y atribución | Estado |
 |---|---|---|---|---|
-| Escena Hola | Pendiente | Pendiente | Pendiente | No incorporada. |
-| Escena Adiós | Pendiente | Pendiente | Pendiente | No incorporada. |
-| Pan | Pendiente | Pendiente | Pendiente | No incorporada. |
-| Manzana | Pendiente | Pendiente | Pendiente | No incorporada. |
+| Escena Hola | IlustracionVocabulario.kt / ilustracion_hola | Dibujo Canvas creado para EspaLearn con asistencia de IA, por elección de Felipe. | Sin arte externo; incorporación solicitada por Felipe. No se atribuye una licencia externa. | Incorporada; revisión visual comunicada por Felipe (R10). |
+| Escena Adiós | IlustracionVocabulario.kt / ilustracion_adios | Dibujo Canvas creado para EspaLearn con asistencia de IA, por elección de Felipe. | Sin arte externo; incorporación solicitada por Felipe. No se atribuye una licencia externa. | Incorporada; revisión visual comunicada por Felipe (R10). |
+| Pan | IlustracionVocabulario.kt / ilustracion_pan | Dibujo Canvas creado para EspaLearn con asistencia de IA, por elección de Felipe. | Sin arte externo; incorporación solicitada por Felipe. No se atribuye una licencia externa. | Incorporada; revisión visual comunicada por Felipe (R10). |
+| Manzana | IlustracionVocabulario.kt / ilustracion_manzana | Dibujo Canvas creado para EspaLearn con asistencia de IA, por elección de Felipe. | Sin arte externo; incorporación solicitada por Felipe. No se atribuye una licencia externa. | Incorporada; revisión visual comunicada por Felipe (R10). |
 | Avatar predeterminado | ui/components/AvatarImagen.kt | Dibujo geométrico Canvas elegido por Felipe e incorporado con código guiado. | Creado en código para este caso; sin imagen externa descargada. | Representación con ojos/sonrisa incorporada en e2c8686; comprobada manualmente según Felipe. |
 | Ilustración física para captura | Pendiente | Pendiente | Pendiente | Pendiente. |
-| Marco opcional | AvatarImagen.kt; borde circular Compose | Implementación visual guiada, incorporada por Felipe. | Sin archivo de arte externo. | Con/sin marco representados y comprobados en fixtures; preferencia persistente pendiente B4. |
+| Marco opcional | AvatarImagen.kt; borde circular Compose | Implementación visual guiada, incorporada por Felipe. | Sin archivo de arte externo. | Cambio de marco y conservación al reabrir comunicados por Felipe, R14/R15; sin nueva prueba de muerte de proceso verificada. |
 
 No basta encontrar una imagen en internet: registrar condiciones compatibles antes de añadirla a un repositorio público. Si se crea para el caso, indicar autoría y autorización. Recursos reutilizados no requieren duplicar archivos innecesariamente.
 
-## Uso provisional en las pruebas A
+## Uso provisional en las pruebas A — histórico del 16/10
 
 `[Ilustración de prueba]`, `[Apoyo turco de prueba]` y Opción A/B son marcadores explícitos, no traducciones, escenas ni alternativas finales. `Hola` aparece en un escenario de Descubrir; eso no constituye el catálogo de cuatro unidades/12pasos.
 
-No se capturó una ilustración ni se comprobó carga de un Painter externo. AvatarImagen sólo representa la geometría predeterminada o el Painter que reciba; la captura/archivo y su conservación pertenecen a B6. No confundir el avatar geométrico con las cuatro imágenes del vocabulario ni con una prueba de cámara.
+En esas pruebas iniciales no se capturó una ilustración ni se comprobó carga de un Painter externo. En el cierre actual, Felipe sí confirmó captura, vista previa, cancelación y reapertura del avatar en su Xiaomi (R09 en pruebas.md). La revisión visual de los dibujos de vocabulario se confirmó después (R10). Ninguna de estas comprobaciones documenta el origen de la ilustración física usada.
 
 ## Revisión y privacidad
 
@@ -83,8 +79,10 @@ No se capturó una ilustración ni se comprobó carga de un Painter externo. Ava
 
 - [ ] Verificar equivalentes turcos con una fuente identificada y registrar fecha/origen.
 - [x] Preparar avatar geométrico y marco visual en código, con origen documentado; sin archivos externos.
-- [ ] Resolver las cuatro ilustraciones del vocabulario y la ilustración física de captura, con procedencia/autorización. Validar además el uso integrado de los siete elementos de la tabla.
+- [x] Incorporar cuatro dibujos de vocabulario en Compose con origen documentado y decisión explícita de Felipe; sin imágenes externas.
+- [x] Comprobar visualmente los dibujos y su correspondencia en las tres etapas; confirmación de Felipe en Xiaomi, R10.
+- [ ] Documentar procedencia/autorización de la ilustración física usada para captura.
 - [ ] Concretar parejas de opciones y correspondencia de IDs.
-- [ ] Verificar escenas de saludos y ayudas inline.
-- [ ] Incorporar recursos autorizados y referencias en el catálogo.
+- [x] Comprobar funcionamiento de escenas y ayuda inline en el recorrido, según R10; sin validación educativa.
+- [x] Conectar las referencias del catálogo a los cuatro dibujos propios en la Route de Sesión.
 - [ ] Registrar limitaciones lingüísticas/pedagógicas restantes sin afirmar validación inexistente.

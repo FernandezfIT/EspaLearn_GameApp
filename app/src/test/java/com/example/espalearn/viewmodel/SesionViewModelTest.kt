@@ -1,5 +1,6 @@
 package com.example.espalearn.viewmodel
 
+import com.example.espalearn.model.ContenidoUnidades
 import com.example.espalearn.model.Etapa
 import com.example.espalearn.model.OpcionUnidad
 import com.example.espalearn.model.TemaUnidad
@@ -151,6 +152,31 @@ class SesionViewModelTest {
         assertTrue(vm.estado.value.etapaCompletada)
         assertTrue(vm.etapaFinalizada.value)
         assertFalse(vm.estado.value.guardandoFinalizacion)
+    }
+
+    @Test
+    fun `los doce pasos conservan la ilustracion de la unidad correspondiente`() = runTest(dispatcher) {
+        Etapa.entries.forEach { etapa ->
+            val vm = SesionViewModel(RepositorioFalso(), etapa, ContenidoUnidades.todas)
+
+            ContenidoUnidades.todas.forEachIndexed { indice, unidad ->
+                assertEquals(indice + 1, vm.estado.value.posicionPaso)
+                assertEquals(unidad.recursoIlustracion, vm.estado.value.recursoIlustracion)
+                if (etapa != Etapa.DESCUBRIR) vm.elegir(unidad.respuestaEsperadaId)
+                if (indice < ContenidoUnidades.todas.lastIndex) vm.continuar()
+            }
+        }
+    }
+
+    @Test
+    fun `elegir y pedir ayuda no cambian la ilustracion actual`() = runTest(dispatcher) {
+        val unidad = ContenidoUnidades.todas.first()
+        val vm = SesionViewModel(RepositorioFalso(), Etapa.MENOS_APOYO, ContenidoUnidades.todas)
+
+        vm.verAyuda()
+        assertEquals(unidad.recursoIlustracion, vm.estado.value.recursoIlustracion)
+        vm.elegir(unidad.respuestaEsperadaId)
+        assertEquals(unidad.recursoIlustracion, vm.estado.value.recursoIlustracion)
     }
 
     @Test

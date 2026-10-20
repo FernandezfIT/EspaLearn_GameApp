@@ -32,7 +32,11 @@ fun InicioScreen(
     onEtapaClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     avatarPainter: Painter? = null,
-    marcoAplicado: Boolean = false
+    marcoAplicado: Boolean = false,
+    mostrarResumen: Boolean = false,
+    onVerResumen: () -> Unit = {},
+    abriendoEtapa: Boolean = false,
+    errorApertura: String? = null
 ) {
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
@@ -52,6 +56,7 @@ fun InicioScreen(
                     avatarPainter = avatarPainter,
                     marcoAplicado = marcoAplicado,
                     onEditarPerfil = onEditarPerfil,
+                    habilitado = !abriendoEtapa,
                     modifier = Modifier
                         .width(260.dp)
                         .fillMaxHeight()
@@ -61,6 +66,10 @@ fun InicioScreen(
                 BloqueRecorridoInicio(
                     etapas = etapas,
                     onEtapaClick = onEtapaClick,
+                    mostrarResumen = mostrarResumen,
+                    onVerResumen = onVerResumen,
+                    abriendoEtapa = abriendoEtapa,
+                    errorApertura = errorApertura,
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight()
@@ -80,12 +89,17 @@ fun InicioScreen(
                     nick = nick,
                     avatarPainter = avatarPainter,
                     marcoAplicado = marcoAplicado,
-                    onEditarPerfil = onEditarPerfil
+                    onEditarPerfil = onEditarPerfil,
+                    habilitado = !abriendoEtapa
                 )
 
                 BloqueRecorridoInicio(
                     etapas = etapas,
-                    onEtapaClick = onEtapaClick
+                    onEtapaClick = onEtapaClick,
+                    mostrarResumen = mostrarResumen,
+                    onVerResumen = onVerResumen,
+                    abriendoEtapa = abriendoEtapa,
+                    errorApertura = errorApertura
                 )
             }
         }
@@ -98,6 +112,7 @@ private fun BloquePerfilInicio(
     avatarPainter: Painter?,
     marcoAplicado: Boolean,
     onEditarPerfil: () -> Unit,
+    habilitado: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -116,7 +131,8 @@ private fun BloquePerfilInicio(
         )
 
         OutlinedButton(
-            onClick = onEditarPerfil
+            onClick = onEditarPerfil,
+            enabled = habilitado
         ) {
             Text(text = "Editar perfil")
         }
@@ -127,6 +143,10 @@ private fun BloquePerfilInicio(
 private fun BloqueRecorridoInicio(
     etapas: List<EtapaMapaUi>,
     onEtapaClick: (String) -> Unit,
+    mostrarResumen: Boolean,
+    onVerResumen: () -> Unit,
+    abriendoEtapa: Boolean,
+    errorApertura: String?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -143,9 +163,26 @@ private fun BloqueRecorridoInicio(
             style = MaterialTheme.typography.bodyLarge
         )
 
+        if (abriendoEtapa) {
+            Text(text = "Abriendo etapa…")
+        }
+        if (errorApertura != null) {
+            Text(text = errorApertura, color = MaterialTheme.colorScheme.error)
+        }
+
         MapaEtapas(
             etapas = etapas,
             onEtapaClick = onEtapaClick
         )
+
+        if (mostrarResumen) {
+            OutlinedButton(
+                onClick = onVerResumen,
+                enabled = !abriendoEtapa,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Ver resumen")
+            }
+        }
     }
 }
