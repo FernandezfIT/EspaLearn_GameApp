@@ -2,6 +2,28 @@
 
 [README](../README.md) · [Alcance](alcance-y-decisiones.md) · [Contratos](contratos.md)
 
+**Actualización:20/10/2026.** Catálogo técnico de cuatro unidades implementado en código; traducciones e ilustraciones definitivas aún pendientes. Las ilustraciones del vocabulario se representan con un marcador de posición explícito hasta incorporar material autorizado.
+
+## Catálogo técnico implementado — 20/10
+
+El catálogo vive en `app/src/main/java/com/example/espalearn/model/ContenidoUnidades.kt`. Los IDs son estables y se usan para la respuesta esperada; **no** por posición izquierda/derecha. Los textos y las parejas de opciones son la propuesta del equipo: no están validados lingüística ni pedagógicamente.
+
+| ID | Temática | Español | Turco (propuesto) | Ilustración | Opciones (respuesta esperada en negrita) |
+|---|---|---|---|---|---|
+| hola | Saludos | Hola | Merhaba | Pendiente (placeholder) | **Hola** / Buenas noches |
+| adios | Saludos | Adiós | Hoşça kal | Pendiente (placeholder) | **Adiós** / Gracias |
+| pan | Alimentos | Pan | Ekmek | Pendiente (placeholder) | **Pan** / Agua |
+| manzana | Alimentos | Manzana | Elma | Pendiente (placeholder) | **Manzana** / Plátano |
+
+Los equivalentes turcos son una propuesta técnica y **deben verificarse** con una fuente identificada antes de presentarlos como contenido revisado. Las parejas de opciones también requieren revisión para evitar ambigüedad.
+
+### Cómo sustituir los marcadores de posición
+
+- La interfaz dibuja `ui/components/IlustracionPlaceholder` cuando no hay imagen real.
+- La referencia de cada unidad está en `Unidad.recursoIlustracion` (por ejemplo `ilustracion_hola`).
+- Para integrar el material definitivo: añadir el recurso a `res/drawable`, registrar su autoría/licencia en la tabla de abajo y reemplazar el placeholder por la imagen en la Route de Sesión.
+- **No** fotografiar menores ni usar imágenes personales reales como material de prueba.
+
 ## Catálogo mínimo acordado
 
 Los IDs siguientes son la convención inicial propuesta para el catálogo técnico. No dependen del orden visual ni equivalen a recursos ya incorporados.
@@ -37,11 +59,17 @@ Cada opción tendrá un ID y texto; la respuesta esperada se expresa mediante ID
 | Escena Adiós | Pendiente | Pendiente | Pendiente | No incorporada. |
 | Pan | Pendiente | Pendiente | Pendiente | No incorporada. |
 | Manzana | Pendiente | Pendiente | Pendiente | No incorporada. |
-| Avatar predeterminado | Pendiente | Pendiente | Pendiente | No incorporado. |
+| Avatar predeterminado | ui/components/AvatarImagen.kt | Dibujo geométrico Canvas elegido por Felipe e incorporado con código guiado. | Creado en código para este caso; sin imagen externa descargada. | Representación con ojos/sonrisa incorporada en e2c8686; comprobada manualmente según Felipe. |
 | Ilustración física para captura | Pendiente | Pendiente | Pendiente | Pendiente. |
-| Marco opcional | Pendiente | Pendiente | Pendiente | Pendiente. |
+| Marco opcional | AvatarImagen.kt; borde circular Compose | Implementación visual guiada, incorporada por Felipe. | Sin archivo de arte externo. | Con/sin marco representados y comprobados en fixtures; preferencia persistente pendiente B4. |
 
 No basta encontrar una imagen en internet: registrar condiciones compatibles antes de añadirla a un repositorio público. Si se crea para el caso, indicar autoría y autorización. Recursos reutilizados no requieren duplicar archivos innecesariamente.
+
+## Uso provisional en las pruebas A
+
+`[Ilustración de prueba]`, `[Apoyo turco de prueba]` y Opción A/B son marcadores explícitos, no traducciones, escenas ni alternativas finales. `Hola` aparece en un escenario de Descubrir; eso no constituye el catálogo de cuatro unidades/12pasos.
+
+No se capturó una ilustración ni se comprobó carga de un Painter externo. AvatarImagen sólo representa la geometría predeterminada o el Painter que reciba; la captura/archivo y su conservación pertenecen a B6. No confundir el avatar geométrico con las cuatro imágenes del vocabulario ni con una prueba de cámara.
 
 ## Revisión y privacidad
 
@@ -54,7 +82,8 @@ No basta encontrar una imagen en internet: registrar condiciones compatibles ant
 ## Checklist de incorporación
 
 - [ ] Verificar equivalentes turcos con una fuente identificada y registrar fecha/origen.
-- [ ] Seleccionar/crear los siete recursos mínimos de la tabla, reutilizando si corresponde, con procedencia documentada.
+- [x] Preparar avatar geométrico y marco visual en código, con origen documentado; sin archivos externos.
+- [ ] Resolver las cuatro ilustraciones del vocabulario y la ilustración física de captura, con procedencia/autorización. Validar además el uso integrado de los siete elementos de la tabla.
 - [ ] Concretar parejas de opciones y correspondencia de IDs.
 - [ ] Verificar escenas de saludos y ayudas inline.
 - [ ] Incorporar recursos autorizados y referencias en el catálogo.

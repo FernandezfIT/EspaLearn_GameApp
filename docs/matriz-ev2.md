@@ -2,22 +2,28 @@
 
 [README](../README.md) · [Checklist](tareas-y-dependencias.md) · [Pruebas](pruebas.md)
 
-Esta matriz relaciona la pauta escrita con tareas y evidencia. No concede una nota ni declara cumplimiento por existir documentación. Pesos tomados de la pauta EV2 leída; indicaciones docentes relatadas se distinguen debajo.
+**Actualización:16/10/2026.** Base local A: `feature/base-ui`, código `e2c8686`. Esta matriz relaciona la pauta escrita con tareas y evidencia. No concede una nota ni declara cumplimiento por existir documentación. Pesos tomados de la pauta EV2 leída; indicaciones docentes relatadas se distinguen debajo.
 
 | Indicador / peso | Aplicación prevista | Responsables y tareas | Material EA2 | Evidencia requerida / estado |
 |---|---|---|---|---|
-| UI y navegación — 15% | Perfil, Inicio, Sesión, Resumen; Atrás coherente y adaptabilidad | A1–A5/A7/A9 | Guías 8–10 | Recorrido y ventanas probados; pendiente. |
-| Formularios y feedback por campo — 15% | Crear/editar perfil único, errores de nick/edad, captura/guardado recuperables | A4 + B3/B6 | Guía 11 y 13 | Límites, mensajes e indicadores; pendiente. No duplicar formularios artificialmente. |
+| UI y navegación — 15% | Perfil, Inicio, Sesión, Resumen; Atrás coherente y adaptabilidad | A1–A5/A7/A9 | Guías 8–10 | UI/demo, Atrás y tamaños reportados funcionales R01–R07. Arranque, Routes y MainActivity reales pendientes. |
+| Formularios y feedback por campo — 15% | Crear/editar perfil único, errores de nick/edad, captura/guardado recuperables | A4 + B3/B6 | Guía 11 y 13 | Presentación R01 preparada. Validación, captura/guardado e icono específico por campo pendientes. Sin duplicar formularios. |
 | Validación centralizada y estado — 10% | Validator y ViewModels fuera de los composables, errores tras Guardar y al corregir | B1–B3 + A4 | Guía 11 | Tests y UI conectada a errores reales; pendiente. |
-| Animaciones funcionales — 10% | Deslizamiento, transición y feedback útiles | A6 + B2 | Guía 12 | Interacción real sin elecciones duplicadas; pendiente. |
-| Modularidad y persistencia local — 15% | UI/modelos/ViewModels/repositorio; perfil/progreso/marco y archivos | B1/B2/B4/B6/B7 + Routes de A | Guías 7, 11–13 | Reapertura y errores con datos reales; pendiente. Paquetes creados no bastan. |
-| Colaboración y control de versiones — 20% | GitHub público, aportes de ambos, PR revisados y checklist Markdown | Ambos | Guía 7 | Repo y ramas publicados según Felipe; invitaciones enviadas. Aportes/revisión de Claudio pendientes de comprobar. |
+| Animaciones funcionales — 10% | Deslizamiento, transición y feedback útiles | A6 + B2 | Guía 12 | Swipe/retorno e IDs equivalentes a botones probados según Felipe R03. Admisión única e integración B2 pendientes. |
+| Modularidad y persistencia local — 15% | UI/modelos/ViewModels/repositorio; perfil/progreso/marco y archivos | B1/B2/B4/B6/B7 + Routes de A | Guías 7, 11–13 | Componentes/Screen/nav separados; fixtures en debug. MVVM, datos reales y reapertura pendientes; no declarar persistencia por remember de demo. |
+| Colaboración y control de versiones — 20% | GitHub público, aportes de ambos, PR revisados y checklist Markdown | Ambos | Guía 7 | Docs anteriores en develop59046f9; código A local e2c8686. Publicación/PR de A y aportes/revisión de Claudio no comprobados. |
 | Dos recursos nativos seguros — 15% | Cámara de ilustración y háptica neutral por elección | B5/B6 + A8 | Guía 13 y pauta | Pareja aceptada según docente relatado por Felipe; integración y pruebas físicas pendientes. |
 
 ## Indicaciones docentes comunicadas por Felipe
 
 - No es necesario Trello ni otra plataforma: seguimiento mediante Markdown, manteniendo responsabilidad y evidencia de ambos.
 - Feedback háptico sirve como segundo recurso junto con cámara; sin obligación de galería para la pareja acordada según ese relato.
+
+## Prioridad de cierre16/10
+
+Felipe pide priorizar funcionamiento y esperar avance B antes de continuar A. TalkBack/accesibilidad avanzada aplazados salvo exigencia docente expresa; no hay prueba TalkBack realizada ni dispensa general documentada. Se conservan etiquetas, errores claros, botones alternativos y adaptación existentes. La pauta incluye experiencia clara/accesible en formularios, pero el texto revisado no exige explícitamente una prueba TalkBack. No retirar sus básicos por esta decisión.
+
+Resultados manuales, compilación reportada y límites en pruebas.md (R01–R08). No se ejecutó suite automatizada específica ni se verificaron recursos nativos. No se asigna porcentaje de cumplimiento EV2 por las pantallas prefijadas.
 
 ## Diferencias todavía abiertas
 

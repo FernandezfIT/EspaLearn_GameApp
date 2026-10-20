@@ -2,7 +2,7 @@
 
 [Volver al README](../README.md) · [Checklist de avance](tareas-y-dependencias.md)
 
-**Actualización:** 15/10/2026. Objetivo: permitir que ambos integrantes obtengan, ejecuten y verifiquen la misma base sin compartir rutas personales ni estado del IDE.
+**Actualización:** 16/10/2026. Objetivo: permitir que ambos integrantes obtengan, ejecuten y verifiquen la misma base sin compartir rutas personales ni estado del IDE.
 
 ## 1. Base compartida
 
@@ -10,6 +10,7 @@
 - Nombre del repositorio: `EspaLearn_GameApp`.
 - Nombre local original del proyecto: `EspaLearn_turco_espaniol`; no necesita coincidir con la carpeta creada al clonar.
 - `main`: base estable. `develop`: integración. Ambas publicadas según confirmación de Felipe.
+- Corte local del16/10: `feature/base-ui`, commit `e2c8686` de UI/navegación. No se afirma publicación remota, PR, revisión ni merge de esta rama. La ampliación documental anterior se comprobó en develop59046f9.
 - Ramas cortas `feature/...` desde develop por tarea; PR hacia develop con revisión del otro integrante antes de integrar. main recibe versión estable revisada, según acuerdo con Felipe.
 - Invitaciones enviadas a Claudio y docente; aceptación aún pendiente de comprobación.
 - Seguimiento: [checklist Markdown](tareas-y-dependencias.md), en reemplazo de Trello por indicación docente comunicada por Felipe.
@@ -27,6 +28,7 @@
 | Gradle Wrapper | `9.5.0` | `gradle/wrapper/gradle-wrapper.properties` |
 | Plugin Kotlin Compose | `2.2.10` | `gradle/libs.versions.toml` |
 | Compose BOM | `2026.02.01` | `gradle/libs.versions.toml` |
+| Navigation Compose | `2.9.7` | `gradle/libs.versions.toml` |
 | Compatibilidad de fuentes y bytecode Java | 11 | `app/build.gradle.kts` |
 | Criterio de JVM del daemon | 25 | `gradle/gradle-daemon-jvm.properties` y captura de Android Studio |
 
@@ -40,12 +42,12 @@ El mínimo SDK 33 no implica compilar ni ejecutar exclusivamente en API 33. Ejec
 
 | Dato | Felipe Fernández | Claudio Novoa |
 |---|---|---|
-| Sistema operativo | Entorno Linux observado; distribución pendiente de registrar | Pendiente |
+| Sistema operativo | Windows, confirmado el16/10; versión exacta pendiente. Linux es antecedente del15/10. | Pendiente |
 | Android Studio | Versión exacta pendiente de registrar desde About | Pendiente |
 | SDK instalado | Ejecución base reportada; inventario pendiente | Pendiente |
 | JVM efectiva de Gradle | Pendiente de registrar; criterio 25 configurado | Pendiente |
 | Dispositivo de prueba | Pixel 6a emulado, Android 17 / API 37.1, según Felipe | Pendiente |
-| Pantalla base ejecutada | Sí, confirmado por Felipe | Pendiente |
+| Pantalla base ejecutada | Sí; UI/demo adicional probada con Run Preview según Felipe | Pendiente |
 | Dispositivo físico para recursos | Disponible según Felipe; modelo/API por registrar | Disponible según Felipe; modelo/API por registrar |
 
 No copiar rutas absolutas de un equipo al otro. Completar esta tabla con comprobaciones reales.
@@ -74,7 +76,27 @@ Pasos a realizar por Claudio; no se consideran ejecutados todavía.
 
 Si falla: registrar el primer error de sincronización o compilación con sus detalles y el paso que lo produjo. No borrar cachés, añadir dependencias o cambiar SDK/JDK a ciegas.
 
-## 5. Qué se comparte y qué permanece local
+## 5. Ejecutar la UI preparada de A
+
+La apertura normal desde Run sigue mostrando `Hello Android`: MainActivity no está conectado al estado de B.
+
+En la rama que contenga `e2c8686`:
+
+1. Sincronizar Gradle; Navigation Compose2.9.7 está declarado en el catálogo.
+2. Abrir `app/src/debug/java/com/example/espalearn/preview/NavegacionDemo.kt`.
+3. Ejecutar **Run Preview** sobre el emulador o dispositivo conectado.
+4. Probar Inicio, Editar perfil y Atrás, etapas de prueba y el acceso explícito a Resumen de prueba.
+5. Usar las demás previews para carga/error, formulario con errores/guardando, feedback, ayuda y marco. `AdaptabilidadPreview.kt` añade tamaños y fuente ampliada.
+
+La demo comienza en Inicio con datos prefijados. Guardar/Continuar/cámara/marco sólo registran solicitudes, sin guardado ni avance real. El botón de Resumen es una herramienta de prueba, no finalización del módulo. El contenido de `src/debug` no debe referenciarse desde la entrada compartida `main`.
+
+Felipe reportó compilación debug y funcionamiento manual; no se ejecutaron herramientas de build desde el asistente ni se adjuntó una corrida automatizada. En PowerShell, desde la raíz, el comando indicado fue:
+
+```powershell
+.\gradlew.bat :app:assembleDebug
+```
+
+## 6. Qué se comparte y qué permanece local
 
 ### Compartido en Git
 
@@ -95,14 +117,14 @@ Si falla: registrar el primer error de sincronización o compilación con sus de
 
 **Estilo e inspecciones:** no se ha creado `.editorconfig` ni una configuración IDE compartida. Si se acuerdan reglas automáticas, se añadirán explícitamente; no afirmar que ambos editores están homologados sólo por compartir el build.
 
-## 6. Comprobaciones pendientes
+## 7. Estado de comprobaciones
 
-Estas comprobaciones son propuestas para ejecutar cuando se acuerde, no resultados obtenidos en esta sesión:
+Distinguir confirmación del integrante de logs o ejecución automatizada adjuntos:
 
 | Comprobación | Propósito | Estado |
 |---|---|---|
 | `./gradlew --version` | Registrar información del Wrapper/JVM que reporte Gradle; contrastar la JVM del daemon cuando proceda. | Pendiente |
-| `./gradlew :app:assembleDebug` | Comprobar compilación debug mediante Wrapper. | Pendiente |
+| `./gradlew :app:assembleDebug` | Comprobar compilación debug mediante Wrapper. | Compilación comunicada por Felipe16/10 tras la indicación del comando Windows; sin log adjunto. No ejecutada por asistente. |
 | `./gradlew :app:testDebugUnitTest` | Ejecutar pruebas unitarias disponibles. | Pendiente |
 | `./gradlew :app:lintDebug` | Ejecutar análisis Android de la variante debug. | Pendiente |
 | Ejecución por Claudio desde copia propia | Comprobar reproducibilidad entre integrantes. | Pendiente |
@@ -111,12 +133,14 @@ Estas comprobaciones son propuestas para ejecutar cuando se acuerde, no resultad
 
 En Windows utilizar `gradlew.bat` en lugar de `./gradlew`. Las tareas de build/prueba pueden generar archivos locales y descargar dependencias; no se han ejecutado automáticamente al redactar esta guía.
 
-## 7. Evidencia actual y siguiente cierre
+## 8. Evidencia actual y siguiente cierre
 
 - Felipe informó ejecución de la aplicación base en emulador, primer commit, publicación de `main`/`develop` e invitaciones enviadas.
 - Se revisaron configuración local, exclusiones y comprobación de whitespace del primer commit; esta última terminó sin mensajes según Felipe.
 - No se ha verificado ejecución por Claudio, pruebas automatizadas ni recursos físicos.
-- K0–K6 y alcance mínimo publicados en develop en commit 1ce1867. La ampliación documental de cierre posterior está local y pendiente de revisión/publicación; no se ejecuta Git automáticamente al redactarla.
+- K0–K6 y alcance mínimo publicados en1ce1867; ampliación documental previa comprobada en develop59046f9 el16/10. Código A presente en commit local e2c8686; actualización documental del16/10 pendiente de publicación explícita.
+- Windows, Navigation2.9.7, demo y comprobaciones manuales registrados. Modelo/API del equipo de ejecución real adicional y JVM efectiva siguen sin documentar.
+- Sesión cerrada a la espera de confirmación de avances B; el siguiente paso es revisar/compilar las entregas y conectarlas, no rehacer la UI. No se ejecutan commit/push al actualizar estos documentos.
 
 **Cierre del entorno compartido:** ambos integrantes ejecutan la misma base y registran sus resultados. Esto no cierra por sí solo E0: también faltan los contratos y acuerdos indicados en el checklist.
 

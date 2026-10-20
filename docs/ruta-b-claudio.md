@@ -6,7 +6,18 @@
 
 La lógica y datos del MVP, no otra aplicación: un perfil local, cuatro unidades (Hola, Adiós, Pan, Manzana), tres etapas y recursos cámara/háptica. Felipe prepara UI/navegación. No crear pantallas paralelas, backend ni selectores extra para probar tu ruta; usa fakes y tests identificados.
 
-**Estado inicial:** sólo existe la base Compose. Los contratos de comportamiento están aprobados por Felipe; necesitas revisarlos con él y materializar las firmas antes de desarrollar consumidores incompatibles. No se afirma que hayas aceptado invitación, clonado o compilado todavía.
+**Actualización16/10:** A ya tiene UI y demo debug en el commit local `e2c8686` de `feature/base-ui`. La ampliación documental anterior está en develop59046f9; no se afirma que la rama A esté publicada o integrada. Los contratos de comportamiento siguen aprobados por Felipe; falta revisar/materializar las firmas de B. No se afirma tu aceptación de invitación, clonación, compilación ni avance sin evidencia.
+
+## Qué tiene A y qué necesita ahora
+
+- Pantallas Perfil/Inicio/Sesión/Resumen, carga/error, mapa, feedback, avatar geométrico/marco, swipe y navegación reutilizable. Navigation Compose2.9.7 añadido al catálogo.
+- Fixtures y `NavegacionDemo` en `src/debug`; MainActivity todavía es plantilla. Las acciones de demo no guardan, admiten respuestas ni completan etapas.
+- Tipos de A bajo `ui`: `EtapaMapaUi`, `SesionPresentacion`, `OpcionRespuestaUi`, `FeedbackUi`, `ResumenPresentacion`, `LogroResumenUi`. Mantener tus modelos de negocio/estado y acordar adaptación; no convertir los tipos visuales en almacenamiento por defecto.
+- Prioridad de entrega: B1 compilable con ejemplos y firmas; después B2/B3 y B4 para cerrar comportamiento/persistencia. Avisar cambios de contratos/owners/factories antes de conectar. No hace falta esperar a cámara/háptica para revisar B1.
+- `clavePaso` de la tarjeta es identidad visual. Debes validar sesión/paso y deduplicar botón/swipe en B2, incluso si la UI se deshabilita.
+- Painter y marco dibujado no son archivo conservado ni preferencia guardada; B4/B6 siguen siendo necesarios.
+
+Felipe cierra el16/10 y espera confirmación de tus checks para continuar A. Comparte rama/commit, pruebas reales y qué está listo/pendiente; el flujo de PR acordado no cambia. Se prioriza funcionamiento; TalkBack avanzado se aplaza salvo exigencia expresa, sin retirar básicos ni inventar dispensa general.
 
 ## Primero: entorno e integración
 
@@ -92,6 +103,29 @@ Usar un adaptador de feedback de interacción, preferentemente View.performHapti
 - Pruebas ejecutadas y resultados; si no se ejecutaron, indicarlo.
 - Cambios requeridos de A y actualización del checklist.
 - Revisión de Felipe antes de merge; resolver develop roto antes de continuar.
+
+## Corte de integración — 20/10/2026
+
+Estado real en la rama `feature/logica-datos`. Lo siguiente está implementado y conectado; lo marcado como pendiente **no** se ha probado en dispositivo y no se declara funcionando.
+
+### Conectado con evidencia de compilación/pruebas
+
+- `MainActivity` usa el `AppContainer` real y `AppNavHost`; ya no es la plantilla.
+- `AppNavHost` mapea `AppUiState`/`SesionUiState` a las pantallas de A mediante `ui/mapping/MapeoPresentacion` sin modificar los componentes ni las firmas de `Screen`.
+- Arranque K0: `Cargando` → `CargandoScreen`; `ErrorLectura` → `ErrorCargaScreen` con reintento; `ListoSinPerfil` → Perfil; `ListoConPerfil` → Inicio.
+- Perfil: captura delegada por `AvatarCapture` con URI de FileProvider y resultado traducido a la candidata del `PerfilViewModel`; guardado válido navega a Inicio.
+- Sesión: `SesionViewModel` recibe la etapa activa, las unidades del catálogo real y deduplica elecciones; al finalizar persiste y pasa a Resumen.
+- Resumen: muestra el logro y el control de marco sólo cuando corresponde; el marco se guarda por el `AppViewModel`.
+- Atrás: bloqueado durante el guardado; al crear descarta y sale, al editar vuelve a Inicio.
+
+### Pendiente de dispositivo (no probado)
+
+- **Háptica (P18/P19):** `AnswerHaptics` está conectado al contador `eleccionesAdmitidas`, pero falta confirmar el pulso físico y que no se repita por restauración o swipe. Requiere teléfono.
+- **Cámara (P15–P17):** captura, cancelación, recuperación tras muerte de proceso y limpieza de huérfanos. Requiere dispositivo con cámara.
+- **Rotación y muerte de proceso (P07/P08):** la etapa activa vive en el `AppViewModel` y se pierde al recrear el proceso; verificar el retorno a Inicio y la candidata pendiente.
+- **Persistencia real:** la suite usa un almacén en memoria; falta comprobar DataStore en dispositivo (reapertura y fallo de E/S).
+
+Estas verificaciones quedan registradas como pendientes en [pruebas.md](pruebas.md); no se presentan como ejecutadas.
 
 ## Qué no está validado
 

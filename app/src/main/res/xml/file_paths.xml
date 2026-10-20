@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Ruta restringida al directorio privado de avatares. -->
+    <files-path
+        name="avatares"
+        path="avatares/" />
+</paths>
