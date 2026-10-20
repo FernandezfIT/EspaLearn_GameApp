@@ -124,7 +124,9 @@ fun AppNavHost(
             val fileStore = remember { AvatarFileStore(context) }
             val capture = remember { AvatarCapture(context, fileStore) }
             val idBorrador = rememberSaveable { UUID.randomUUID().toString() }
-            var uriPendiente by remember { mutableStateOf<Uri?>(null) }
+            // El URI pendiente se conserva ante recreación para poder recibir el
+            // resultado de la cámara y recuperar la candidata (K5/B6).
+            var uriPendiente by rememberSaveable { mutableStateOf<Uri?>(null) }
 
             val launcherCaptura = rememberLauncherForActivityResult(
                 contract = AvatarCapture.contrato()
