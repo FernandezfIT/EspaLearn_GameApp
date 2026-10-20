@@ -82,10 +82,10 @@ No publicar rutas privadas, tokens o información personal en logs/capturas.
 **Fecha: 20/10/2026. Rama:** `feature/logica-datos`. **Ejecutado por:** asistente, a pedido de Claudio.
 
 - **Entorno:** Windows, Gradle Wrapper, comando `:app:testDebugUnitTest` del módulo `app`. Sin dispositivo/emulador: son pruebas de JVM.
-- **Resultado:** `BUILD SUCCESSFUL`. 49 pruebas, 0 fallos, 0 errores. Desglose: `PerfilValidatorTest` 23, `LocalAppRepositoryTest` 9, `SesionViewModelTest` 9, `PerfilViewModelTest` 7 y la prueba de plantilla 1.
-- **Casos cubiertos por suite:** validación de nick/edad (P03–P05), errores tras Guardar y reactividad (P06), transiciones de sesión y admisión única (P10/P11), finalización tras guardado e idempotencia, reapertura/repetición sin duplicados y conservación de progreso al editar (P12–P14), marco sólo con el módulo completo.
+- **Resultado:** `BUILD SUCCESSFUL`. 57 pruebas, 0 fallos, 0 errores. Desglose: `PerfilValidatorTest` 23, `LocalAppRepositoryTest` 9, `SesionViewModelTest` 9, `MapeoPresentacionTest` 8, `PerfilViewModelTest` 7 y la prueba de plantilla 1.
+- **Casos cubiertos por suite:** validación de nick/edad (P03–P05), errores tras Guardar y reactividad (P06), transiciones de sesión y admisión única (P10/P11), finalización tras guardado e idempotencia, reapertura/repetición sin duplicados y conservación de progreso al editar (P12–P14), marco sólo con el módulo completo, y mapeo de estados a presentación (orden/bloqueo de etapas, Descubrir sin opciones, Menos apoyo con turco oculto, logro sólo con el módulo completo).
 - **Evidencia:** reporte HTML de Gradle en `app/build/reports/tests/testDebugUnitTest/`.
-- **Limitaciones:** no acredita persistencia real en DataStore de dispositivo, ni recursos de cámara/háptica, ni integración con la UI de A. Los casos P01/P02/P07/P08/P15–P22 siguen pendientes de integración y dispositivo.
-- **Compilación:** `:app:compileDebugKotlin` ejecutada con éxito antes de la suite.
+- **Limitaciones:** no acredita persistencia real en DataStore de dispositivo, ni recursos de cámara/háptica, ni el recorrido integrado en pantalla. La integración de navegación y pantallas está compilada, pero no se ejecutó en dispositivo: P01/P02 (recorrido en pantalla) y P07/P08 (Atrás y muerte de proceso) siguen pendientes de esa verificación; P15–P22 (cámara, háptica, rotación e integración física) permanecen pendientes de dispositivo.
+- **Compilación:** `:app:compileDebugKotlin` y `:app:assembleDebug` ejecutadas con éxito antes de la suite.
 
 La aceptación de háptica/cámara por el docente, según confirmación relatada por Felipe, sigue sin prueba física registrada.

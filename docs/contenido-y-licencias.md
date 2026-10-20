@@ -2,7 +2,27 @@
 
 [README](../README.md) · [Alcance](alcance-y-decisiones.md) · [Contratos](contratos.md)
 
-**Actualización:16/10/2026.** Avatar y marco representados en UI; contenido bilingüe e ilustraciones del vocabulario aún pendientes.
+**Actualización:20/10/2026.** Catálogo técnico de cuatro unidades implementado en código; traducciones e ilustraciones definitivas aún pendientes. Las ilustraciones del vocabulario se representan con un marcador de posición explícito hasta incorporar material autorizado.
+
+## Catálogo técnico implementado — 20/10
+
+El catálogo vive en `app/src/main/java/com/example/espalearn/model/ContenidoUnidades.kt`. Los IDs son estables y se usan para la respuesta esperada; **no** por posición izquierda/derecha. Los textos y las parejas de opciones son la propuesta del equipo: no están validados lingüística ni pedagógicamente.
+
+| ID | Temática | Español | Turco (propuesto) | Ilustración | Opciones (respuesta esperada en negrita) |
+|---|---|---|---|---|---|
+| hola | Saludos | Hola | Merhaba | Pendiente (placeholder) | **Hola** / Buenas noches |
+| adios | Saludos | Adiós | Hoşça kal | Pendiente (placeholder) | **Adiós** / Gracias |
+| pan | Alimentos | Pan | Ekmek | Pendiente (placeholder) | **Pan** / Agua |
+| manzana | Alimentos | Manzana | Elma | Pendiente (placeholder) | **Manzana** / Plátano |
+
+Los equivalentes turcos son una propuesta técnica y **deben verificarse** con una fuente identificada antes de presentarlos como contenido revisado. Las parejas de opciones también requieren revisión para evitar ambigüedad.
+
+### Cómo sustituir los marcadores de posición
+
+- La interfaz dibuja `ui/components/IlustracionPlaceholder` cuando no hay imagen real.
+- La referencia de cada unidad está en `Unidad.recursoIlustracion` (por ejemplo `ilustracion_hola`).
+- Para integrar el material definitivo: añadir el recurso a `res/drawable`, registrar su autoría/licencia en la tabla de abajo y reemplazar el placeholder por la imagen en la Route de Sesión.
+- **No** fotografiar menores ni usar imágenes personales reales como material de prueba.
 
 ## Catálogo mínimo acordado
 

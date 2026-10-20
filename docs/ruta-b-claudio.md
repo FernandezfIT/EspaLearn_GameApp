@@ -104,6 +104,29 @@ Usar un adaptador de feedback de interacción, preferentemente View.performHapti
 - Cambios requeridos de A y actualización del checklist.
 - Revisión de Felipe antes de merge; resolver develop roto antes de continuar.
 
+## Corte de integración — 20/10/2026
+
+Estado real en la rama `feature/logica-datos`. Lo siguiente está implementado y conectado; lo marcado como pendiente **no** se ha probado en dispositivo y no se declara funcionando.
+
+### Conectado con evidencia de compilación/pruebas
+
+- `MainActivity` usa el `AppContainer` real y `AppNavHost`; ya no es la plantilla.
+- `AppNavHost` mapea `AppUiState`/`SesionUiState` a las pantallas de A mediante `ui/mapping/MapeoPresentacion` sin modificar los componentes ni las firmas de `Screen`.
+- Arranque K0: `Cargando` → `CargandoScreen`; `ErrorLectura` → `ErrorCargaScreen` con reintento; `ListoSinPerfil` → Perfil; `ListoConPerfil` → Inicio.
+- Perfil: captura delegada por `AvatarCapture` con URI de FileProvider y resultado traducido a la candidata del `PerfilViewModel`; guardado válido navega a Inicio.
+- Sesión: `SesionViewModel` recibe la etapa activa, las unidades del catálogo real y deduplica elecciones; al finalizar persiste y pasa a Resumen.
+- Resumen: muestra el logro y el control de marco sólo cuando corresponde; el marco se guarda por el `AppViewModel`.
+- Atrás: bloqueado durante el guardado; al crear descarta y sale, al editar vuelve a Inicio.
+
+### Pendiente de dispositivo (no probado)
+
+- **Háptica (P18/P19):** `AnswerHaptics` está conectado al contador `eleccionesAdmitidas`, pero falta confirmar el pulso físico y que no se repita por restauración o swipe. Requiere teléfono.
+- **Cámara (P15–P17):** captura, cancelación, recuperación tras muerte de proceso y limpieza de huérfanos. Requiere dispositivo con cámara.
+- **Rotación y muerte de proceso (P07/P08):** la etapa activa vive en el `AppViewModel` y se pierde al recrear el proceso; verificar el retorno a Inicio y la candidata pendiente.
+- **Persistencia real:** la suite usa un almacén en memoria; falta comprobar DataStore en dispositivo (reapertura y fallo de E/S).
+
+Estas verificaciones quedan registradas como pendientes en [pruebas.md](pruebas.md); no se presentan como ejecutadas.
+
 ## Qué no está validado
 
 Compatibilidad completa del conjunto de versiones, dispositivo de Claudio, traducciones, licencias finales, pedagogía y recursos físicos. La consulta educativa del caso no se realizó y Felipe decidió priorizar el aspecto técnico de EV2; no inventar esa evidencia. Ver [criterios-pedagogicos.md](criterios-pedagogicos.md).
