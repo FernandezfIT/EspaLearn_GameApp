@@ -2,6 +2,8 @@ package com.example.espalearn.viewmodel
 
 import com.example.espalearn.model.AvatarRef
 import com.example.espalearn.model.Perfil
+import com.example.espalearn.model.state.AppUiState
+import com.example.espalearn.model.state.AvatarDraft
 import com.example.espalearn.repository.RepositorioFalso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,6 +13,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -112,6 +115,64 @@ class PerfilViewModelTest {
 
         assertTrue(vm.estado.value.nick == "Deniz123")
         assertTrue(vm.estado.value.edadTexto == "8")
+    }
+
+    @Test
+    fun `la candidata solo se persiste al guardar un perfil valido`() = runTest(dispatcher) {
+        val repositorio = RepositorioFalso()
+        val vm = PerfilViewModel(repositorio)
+        vm.capturaCorrecta("candidato_nuevo.jpg")
+
+        vm.guardar()
+        advanceUntilIdle()
+        assertEquals(AppUiState.ListoSinPerfil, repositorio.estadoAplicacion.value)
+
+        vm.editarNick("Deniz123")
+        vm.editarEdad("8")
+        vm.guardar()
+        advanceUntilIdle()
+
+        val guardado = repositorio.estadoAplicacion.value as AppUiState.ListoConPerfil
+        assertEquals(AvatarRef.ArchivoPrivado("candidato_nuevo.jpg"), guardado.perfil.avatar)
+        assertTrue(vm.guardadoExitoso.value)
+    }
+
+    @Test
+    fun `cancelar o fallar otro intento conserva la candidata anterior`() {
+        val vm = PerfilViewModel(RepositorioFalso(), perfilExistente)
+        vm.capturaCorrecta("candidato_primero.jpg")
+
+        vm.capturaCancelada()
+        assertEquals(AvatarDraft.ArchivoCandidato("candidato_primero.jpg"), vm.estado.value.avatarCandidato)
+        assertNull(vm.estado.value.errorCaptura)
+
+        vm.capturaFallida("Cámara no disponible")
+        assertEquals(AvatarDraft.ArchivoCandidato("candidato_primero.jpg"), vm.estado.value.avatarCandidato)
+        assertNotNull(vm.estado.value.errorCaptura)
+    }
+
+    @Test
+    fun `fallo al guardar candidata conserva avatar persistido y permite reintentar`() = runTest(dispatcher) {
+        val repositorio = RepositorioFalso()
+        val anterior = perfilExistente.copy(avatar = AvatarRef.ArchivoPrivado("avatar_anterior.jpg"))
+        repositorio.guardarPerfil(anterior)
+        val vm = PerfilViewModel(repositorio, anterior)
+        vm.capturaCorrecta("candidato_nuevo.jpg")
+        repositorio.falloEscritura = true
+
+        vm.guardar()
+        advanceUntilIdle()
+        val sinCambios = repositorio.estadoAplicacion.value as AppUiState.ListoConPerfil
+        assertEquals(anterior.avatar, sinCambios.perfil.avatar)
+        assertEquals(AvatarDraft.ArchivoCandidato("candidato_nuevo.jpg"), vm.estado.value.avatarCandidato)
+        assertFalse(vm.guardadoExitoso.value)
+
+        repositorio.falloEscritura = false
+        vm.guardar()
+        advanceUntilIdle()
+        val actualizado = repositorio.estadoAplicacion.value as AppUiState.ListoConPerfil
+        assertEquals(AvatarRef.ArchivoPrivado("candidato_nuevo.jpg"), actualizado.perfil.avatar)
+        assertTrue(vm.guardadoExitoso.value)
     }
 
     @Test

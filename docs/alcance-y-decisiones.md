@@ -4,7 +4,7 @@
 
 ## Alcance vigente
 
-**Actualización: 16/10/2026.** Acuerdos de alcance del15/10, complementados por el corte de implementación de A del16/10. No equivalen a revisión de Claudio ni a funcionalidades integradas con lógica/datos reales.
+**Corte vigente:** `feature/cierre-ev2` sobre `develop` en `427f1ef` (PR #2), con cambios locales sin commit/publicación. UI y lógica integradas; 99 unitarias y 6 instrumentadas aprobadas, lint con 0 errores y 16 advertencias. Cámara, háptica y recorrido comprobados según Felipe en Xiaomi. El corte de A del 16/10 se conserva debajo como histórico, no como estado actual. No equivale a revisión de Claudio del cierre ni a validación educativa.
 
 - Un módulo local, un perfil ficticio y cuatro pantallas reutilizables: Perfil, Inicio, Sesión y Resumen.
 - Dos temáticas, sin menú de selección: saludos y alimentos.
@@ -13,10 +13,13 @@
 - 12 pasos y 8 elecciones; sin nota mínima ni avance automático tras responder.
 - Persistir perfil, etapas completadas, etapa activa y preferencia de marco.
 - Un logro derivado de completar las tres etapas y marco opcional; sin pantalla adicional.
-- Avatar predeterminado geométrico elegido por Felipe el16/10, dibujado con Canvas y reutilizado en Perfil/Inicio/Resumen. Sustituible por captura de ilustración autorizada cuando se integre B6; sin banco seleccionable en EV2.
-- Cámara + háptica neutral: pareja aceptada por el docente según confirmación de Felipe; funcionamiento pendiente de pruebas.
+- Avatar geométrico reutilizado en Perfil/Inicio/Resumen, sustituible por candidata de cámara confirmada al guardar. Captura/cancelación/reapertura comprobadas según Felipe; sin banco seleccionable.
+- Cámara + háptica neutral aceptadas por el docente según relato de Felipe; funcionamiento físico comunicado, sin atribuir prueba de todos los fallos/ajustes.
+- Resumen automático sólo al primer cierre confirmado de etapa 3. Etapas 1/2 y repasos vuelven a Inicio; Ver resumen aparece debajo de etapa 3 al completar el módulo.
+- Sesión retenida por Android puede continuar su paso; nueva instancia empieza desde paso 1. No se persiste índice de tarjeta. La continuidad observada en paso 2 fue aceptada por Felipe; no hubo verificación de PID.
+- Dibujos de vocabulario propios en Compose, con origen documentado; traducciones/distractores y validación educativa siguen pendientes.
 
-## Implementación A preparada — 16/10
+## Histórico — implementación A preparada el 16/10
 
 Base local `feature/base-ui`, commit `e2c8686`: cuatro pantallas, carga/error de arranque, componentes, swipe con retorno, avatar geométrico/marco, Navigation2.9.7 y demo debug. Inicio cambia entre una/dos columnas según ancho local disponible; no se añadió la API WindowSizeClasses.
 
@@ -51,7 +54,7 @@ En saludos se usarán escenas ilustradas. No audio, temporizador ni pantalla ext
 - Seguimiento en Markdown en lugar de Trello por indicación docente comunicada por Felipe.
 - Ramas cortas desde develop; PR pequeños hacia develop con revisión del otro integrante antes de integrar. main recibe versiones estables revisadas. No autoaprobar por falta de disponibilidad.
 - Base técnica aprobada: módulo app único, StateFlow/ViewModel, repositorio único, Preferences DataStore, fotos privadas y conexión manual; sin Hilt, Room o backend.
-- Ambos disponen de teléfono Android físico; modelos/versiones y resultados por registrar al probar.
+- Ambos disponen de teléfono Android físico según Felipe. El cierre se probó en Xiaomi identificado por runner como `25069PTEBG - 16`; entorno propio de Claudio pendiente de detallar.
 
 ## Discrepancias y límites académicos
 
@@ -72,11 +75,10 @@ Ampliar contenido para EV3 es intención del equipo; no se presenta como requisi
 
 ## Reanudación de Felipe — próxima sesión
 
-1. Esperar el aviso de Felipe de que los checks B están completos o hay una entrega concreta lista. No inferir avances en otra rama ni requerir que B9 esté terminado para revisar un bloque B1 entregado.
-2. Comprobar rama, commits, cambios y resultados de B; no ejecutar pull/merge/commit/push sin instrucción. La rama A inspeccionada es feature/base-ui, código e2c8686.
-3. Revisar B1 y mapear sus tipos/estados hacia las pantallas existentes. Acordar owners/factories y conectar Routes; no crear otro validador/repositorio ni rehacer A1/A2.
-4. Integrar por bloques: K0 y Perfil, Inicio/Sesión, progreso/Resumen; navegación exitosa sólo tras confirmación. MainActivity se conecta a raíz real, no a fixtures debug. Probar Atrás creando/guardando y rechazo de duplicados/tardíos.
-5. Incorporar recursos nativos reales y contenido autorizado cuando estén listos, con pruebas de reapertura/captura/fallo pertinentes. No atribuirlas a las pruebas visuales ya hechas.
-6. Retomar básicos y pruebas funcionales mínimas pendientes, sin TalkBack avanzado salvo obligación expresa. Código explicado por bloques y añadido manualmente por Felipe; esta autorización al asistente corresponde a documentación, no a escribir la app.
+1. Revisar `git status` y preservar todos los archivos nuevos del cierre. No repetir la integración B ni reconstruir la UI. No hacer commit/push sin instrucción explícita.
+2. Inicio y Resumen ya esperan el registro confirmado de etapa antes de navegar. Conservar las regresiones de Inicio ante fallo/reintento y escritura pendiente, ambas aprobadas; no reintroducir el método asíncrono sin resultado.
+3. Si se amplía verificación: API 33, primera celebración con datos iniciales vacíos, ajustes hápticos, fallos nativos y muerte de proceso con PID. No confundir continuidad en Recientes con prueba de proceso muerto.
+4. Revisar con Claudio, publicar rama/PR, comprobar copia limpia y confirmar requisitos/fechas de entrega en AVA. Mantener discrepancias académicas y traducciones pendientes explícitas.
+5. Por petición de Felipe, reservar una sesión posterior para comprender el flujo. Este cierre priorizó desarrollo guiado: el asistente modificó código y Felipe ejecutó comandos y pruebas; no se atribuye comprensión completa por haber aprobado pruebas.
 
-La sesión16/10 implementó preparación UI y cerró con actualización documental autorizada. No se integró lógica/datos de B ni se hicieron operaciones Git de escritura desde el asistente.
+El estado anterior del 16/10 fue sustituido por el cierre descrito en README y pruebas.md. Los cambios del cierre siguen locales; no se ejecutaron commit/push.

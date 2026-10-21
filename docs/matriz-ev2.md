@@ -2,43 +2,56 @@
 
 [README](../README.md) · [Checklist](tareas-y-dependencias.md) · [Pruebas](pruebas.md)
 
-**Actualización:16/10/2026.** Base local A: `feature/base-ui`, código `e2c8686`. Esta matriz relaciona la pauta escrita con tareas y evidencia. No concede una nota ni declara cumplimiento por existir documentación. Pesos tomados de la pauta EV2 leída; indicaciones docentes relatadas se distinguen debajo.
+**Corte vigente:** cierre local `feature/cierre-ev2` sobre `develop` en `427f1ef` (PR #2). Fuente y documentación del cierre todavía sin commit/publicación. Esta matriz relaciona los indicadores de la pauta leída con implementación y evidencia; no concede nota ni porcentaje de cumplimiento.
 
-| Indicador / peso | Aplicación prevista | Responsables y tareas | Material EA2 | Evidencia requerida / estado |
-|---|---|---|---|---|
-| UI y navegación — 15% | Perfil, Inicio, Sesión, Resumen; Atrás coherente y adaptabilidad | A1–A5/A7/A9 | Guías 8–10 | UI/demo, Atrás y tamaños reportados funcionales R01–R07. Arranque, Routes y MainActivity reales pendientes. |
-| Formularios y feedback por campo — 15% | Crear/editar perfil único, errores de nick/edad, captura/guardado recuperables | A4 + B3/B6 | Guía 11 y 13 | Presentación R01 preparada. Validación, captura/guardado e icono específico por campo pendientes. Sin duplicar formularios. |
-| Validación centralizada y estado — 10% | Validator y ViewModels fuera de los composables, errores tras Guardar y al corregir | B1–B3 + A4 | Guía 11 | Tests y UI conectada a errores reales; pendiente. |
-| Animaciones funcionales — 10% | Deslizamiento, transición y feedback útiles | A6 + B2 | Guía 12 | Swipe/retorno e IDs equivalentes a botones probados según Felipe R03. Admisión única e integración B2 pendientes. |
-| Modularidad y persistencia local — 15% | UI/modelos/ViewModels/repositorio; perfil/progreso/marco y archivos | B1/B2/B4/B6/B7 + Routes de A | Guías 7, 11–13 | Componentes/Screen/nav separados; fixtures en debug. MVVM, datos reales y reapertura pendientes; no declarar persistencia por remember de demo. |
-| Colaboración y control de versiones — 20% | GitHub público, aportes de ambos, PR revisados y checklist Markdown | Ambos | Guía 7 | Docs anteriores en develop59046f9; código A local e2c8686. Publicación/PR de A y aportes/revisión de Claudio no comprobados. |
-| Dos recursos nativos seguros — 15% | Cámara de ilustración y háptica neutral por elección | B5/B6 + A8 | Guía 13 y pauta | Pareja aceptada según docente relatado por Felipe; integración y pruebas físicas pendientes. |
+| Indicador / peso | Implementación | Responsables / material | Evidencia y límite |
+|---|---|---|---|
+| UI y navegación — 15% | Arranque, Perfil, Inicio, Sesión y Resumen reales; acceso secuencial, repaso y Ver resumen tras completar módulo. | A + integración B; guías 8–10. | Flujo comunicado por Felipe en Xiaomi; tests Compose de Ver resumen y apertura de etapa ante escritura pendiente/fallida. Primera celebración con datos vacíos no repetida manualmente. Adaptabilidad ampliada integrada pendiente. |
+| Formularios y feedback — 15% | Crear/editar perfil único; errores con mensaje/icono, candidata de cámara y borrador restaurable. | A4 + B3/B6; guías 11/13. | R09/R12/R13: captura, cancelación, reapertura y giro comunicados. Faltan fallos nativos forzados y comprobación independiente de muerte de proceso. |
+| Validación centralizada y estado — 10% | PerfilValidator, StateFlow/ViewModels y SavedStateHandle fuera de las pantallas. | B1–B3 + cierre A; guía 11. | Suite JVM de límites, transiciones, restauración y errores tras Guardar; no acredita todos los teclados/configuraciones Android. |
+| Animaciones funcionales — 10% | Swipe/retorno, botones equivalentes, respuesta única, feedback y Continuar manual. | A6 + B2; guía 12. | R03/R10 y tests de admisión; no se atribuye prueba física de todos los eventos tardíos. |
+| Modularidad y persistencia — 15% | Repositorio/DataStore, perfil, archivos privados, progreso y marco; contenedor por Application. | B1/B2/B4/B6/B7 + cierre A; guías 7/11–13. | 99 unitarias y regresión Android de recreación. Felipe confirma conservación de nick/progreso/marco. Inicio y Resumen esperan el registro confirmado antes de navegar; fallo/reintento de Inicio probados con operación sustituida. No se persiste índice de tarjeta. |
+| Colaboración y versiones — 20% | Aportes A incluidos en base; B integrado mediante PR #2; checklist Markdown y cierre local de A. | Ambos; guía 7. | Historia Git inspeccionada. No se atribuye revisión de Claudio del cierre, publicación de esta rama, nueva revisión de PR, copia limpia ni entrega. |
+| Dos recursos nativos seguros — 15% | TakePicture/FileProvider privado para ilustración; pulso háptico neutral por elección. | B5/B6 + A8/cierre; guía 13. | Cámara/cancelación/imagen y pulso botón/swipe comprobados según Felipe en Xiaomi. Ajustes hápticos y fallos de cámara/almacenamiento por ampliar. |
+
+## Evidencia actual
+
+- Felipe ejecutó `assembleDebug`, `testDebugUnitTest`, `lintDebug` y `connectedDebugAndroidTest` con éxito.
+- Reportes inspeccionados: **99 pruebas JVM y 6 instrumentadas**, sin fallos/errores; **lint: 0 errores, 16 advertencias**.
+- Las 6 instrumentadas cubren contenedor/repositorio/ViewModel tras recrear Activity, 2 casos Compose de Ver resumen, 2 de Inicio ante fallo/espera de escritura y contexto de plantilla. No son 6 pruebas completas de todo el producto ni fuerzan errores nativos de DataStore.
+- Dispositivo del runner: `25069PTEBG - 16`, Xiaomi según Felipe. API 33 sin ejecución acreditada.
+- Registros manuales R09–R15 en pruebas.md. La prueba de reapertura conservó el paso 2: Felipe acepta continuar si la sesión se retiene. No se comprobó el PID, por lo que no acredita recuperación exacta de tarjeta tras muerte real del proceso.
+
+## Decisiones vigentes
+
+- Resumen automático sólo tras el primer cierre confirmado de etapa 3; etapas 1/2 y todos los repasos vuelven a Inicio.
+- Ver resumen aparece debajo de etapa 3 al completar el módulo; permite consultar el logro y aplicar/quitar marco después.
+- Sesión retenida: puede conservar el paso actual. Nueva sesión: comienza en paso 1; no se persiste el índice de tarjeta.
+- Priorización de funcionamiento y comprensión del flujo en una sesión posterior, por petición de Felipe.
+- TalkBack avanzado sigue aplazado, no probado; se conservan etiquetas, mensajes/iconos, botones alternativos y adaptación. No se afirma dispensa general de accesibilidad.
 
 ## Indicaciones docentes comunicadas por Felipe
 
-- No es necesario Trello ni otra plataforma: seguimiento mediante Markdown, manteniendo responsabilidad y evidencia de ambos.
-- Feedback háptico sirve como segundo recurso junto con cámara; sin obligación de galería para la pareja acordada según ese relato.
-
-## Prioridad de cierre16/10
-
-Felipe pide priorizar funcionamiento y esperar avance B antes de continuar A. TalkBack/accesibilidad avanzada aplazados salvo exigencia docente expresa; no hay prueba TalkBack realizada ni dispensa general documentada. Se conservan etiquetas, errores claros, botones alternativos y adaptación existentes. La pauta incluye experiencia clara/accesible en formularios, pero el texto revisado no exige explícitamente una prueba TalkBack. No retirar sus básicos por esta decisión.
-
-Resultados manuales, compilación reportada y límites en pruebas.md (R01–R08). No se ejecutó suite automatizada específica ni se verificaron recursos nativos. No se asigna porcentaje de cumplimiento EV2 por las pantallas prefijadas.
+- Seguimiento mediante Markdown en vez de Trello; no elimina participación real ni revisión.
+- Cámara + háptica aceptadas como pareja de recursos, sin obligación de galería según ese relato.
 
 ## Diferencias todavía abiertas
 
-- Caso escrito: público menor de 10. Desarrollo previsto: edad simulada 7–10; confirmar ampliación con docente.
-- Caso escrito: consulta educativa previa. No realizada; Felipe decide priorizar técnica y comunica que no se evaluará pedagogía en EV2. No hay dispensa documentada ni evidencia de consulta; ver criterios-pedagogicos.md.
-- Traducciones, escenas e imágenes definitivas y sus permisos aún pendientes.
+- Caso escrito: menores de 10; propuesta implementada: edad simulada 7–10, pendiente de confirmación docente.
+- Consulta educativa previa no realizada. Felipe prioriza técnica y comunica que no se evaluará pedagogía en EV2; no hay dispensa documental ni validación educativa.
+- Cuatro dibujos propios incorporados con origen documentado y revisión visual comunicada; traducciones/distractores aún no verificados con fuente lingüística. Falta procedencia de la ilustración física de cámara.
 
-## Entrega y congelamiento — por verificar antes del envío
+## Entrega y congelamiento
 
-- [ ] README con integrantes, funciones realmente implementadas e instrucciones verificadas.
-- [ ] Repositorio público sin credenciales ni material no autorizado y acceso docente/equipo comprobado.
-- [ ] Actividad real distribuida y PR/revisiones del equipo, no evidencia fabricada al cierre.
-- [ ] Proyecto desde copia limpia ejecutable; documentación y fuente corresponden a la misma versión.
-- [ ] Confirmar plazos, hora y enlaces AVA vigentes. Fechas históricas declaradas: cierre 24/10/2026 y entrega 27/10/2026; no son capacidad ni hora verificadas.
-- [ ] Entrega grupal de fuentes por un integrante y activación individual por ambos según pauta.
-- [ ] Congelar versión entregada y respetar prohibición de cambios posteriores indicada en la pauta; confirmar interpretación/corte con docente.
+- [x] README actualizado con integrantes, funciones reales, comandos ejecutados y límites.
+- [x] Corregir apertura desde Inicio y verificar fallo/espera/reintento con la Route real y operación sustituida, sin navegar prematuramente.
+- [ ] Revisar código/documentación del cierre con Claudio y decidir tratamiento de avisos de lint.
+- [ ] Publicar rama y PR hacia develop; revisión del otro integrante, sin autoatribuir aprobación.
+- [ ] Comprobar copia limpia y ejecución en mínimo API 33.
+- [ ] Verificar ausencia de credenciales, permisos de contenido y acceso docente/equipo.
+- [ ] Resolver/explicitar diferencias académicas y revisión lingüística pendiente.
+- [ ] Confirmar fecha/hora/enlaces AVA. Fechas históricas declaradas: cierre 24/10/2026 y entrega 27/10/2026; no son hora ni plazos vigentes verificados.
+- [ ] Entrega grupal y activación individual de ambos según pauta.
+- [ ] Congelar la misma versión entregada y respetar el corte de cambios indicado por el docente.
 
-No incluir backend, Retrofit, APK firmado o contenidos extra por suponer que son obligatorios de esta EV2. Si aparece una nueva instrucción explícita, actualizar alcance y tareas antes de incorporarla.
+No añadir backend, Retrofit, APK firmado ni contenido extra por suponer que son obligatorios en EV2.

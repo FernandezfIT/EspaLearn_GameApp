@@ -17,6 +17,10 @@ data class Progreso(
     val moduloCompletado: Boolean
         get() = etapasCompletadas.containsAll(Etapa.entries)
 
+    /** Continuar abre la primera pendiente; repasar empieza en Descubrir sin borrar avance. */
+    val etapaParaContinuar: Etapa
+        get() = Etapa.entries.firstOrNull { !etapaCompletada(it) } ?: Etapa.DESCUBRIR
+
     fun etapaCompletada(etapa: Etapa): Boolean = etapa in etapasCompletadas
 
     /** Acceso secuencial: la primera siempre; las demás requieren la anterior completada. */

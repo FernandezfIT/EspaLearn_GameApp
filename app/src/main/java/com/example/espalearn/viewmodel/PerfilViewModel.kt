@@ -1,5 +1,6 @@
 package com.example.espalearn.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.espalearn.domain.PerfilValidator
@@ -17,83 +18,67 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/**
- * Estado del formulario de perfil (K1), reutilizado para crear y editar.
- *
- * No muestra errores al abrir: el primer Guardar activa la validación y,
- * desde entonces, corregir un campo actualiza su error. Durante el guardado
- * se impide un segundo envío; el éxito sólo se comunica tras confirmar la
- * escritura y la interfaz decide entonces la salida.
- */
+/** Borrador restaurable; sólo se anuncia éxito después de confirmar la escritura. */
 class PerfilViewModel(
     private val repositorio: AppRepository,
-    private val perfilExistente: Perfil? = null
+    private val perfilExistente: Perfil? = null,
+    private val savedState: SavedStateHandle = SavedStateHandle()
 ) : ViewModel() {
 
-    private val _estado = MutableStateFlow(
-        perfilExistente?.let { perfil ->
-            PerfilUiState(
-                modo = ModoFormularioPerfil.EDITAR,
-                nick = perfil.nick,
-                edadTexto = perfil.edad.toString(),
-                avatarActual = cuandoAvatarActual(perfil.avatar)
-            )
-        } ?: PerfilUiState()
-    )
+    private val _estado = MutableStateFlow(restaurarBorrador())
     val estado: StateFlow<PerfilUiState> = _estado.asStateFlow()
 
     private val _guardadoExitoso = MutableStateFlow(false)
     val guardadoExitoso: StateFlow<Boolean> = _guardadoExitoso.asStateFlow()
 
+    init {
+        persistirBorrador()
+    }
+
     fun editarNick(nick: String) {
-        _estado.update { actual ->
+        if (_estado.value.guardando) return
+        actualizar { actual ->
             val nuevo = actual.copy(nick = nick)
             if (actual.validacionActivada) nuevo.copy(errores = calcularErrores(nuevo)) else nuevo
         }
     }
 
     fun editarEdad(edadTexto: String) {
-        _estado.update { actual ->
+        if (_estado.value.guardando) return
+        actualizar { actual ->
             val nuevo = actual.copy(edadTexto = edadTexto)
             if (actual.validacionActivada) nuevo.copy(errores = calcularErrores(nuevo)) else nuevo
         }
     }
 
-    /** Registra el resultado de la captura: candidata, sin error (K5). */
     fun capturaCorrecta(nombreArchivo: String) {
-        _estado.update {
-            it.copy(
-                avatarCandidato = AvatarDraft.ArchivoCandidato(nombreArchivo),
-                errorCaptura = null
-            )
+        actualizar {
+            it.copy(avatarCandidato = AvatarDraft.ArchivoCandidato(nombreArchivo), errorCaptura = null)
         }
     }
 
-    /** Fallo de captura: mensaje y reintento, conservando el avatar anterior. */
     fun capturaFallida(mensaje: String) {
-        _estado.update { it.copy(errorCaptura = mensaje) }
+        actualizar { it.copy(errorCaptura = mensaje) }
     }
 
-    /** Cancelar cámara no es error: conserva avatar y borrador. */
+    /** Cancelar otro intento conserva tanto la candidata previa como el avatar persistido. */
     fun capturaCancelada() {
-        _estado.update { it.copy(errorCaptura = null) }
+        actualizar { it.copy(errorCaptura = null) }
     }
 
-    /** Valida y solicita el guardado; no asume éxito por el toque. */
     fun guardar() {
         val actual = _estado.value
         if (actual.guardando) return
 
         val errores = calcularErrores(actual)
         if (errores.hayErrores) {
-            _estado.update { it.copy(validacionActivada = true, errores = errores) }
+            actualizar { it.copy(validacionActivada = true, errores = errores) }
             return
         }
 
         val edad = PerfilValidator.edadConfirmada(actual.edadTexto) ?: return
         val avatar = cuandoAvatarConfirmado(actual)
-
-        _estado.update {
+        actualizar {
             it.copy(
                 validacionActivada = true,
                 errores = PerfilErrores(),
@@ -110,41 +95,93 @@ class PerfilViewModel(
             )
             when (val resultado = repositorio.guardarPerfil(perfil)) {
                 is Resultado.Exito -> {
-                    _estado.update { it.copy(guardando = false) }
+                    actualizar { it.copy(guardando = false) }
                     _guardadoExitoso.value = true
                 }
-                is Resultado.Fallo -> {
-                    _estado.update {
-                        it.copy(guardando = false, errorGuardado = resultado.mensaje)
-                    }
+                is Resultado.Fallo -> actualizar {
+                    it.copy(guardando = false, errorGuardado = resultado.mensaje)
                 }
             }
         }
     }
 
-    /** Consumido por la interfaz al salir como guardado exitoso. */
     fun guardadoConsumido() {
         _guardadoExitoso.value = false
+    }
+
+    private fun actualizar(transformar: (PerfilUiState) -> PerfilUiState) {
+        _estado.update(transformar)
+        persistirBorrador()
+    }
+
+    /** Sólo primitivas y nombres de archivo; nunca Context, Bitmap ni URI/archivo completo. */
+    private fun persistirBorrador() {
+        val actual = _estado.value
+        savedState["perfil.iniciado"] = true
+        savedState["perfil.modo"] = actual.modo.name
+        savedState["perfil.nick"] = actual.nick
+        savedState["perfil.edad"] = actual.edadTexto
+        savedState["perfil.avatarActual"] = (actual.avatarActual as? AvatarDraft.ArchivoCandidato)?.nombreArchivo
+        savedState["perfil.candidata"] = (actual.avatarCandidato as? AvatarDraft.ArchivoCandidato)?.nombreArchivo
+        savedState["perfil.validacion"] = actual.validacionActivada
+        savedState["perfil.guardando"] = actual.guardando
+        savedState["perfil.errorCaptura"] = actual.errorCaptura
+        savedState["perfil.errorGuardado"] = actual.errorGuardado
+    }
+
+    private fun restaurarBorrador(): PerfilUiState {
+        if (savedState.get<Boolean>("perfil.iniciado") != true) {
+            return perfilExistente?.let { perfil ->
+                PerfilUiState(
+                    modo = ModoFormularioPerfil.EDITAR,
+                    nick = perfil.nick,
+                    edadTexto = perfil.edad.toString(),
+                    avatarActual = cuandoAvatarActual(perfil.avatar)
+                )
+            } ?: PerfilUiState()
+        }
+        val restaurado = PerfilUiState(
+            modo = if (savedState.get<String>("perfil.modo") == ModoFormularioPerfil.EDITAR.name) {
+                ModoFormularioPerfil.EDITAR
+            } else {
+                ModoFormularioPerfil.CREAR
+            },
+            nick = savedState.get<String>("perfil.nick").orEmpty(),
+            edadTexto = savedState.get<String>("perfil.edad").orEmpty(),
+            avatarActual = savedState.get<String>("perfil.avatarActual")
+                ?.let { AvatarDraft.ArchivoCandidato(it) } ?: AvatarDraft.Predeterminado,
+            avatarCandidato = savedState.get<String>("perfil.candidata")
+                ?.let { AvatarDraft.ArchivoCandidato(it) },
+            validacionActivada = savedState.get<Boolean>("perfil.validacion") == true,
+            // Una escritura interrumpida no se reanuda como si siguiera ejecutándose.
+            guardando = false,
+            errorCaptura = savedState["perfil.errorCaptura"],
+            errorGuardado = if (savedState.get<Boolean>("perfil.guardando") == true) {
+                "El guardado se interrumpió. Revisa los datos y vuelve a guardar."
+            } else {
+                savedState["perfil.errorGuardado"]
+            }
+        )
+        return if (restaurado.validacionActivada) {
+            restaurado.copy(errores = calcularErrores(restaurado))
+        } else {
+            restaurado
+        }
     }
 
     private fun calcularErrores(estado: PerfilUiState): PerfilErrores =
         PerfilValidator.validar(estado.nick, estado.edadTexto)
 
     private fun cuandoAvatarConfirmado(estado: PerfilUiState): AvatarRef =
-        when (val candidato = estado.avatarCandidato) {
-            is AvatarDraft.ArchivoCandidato -> AvatarRef.ArchivoPrivado(candidato.nombreArchivo)
-            else -> cuandoAvatarActualRef(estado.avatarActual)
-        }
+        cuandoAvatarActualRef(estado.avatarCandidato ?: estado.avatarActual)
 
-    private fun cuandoAvatarActualRef(avatar: AvatarDraft): AvatarRef =
-        when (avatar) {
-            is AvatarDraft.ArchivoCandidato -> AvatarRef.ArchivoPrivado(avatar.nombreArchivo)
-            AvatarDraft.Predeterminado -> AvatarRef.Predeterminado
-        }
+    private fun cuandoAvatarActualRef(avatar: AvatarDraft): AvatarRef = when (avatar) {
+        is AvatarDraft.ArchivoCandidato -> AvatarRef.ArchivoPrivado(avatar.nombreArchivo)
+        AvatarDraft.Predeterminado -> AvatarRef.Predeterminado
+    }
 
-    private fun cuandoAvatarActual(avatar: AvatarRef): AvatarDraft =
-        when (avatar) {
-            is AvatarRef.ArchivoPrivado -> AvatarDraft.ArchivoCandidato(avatar.nombreArchivo)
-            AvatarRef.Predeterminado -> AvatarDraft.Predeterminado
-        }
+    private fun cuandoAvatarActual(avatar: AvatarRef): AvatarDraft = when (avatar) {
+        is AvatarRef.ArchivoPrivado -> AvatarDraft.ArchivoCandidato(avatar.nombreArchivo)
+        AvatarRef.Predeterminado -> AvatarDraft.Predeterminado
+    }
 }

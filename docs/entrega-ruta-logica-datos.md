@@ -4,6 +4,8 @@
 
 **Fecha: 20/10/2026.** Rama `feature/logica-datos`, creada desde `feature/base-ui`. Este documento describe qué está listo para que la ruta de interfaz cierre su parte, cómo consumirlo y qué queda pendiente. No sustituye al PR ni a la revisión del otro integrante.
 
+> **Actualización de integración:** este handoff se conserva como entrega histórica de B. El PR #2 ya se integró en develop `427f1ef`; los pasos que piden abrirlo más abajo quedaron superados. El cierre local de Felipe corrige/conecta háptica, avatar, restauración, contenedor, dibujos y navegación; ver README y pruebas.md. No se atribuye revisión de Claudio de esos cambios aún sin publicar.
+
 ## 1. Qué se entrega
 
 - Modelos de dominio y estados de interfaz (contratos K0–K4).

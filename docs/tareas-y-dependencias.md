@@ -2,7 +2,7 @@
 
 [Volver al README](../README.md) · [Entorno de desarrollo](entorno-desarrollo.md)
 
-**Actualización:** 16/10/2026. **A:** Felipe Fernández. **B:** Claudio Novoa.
+**Corte vigente:** `feature/cierre-ev2` sobre `develop` en `427f1ef`. **A:** Felipe Fernández. **B:** Claudio Novoa. Los cortes del 16/10 y 20/10 y el plan E0–E4 que siguen se conservan como histórico; la lista siguiente prevalece para el estado actual.
 
 ## Uso y acuerdos
 
@@ -16,7 +16,28 @@ Este documento reemplaza el tablero externo. Según la indicación del docente c
 - Los responsables son principales, no exclusivos; cualquier reasignación debe quedar anotada.
 - No se fijan fechas ni porcentajes ficticios. El calendario se acordará con capacidad real y plazos docentes confirmados.
 
-## Corte de avance — 16/10/2026
+## Cierre integrado vigente
+
+- [x] Sincronizar develop por fast-forward y crear la rama local de cierre, preservando feature/base-ui.
+- [x] Consumir modelos, validación, ViewModels, repositorio y catálogo de B sin duplicar lógica.
+- [x] Conectar avatar real y háptica; comprobar captura/cancelación/reapertura y pulso por botón/swipe en Xiaomi según Felipe.
+- [x] Corregir Atrás durante guardado y respuesta española visible antes de elegir.
+- [x] Incorporar cuatro dibujos Canvas propios por decisión de Felipe, con origen documentado y correspondencia probada.
+- [x] Restaurar borrador de perfil con SavedStateHandle y añadir iconos por campo; giro y reapertura comunicados por Felipe.
+- [x] Compartir contenedor a nivel Application y ejecutar regresión instrumentada de recreación.
+- [x] Resumen automático sólo al primer cierre confirmado de etapa 3; etapas 1/2 y repasos vuelven a Inicio. Ver resumen disponible tras completar el módulo; implementación, pruebas Compose y confirmación manual.
+- [x] Ejecutar assembleDebug, 99 pruebas JVM, 6 instrumentadas y lint (0 errores, 16 advertencias); reportes inspeccionados.
+- [x] Comprobar conservación de nick/progreso/marco tras la secuencia de giro, edición y reapertura, según Felipe. Continuó en paso 2; se acepta sesión retenida y no se acredita muerte real del proceso ni persistencia del índice.
+- [x] Actualizar README, matriz, contratos, contenido y registros de cierre con evidencia y límites.
+- [x] Inicio y Resumen esperan registro confirmado antes de navegar. Inicio muestra error/reintento y bloquea acciones durante escritura; 2 regresiones instrumentadas de la Route real con operación de escritura sustituida, aprobadas.
+- [ ] Ampliar pruebas físicas de fallos, ajustes hápticos y compatibilidad API 33; comprobar primer cierre con datos vacíos y muerte real de proceso con PID si se requiere acreditar esos casos.
+- [ ] Resolver verificación lingüística y pendientes académicos/procedencia de ilustración física.
+- [ ] Revisar cierre con Claudio, decidir avisos de lint, publicar rama/PR y revisar antes de integrar. Sin commit/push nuevos ejecutados por el asistente.
+- [ ] Probar copia limpia, confirmar AVA y congelar/entregar versión acordada.
+
+No se declara entrega ni cumplimiento total. Detalle: pruebas.md, matriz-ev2.md y contratos.md.
+
+## Histórico — corte de avance del 16/10/2026
 
 **Base local inspeccionada:** `feature/base-ui`, commit `e2c8686`. Código incorporado por Felipe y funcionamiento/compilación reportados por él; sin afirmar PR, revisión o merge. Esta actualización sólo modifica documentación.
 

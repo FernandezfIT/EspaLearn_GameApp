@@ -208,18 +208,29 @@ Sin temporizador, vidas, puntuación mínima ni pantallas extra.
 - Tres hitos con acceso secuencial: **Descubrir → Con apoyo → Menos apoyo**.
 - Completar requiere recorrer todos los pasos de la etapa, sin nota ni aciertos mínimos.
 - Guardar etapas completadas, etapa activa y preferencia del marco; sin historial de respuestas ni estadísticas.
-- Tras reabrir: conservar etapas completas y reiniciar desde el comienzo la etapa interrumpida.
+- Conservar etapas completas. Si Android mantiene la sesión, puede continuar en su paso actual, aceptado por Felipe al cierre. Una nueva instancia de sesión empieza la etapa desde paso 1; no se persiste el índice de tarjeta ni se garantiza recuperación exacta tras muerte de proceso.
 - Permitir repetir etapas completadas sin borrar progreso ni duplicar etapas distintas completadas.
 - Completar las tres etapas habilita un único logro final y un marco opcional para el avatar, sin pantalla adicional.
 - Ante fallo de escritura: ofrecer reintento y no mostrar como confirmado un avance no guardado.
 
-El logro se deriva de la finalización del módulo; no se añade un sistema de puntos o progresión independiente. El almacenamiento concreto y las transiciones compilables siguen pendientes.
+El logro se deriva de la finalización del módulo; no se añade un sistema de puntos o progresión independiente.
+
+**Navegación vigente aprobada por Felipe en el cierre EV2:**
+
+- Resumen se abre automáticamente **sólo al completar Menos apoyo (etapa 3) por primera vez**, después de confirmar el guardado. Se compara con el progreso previo a la sesión, no sólo con el progreso acumulado posterior.
+- Terminar etapas 1/2 o cualquier repaso vuelve a Inicio, sin otra celebración automática ni duplicación de logro.
+- Cuando el módulo está completo, aparece **Ver resumen** debajo de la etapa 3 en Inicio, tanto en una como en dos columnas. Permite consultar el logro y aplicar/quitar el marco cuando se quiera.
+- En Resumen, **Repasar el recorrido** abre Descubrir sin borrar etapas ni marco; **Volver a Inicio** muestra el mapa. Repasar espera el registro de etapa antes de navegar; ante fallo conserva Resumen con reintento. La nueva sesión no deja Resumen detrás.
+- Inicio también espera el registro confirmado antes de abrir una etapa; durante escritura bloquea etapas, edición, Resumen y Atrás. Fallo mantiene Inicio con mensaje y reintento, sin navegación anticipada. La Route real tiene regresiones instrumentadas con escritura sustituida.
+- El resumen parcial con **Continuar el recorrido** se conserva en tipos/previews, pero ya no se abre en el flujo normal tras etapas 1/2. La decisión anterior de abrirlo al finalizar cada etapa queda sustituida por esta regla.
+
+Implementación y evidencia en pruebas.md; compilar no acredita por sí solo la comprobación en dispositivo.
 
 ### Criterios de verificación futuros
 
 - [ ] Acceso secuencial y repetición coherentes.
 - [ ] Errores de respuesta no impiden completar una etapa recorrida.
-- [ ] Reapertura conserva etapas terminadas y reinicia la interrumpida.
+- [ ] Reapertura conserva etapas terminadas; distinguir sesión retenida de nueva instancia al verificar el paso. No atribuir muerte real de proceso sin comprobarla.
 - [ ] Repetir no duplica progreso ni logro.
 - [ ] Marco opcional recuperable después de reabrir.
 - [ ] Fallo de guardado permite reintentar sin éxito ficticio.

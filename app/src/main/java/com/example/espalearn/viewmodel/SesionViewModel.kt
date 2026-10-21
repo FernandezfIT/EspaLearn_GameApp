@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.espalearn.model.Etapa
 import com.example.espalearn.model.OpcionUnidad
 import com.example.espalearn.model.Unidad
+import com.example.espalearn.model.state.AppUiState
 import com.example.espalearn.model.state.FaseSesion
 import com.example.espalearn.model.state.SesionUiState
 import com.example.espalearn.repository.AppRepository
@@ -35,6 +36,10 @@ class SesionViewModel(
     private val unidades: List<Unidad>,
     idSesion: String = UUID.randomUUID().toString()
 ) : ViewModel() {
+
+    // Instantánea previa al guardado: el estado global ya estará completado al finalizar.
+    private val moduloCompletadoAlIniciar =
+        (repositorio.estadoAplicacion.value as? AppUiState.ListoConPerfil)?.progreso?.moduloCompletado == true
 
     private val pasos: List<Paso> = construirPasos(etapa, unidades)
 
@@ -97,7 +102,7 @@ class SesionViewModel(
      */
     fun continuar() {
         val actual = _estado.value
-        if (actual.guardandoFinalizacion || _etapaFinalizada.value) return
+        if (actual.guardandoFinalizacion || actual.etapaCompletada || _etapaFinalizada.value) return
 
         if (actual.fase == FaseSesion.PRACTICA && !actual.feedbackVisible) return
 
@@ -120,7 +125,12 @@ class SesionViewModel(
                 is Resultado.Exito -> {
                     // La etapa no se anuncia completada antes de confirmar el guardado.
                     _estado.update {
-                        it.copy(guardandoFinalizacion = false, etapaCompletada = true)
+                        it.copy(
+                            guardandoFinalizacion = false,
+                            etapaCompletada = true,
+                            moduloCompletadoPorPrimeraVez = etapa == Etapa.MENOS_APOYO &&
+                                !moduloCompletadoAlIniciar && resultado.valor.moduloCompletado
+                        )
                     }
                     _etapaFinalizada.value = true
                 }
@@ -159,6 +169,7 @@ class SesionViewModel(
             posicionPaso = indice + 1,
             tituloEtapa = tituloDeEtapa(etapa),
             palabraEspanol = paso.unidad.textoEspanol,
+            recursoIlustracion = paso.unidad.recursoIlustracion,
             apoyoTurco = paso.unidad.apoyoTurco,
             apoyoTurcoOculto = paso.apoyoTurcoOculto,
             ayudaRevelada = false,
@@ -170,6 +181,7 @@ class SesionViewModel(
             continuarVisible = paso.fase == FaseSesion.PRESENTACION,
             guardandoFinalizacion = false,
             etapaCompletada = false,
+            moduloCompletadoPorPrimeraVez = false,
             errorOperacion = null
         )
     }

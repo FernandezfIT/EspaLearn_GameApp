@@ -2,7 +2,7 @@
 
 [Volver al README](../README.md) · [Checklist de avance](tareas-y-dependencias.md)
 
-**Actualización:** 16/10/2026. Objetivo: permitir que ambos integrantes obtengan, ejecuten y verifiquen la misma base sin compartir rutas personales ni estado del IDE.
+**Corte vigente:** cierre local `feature/cierre-ev2`, base `develop` en `427f1ef`. Objetivo: ejecutar/verificar la misma versión sin compartir rutas personales ni estado del IDE. Los antecedentes del 16/10 se distinguen de las comprobaciones del cierre.
 
 ## 1. Base compartida
 
@@ -10,7 +10,8 @@
 - Nombre del repositorio: `EspaLearn_GameApp`.
 - Nombre local original del proyecto: `EspaLearn_turco_espaniol`; no necesita coincidir con la carpeta creada al clonar.
 - `main`: base estable. `develop`: integración. Ambas publicadas según confirmación de Felipe.
-- Corte local del16/10: `feature/base-ui`, commit `e2c8686` de UI/navegación. No se afirma publicación remota, PR, revisión ni merge de esta rama. La ampliación documental anterior se comprobó en develop59046f9.
+- Antecedente del 16/10: UI en `e2c8686` y documentación en `59046f9`.
+- Base actual inspeccionada: `develop` en `427f1ef` (PR #2), que ya incluye la UI y lógica B. Rama local `feature/cierre-ev2` con cambios sin commit ni publicación. Run abre el producto real.
 - Ramas cortas `feature/...` desde develop por tarea; PR hacia develop con revisión del otro integrante antes de integrar. main recibe versión estable revisada, según acuerdo con Felipe.
 - Invitaciones enviadas a Claudio y docente; aceptación aún pendiente de comprobación.
 - Seguimiento: [checklist Markdown](tareas-y-dependencias.md), en reemplazo de Trello por indicación docente comunicada por Felipe.
@@ -46,15 +47,15 @@ El mínimo SDK 33 no implica compilar ni ejecutar exclusivamente en API 33. Ejec
 | Android Studio | Versión exacta pendiente de registrar desde About | Pendiente |
 | SDK instalado | Ejecución base reportada; inventario pendiente | Pendiente |
 | JVM efectiva de Gradle | Pendiente de registrar; criterio 25 configurado | Pendiente |
-| Dispositivo de prueba | Pixel 6a emulado, Android 17 / API 37.1, según Felipe | Pendiente |
-| Pantalla base ejecutada | Sí; UI/demo adicional probada con Run Preview según Felipe | Pendiente |
-| Dispositivo físico para recursos | Disponible según Felipe; modelo/API por registrar | Disponible según Felipe; modelo/API por registrar |
+| Dispositivo de prueba | Histórico: Pixel 6a emulado, Android 17 / API 37.1. Cierre: Xiaomi identificado por runner como `25069PTEBG - 16`. | Pendiente de detallar |
+| Aplicación ejecutada | Run real, suites y pruebas manuales del cierre confirmados por Felipe. | Handoff B reporta build y 57 unitarias; comprobación directa del entorno personal pendiente. |
+| Dispositivo físico para recursos | Xiaomi; captura/cancelación/avatar, háptica y giro comprobados según Felipe. | Disponible según Felipe; modelo/API por registrar |
 
 No copiar rutas absolutas de un equipo al otro. Completar esta tabla con comprobaciones reales.
 
 ## 4. Primera ejecución de Claudio
 
-Pasos a realizar por Claudio; no se consideran ejecutados todavía.
+Guía de obtención/reproducción. El handoff B ya informa compilación y 57 pruebas; no se atribuye ejecución directa de estos pasos por Claudio ni revisión del cierre local.
 
 1. Aceptar la invitación al repositorio y comprobar el acceso.
 2. Elegir una ubicación local y obtener el proyecto:
@@ -72,15 +73,15 @@ Pasos a realizar por Claudio; no se consideran ejecutados todavía.
 7. Verificar que aparece la pantalla base y registrar equipo, dispositivo y resultado en este documento.
 8. Comprobar que la configuración local no introduce cambios inesperados en archivos compartidos antes de preparar commits.
 
-**Resultado esperado actual:** pantalla de ejemplo Compose, no el MVP educativo.
+**Resultado esperado de la base integrada:** flujo real de carga → crear perfil o Inicio. Para incluir las correcciones del cierre se necesita su rama, aún sin publicación. La plantilla Compose ya no es la entrada normal.
 
 Si falla: registrar el primer error de sincronización o compilación con sus detalles y el paso que lo produjo. No borrar cachés, añadir dependencias o cambiar SDK/JDK a ciegas.
 
-## 5. Ejecutar la UI preparada de A
+## 5. Ejecutar el producto y las previews
 
-La apertura normal desde Run sigue mostrando `Hello Android`: MainActivity no está conectado al estado de B.
+Run → app usa MainActivity → AppNavHost con el contenedor de EspaLearnApplication. No se debe conectar NavegacionDemo a la entrada real.
 
-En la rama que contenga `e2c8686`:
+Para explorar las previews históricas de A:
 
 1. Sincronizar Gradle; Navigation Compose2.9.7 está declarado en el catálogo.
 2. Abrir `app/src/debug/java/com/example/espalearn/preview/NavegacionDemo.kt`.
@@ -90,11 +91,13 @@ En la rama que contenga `e2c8686`:
 
 La demo comienza en Inicio con datos prefijados. Guardar/Continuar/cámara/marco sólo registran solicitudes, sin guardado ni avance real. El botón de Resumen es una herramienta de prueba, no finalización del módulo. El contenido de `src/debug` no debe referenciarse desde la entrada compartida `main`.
 
-Felipe reportó compilación debug y funcionamiento manual; no se ejecutaron herramientas de build desde el asistente ni se adjuntó una corrida automatizada. En PowerShell, desde la raíz, el comando indicado fue:
+Comprobación del cierre ejecutada por Felipe en PowerShell; reportes locales inspeccionados por el asistente:
 
 ```powershell
-.\gradlew.bat :app:assembleDebug
+.\gradlew.bat :app:assembleDebug :app:testDebugUnitTest :app:lintDebug :app:connectedDebugAndroidTest
 ```
+
+La última tarea requiere dispositivo/emulador conectado. Resultado: 99 pruebas JVM y 6 instrumentadas sin fallos/errores; lint con 0 errores y 16 advertencias. Ver pruebas.md para el alcance real.
 
 ## 6. Qué se comparte y qué permanece local
 
@@ -124,12 +127,13 @@ Distinguir confirmación del integrante de logs o ejecución automatizada adjunt
 | Comprobación | Propósito | Estado |
 |---|---|---|
 | `./gradlew --version` | Registrar información del Wrapper/JVM que reporte Gradle; contrastar la JVM del daemon cuando proceda. | Pendiente |
-| `./gradlew :app:assembleDebug` | Comprobar compilación debug mediante Wrapper. | Compilación comunicada por Felipe16/10 tras la indicación del comando Windows; sin log adjunto. No ejecutada por asistente. |
-| `./gradlew :app:testDebugUnitTest` | Ejecutar pruebas unitarias disponibles. | Pendiente |
-| `./gradlew :app:lintDebug` | Ejecutar análisis Android de la variante debug. | Pendiente |
+| `./gradlew :app:assembleDebug` | Compilar debug mediante Wrapper. | BUILD SUCCESSFUL comunicado por Felipe en el cierre. |
+| `./gradlew :app:testDebugUnitTest` | Ejecutar unitarias. | 99 pruebas, 0 fallos/errores; XML inspeccionados. |
+| `./gradlew :app:lintDebug` | Análisis Android de debug. | 0 errores, 16 advertencias; XML/TXT inspeccionados. |
+| `./gradlew :app:connectedDebugAndroidTest` | Pruebas en Android. | 6 pruebas, 0 fallos/errores, Xiaomi `25069PTEBG - 16`; XML inspeccionados. |
 | Ejecución por Claudio desde copia propia | Comprobar reproducibilidad entre integrantes. | Pendiente |
 | Ejecución en API 33 | Comprobar la base en el mínimo declarado. | Pendiente |
-| Pruebas físicas de recursos | Comprobar integración real cuando se implemente y apruebe. | Pendiente |
+| Pruebas físicas de recursos | Comprobar cámara/háptica reales. | Comunicadas por Felipe, R09/R10. Fallos nativos y ajustes hápticos por ampliar. |
 
 En Windows utilizar `gradlew.bat` en lugar de `./gradlew`. Las tareas de build/prueba pueden generar archivos locales y descargar dependencias; no se han ejecutado automáticamente al redactar esta guía.
 
@@ -137,10 +141,10 @@ En Windows utilizar `gradlew.bat` en lugar de `./gradlew`. Las tareas de build/p
 
 - Felipe informó ejecución de la aplicación base en emulador, primer commit, publicación de `main`/`develop` e invitaciones enviadas.
 - Se revisaron configuración local, exclusiones y comprobación de whitespace del primer commit; esta última terminó sin mensajes según Felipe.
-- No se ha verificado ejecución por Claudio, pruebas automatizadas ni recursos físicos.
-- K0–K6 y alcance mínimo publicados en1ce1867; ampliación documental previa comprobada en develop59046f9 el16/10. Código A presente en commit local e2c8686; actualización documental del16/10 pendiente de publicación explícita.
-- Windows, Navigation2.9.7, demo y comprobaciones manuales registrados. Modelo/API del equipo de ejecución real adicional y JVM efectiva siguen sin documentar.
-- Sesión cerrada a la espera de confirmación de avances B; el siguiente paso es revisar/compilar las entregas y conectarlas, no rehacer la UI. No se ejecutan commit/push al actualizar estos documentos.
+- Handoff B incorporado en PR #2, `develop` en `427f1ef`; cierre local con las correcciones descritas en README y pruebas.md.
+- Suites JVM/Android y recursos físicos comprobados con los límites de la sección anterior. No se atribuye ejecución desde copia limpia ni revisión de Claudio del cierre.
+- Xiaomi identificado en el runner; JVM efectiva, inventario del SDK y ejecución en mínimo API 33 aún por registrar.
+- La apertura de etapa desde Inicio ya espera confirmación y tiene regresiones instrumentadas de fallo/reintento/espera aprobadas. El siguiente cierre es revisar/publicar cambios y comprobar copia limpia/entrega; no rehacer la UI. Actualizar documentos no ejecuta commit/push.
 
 **Cierre del entorno compartido:** ambos integrantes ejecutan la misma base y registran sus resultados. Esto no cierra por sí solo E0: también faltan los contratos y acuerdos indicados en el checklist.
 

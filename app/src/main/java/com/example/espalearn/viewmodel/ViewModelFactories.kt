@@ -2,6 +2,8 @@ package com.example.espalearn.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.espalearn.model.Etapa
 import com.example.espalearn.model.Perfil
 import com.example.espalearn.model.Unidad
@@ -18,7 +20,11 @@ object ViewModelFactories {
         factory { AppViewModel(repositorio) }
 
     fun perfil(repositorio: AppRepository, perfilExistente: Perfil?): ViewModelProvider.Factory =
-        factory { PerfilViewModel(repositorio, perfilExistente) }
+        object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <VM : ViewModel> create(modelClass: Class<VM>, extras: CreationExtras): VM =
+                PerfilViewModel(repositorio, perfilExistente, extras.createSavedStateHandle()) as VM
+        }
 
     fun sesion(
         repositorio: AppRepository,

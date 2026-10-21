@@ -7,10 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.espalearn.app.AppContainer
 import com.example.espalearn.navigation.AppNavHost
 import com.example.espalearn.ui.theme.EspaLearn_turco_espaniolTheme
 
@@ -20,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val appContainer = AppContainer(applicationContext)
+        val appContainer = (application as EspaLearnApplication).appContainer
 
         setContent {
             EspaLearn_turco_espaniolTheme {
@@ -28,7 +26,7 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     AppNavHost(
-                        appContainer = remember { appContainer },
+                        appContainer = appContainer,
                         navController = navController,
                         modifier = Modifier.padding(innerPadding)
                     )

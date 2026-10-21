@@ -9,9 +9,9 @@ import com.example.espalearn.repository.dataStorePreferencias
 /**
  * Contenedor de dependencias de la aplicación, sin inyección de frameworks.
  *
- * Crea y reutiliza una única instancia del repositorio y del DataStore,
- * evitando abrir el mismo archivo desde varias pantallas. Las factories de
- * ViewModels reciben el repositorio desde aquí.
+ * EspaLearnApplication conserva este contenedor durante toda la vida del
+ * proceso, no de la Activity. Todas las factories reciben el mismo repositorio
+ * incluso después de una rotación. DataStore también se comparte por archivo.
  */
 class AppContainer(context: Context) {
 

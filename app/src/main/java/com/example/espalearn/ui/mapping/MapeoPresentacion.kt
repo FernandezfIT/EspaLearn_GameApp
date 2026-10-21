@@ -56,7 +56,12 @@ object MapeoPresentacion {
             clavePaso = "${estado.idSesion}-${estado.idPaso}",
             tituloEtapa = estado.tituloEtapa,
             posicionTexto = "Paso ${estado.posicionPaso} de $total",
-            palabraEspanol = estado.palabraEspanol,
+            // Descubrir presenta la palabra; en práctica sólo se revela con el feedback.
+            palabraEspanol = if (!esPractica || estado.feedbackVisible) {
+                estado.palabraEspanol
+            } else {
+                null
+            },
             // En Menos apoyo el turco permanece oculto hasta revelar la ayuda.
             apoyoTurco = if (esPractica && estado.apoyoTurcoOculto && !estado.ayudaRevelada) {
                 null
