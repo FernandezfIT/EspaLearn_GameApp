@@ -1,0 +1,6 @@
+# Función: excluir resultados locales del backend sin ocultar código, migraciones ni wrapper.
+# Compilación y reportes: se regeneran con Maven, no forman parte del código fuente.
+/target/
+# Entorno y logs: pueden contener información local sensible y no deben publicarse.
+.env
+*.log

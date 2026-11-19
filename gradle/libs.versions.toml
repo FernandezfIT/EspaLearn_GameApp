@@ -1,3 +1,4 @@
+# Función: centralizar versiones y dependencias del cliente Android MVVM.
 [versions]
 agp = "9.3.3"
 coreKtx = "1.19.1"
@@ -11,8 +12,16 @@ composeBom = "2026.02.01"
 navigationCompose = "2.9.7"
 datastore = "1.2.1"
 coroutines = "1.10.2"
+# F2: Retrofit para la API propia; Room con procesador Java, sin añadir KSP.
+retrofit = "3.0.0"
+room = "2.8.4"
 
+# Bibliotecas: conservar el toolchain existente y añadir únicamente la integración F2.
 [libraries]
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -33,6 +42,7 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
+# Plugins: no se migra Kotlin ni AGP para incorporar red/persistencia.
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

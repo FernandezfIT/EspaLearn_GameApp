@@ -1,0 +1,44 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "5a02a5a838a46f69b1c20998b232f5d8",
+    "entities": [
+      {
+        "tableName": "contenido",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`palabraId` TEXT NOT NULL, `versionCatalogo` TEXT NOT NULL, `contenidoJson` TEXT NOT NULL, PRIMARY KEY(`palabraId`, `versionCatalogo`))",
+        "fields": [
+          {
+            "fieldPath": "palabraId",
+            "columnName": "palabraId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCatalogo",
+            "columnName": "versionCatalogo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contenidoJson",
+            "columnName": "contenidoJson",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "palabraId",
+            "versionCatalogo"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5a02a5a838a46f69b1c20998b232f5d8')"
+    ]
+  }
+}

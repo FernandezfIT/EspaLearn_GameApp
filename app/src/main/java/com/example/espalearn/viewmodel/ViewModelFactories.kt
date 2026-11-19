@@ -8,6 +8,11 @@ import com.example.espalearn.model.Etapa
 import com.example.espalearn.model.Perfil
 import com.example.espalearn.model.Unidad
 import com.example.espalearn.repository.AppRepository
+import com.example.espalearn.repository.VerticalRepository
+import com.example.espalearn.repository.SesionPreparada
+import com.example.espalearn.repository.Resultado
+import com.example.espalearn.domain.ev3.ResultadoPalabra
+import com.example.espalearn.model.Progreso
 
 /**
  * Fábricas de ViewModels con conexión manual: reciben el repositorio y los
@@ -31,6 +36,14 @@ object ViewModelFactories {
         etapa: Etapa,
         unidades: List<Unidad>
     ): ViewModelProvider.Factory = factory { SesionViewModel(repositorio, etapa, unidades) }
+
+    // F2: identidad de sesión incluye recorrido y etapa; el cierre se inyecta desde la vertical.
+    fun recorrido(repositorio: VerticalRepository): ViewModelProvider.Factory = factory { RecorridoViewModel(repositorio) }
+
+    fun sesionEv3(repositorio: AppRepository, preparada: SesionPreparada,
+                  confirmar: suspend (List<ResultadoPalabra>) -> Resultado<Progreso>): ViewModelProvider.Factory =
+        factory { SesionViewModel(repositorio, preparada.etapa, preparada.unidades,
+            "${preparada.recorrido.recorridoId}/${preparada.etapa.id}", confirmar) }
 
     private fun <T : ViewModel> factory(crear: () -> T): ViewModelProvider.Factory =
         object : ViewModelProvider.Factory {

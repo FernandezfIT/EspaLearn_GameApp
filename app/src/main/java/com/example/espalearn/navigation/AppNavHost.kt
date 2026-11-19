@@ -2,6 +2,12 @@ package com.example.espalearn.navigation
 
 import android.content.ActivityNotFoundException
 import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
+import com.example.espalearn.platform.PermisoRedLocal
+import com.example.espalearn.ui.screens.recorrido.RecorridoScreen
+import com.example.espalearn.viewmodel.RecorridoViewModel
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -10,12 +16,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -23,33 +27,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.espalearn.app.AppContainer
 import com.example.espalearn.model.AvatarRef
-import com.example.espalearn.model.ContenidoUnidades
 import com.example.espalearn.model.state.AppUiState
 import com.example.espalearn.model.state.AvatarDraft
 import com.example.espalearn.model.state.ModoFormularioPerfil
-import com.example.espalearn.platform.AnswerHaptics
 import com.example.espalearn.platform.AvatarCapture
 import com.example.espalearn.platform.AvatarFileStore
-import com.example.espalearn.repository.Resultado
-import com.example.espalearn.ui.components.IlustracionVocabulario
-import com.example.espalearn.ui.components.rememberAvatarPainter
-import com.example.espalearn.ui.mapping.MapeoPresentacion
 import com.example.espalearn.ui.screens.arranque.CargandoScreen
 import com.example.espalearn.ui.screens.arranque.ErrorCargaScreen
+import com.example.espalearn.ui.components.rememberAvatarPainter
 import com.example.espalearn.ui.screens.perfil.PerfilScreen
-import com.example.espalearn.ui.screens.resumen.ResumenScreen
-import com.example.espalearn.ui.screens.sesion.SesionScreen
 import com.example.espalearn.viewmodel.AppViewModel
 import com.example.espalearn.viewmodel.PerfilViewModel
-import com.example.espalearn.viewmodel.SesionViewModel
 import com.example.espalearn.viewmodel.ViewModelFactories
-import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.UUID
 
 /**
- * Rutas reales que conectan los ViewModels de la ruta B con las pantallas ya
- * existentes de la ruta A, sin modificar sus componentes.
+ * Función: coordinar perfil local y recorrido EV3 remoto sin mezclar sus autoridades.
+ * La sesión reutiliza sus componentes; carga/error no se interpretan como perfil ausente.
  *
  * El [AppViewModel] se comparte a nivel de Activity para que el estado global
  * no se duplique. Perfil y Sesión usan los ViewModels de su destino. La
@@ -66,6 +61,18 @@ fun AppNavHost(
         factory = ViewModelFactories.app(appContainer.repositorio)
     )
     val appState by appViewModel.estadoAplicacion.collectAsStateWithLifecycle()
+    // EV3: estado remoto separado del perfil local; una sola instancia por Activity.
+    val recorrido: RecorridoViewModel = viewModel(factory = ViewModelFactories.recorrido(appContainer.vertical))
+    val estadoRecorrido by recorrido.estado.collectAsStateWithLifecycle()
+    val contexto = LocalContext.current
+    val permisoLan = PermisoRedLocal.NOMBRE
+    var redLocal by remember { mutableStateOf(PermisoRedLocal.autorizado(contexto)) }
+    val pedirRed = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { redLocal = it }
+    // Revalidar al volver de Ajustes: no conservar un permiso revocado en un booleano antiguo.
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { redLocal = PermisoRedLocal.autorizado(contexto) }
+    LaunchedEffect(appState is AppUiState.ListoConPerfil, redLocal) {
+        if (appState is AppUiState.ListoConPerfil && redLocal) recorrido.recargar()
+    }
 
     NavHost(
         navController = navController,
@@ -90,25 +97,17 @@ fun AppNavHost(
                     }
                 }
 
-                is AppUiState.ListoConPerfil -> InicioRoute(
-                    estado = estado,
-                    prepararEtapa = appViewModel::prepararEtapa,
-                    onEtapaPreparada = {
-                        navController.navigate(AppDestination.SESION.route) {
-                            launchSingleTop = true
-                        }
-                    },
-                    onEditarPerfil = {
-                        navController.navigate(AppDestination.PERFIL.route) {
-                            launchSingleTop = true
-                        }
-                    },
-                    onVerResumen = {
-                        navController.navigate(AppDestination.RESUMEN.route) {
-                            launchSingleTop = true
-                        }
-                    }
-                )
+                is AppUiState.ListoConPerfil -> {
+                    LaunchedEffect(Unit) { if (redLocal) recorrido.recargar() }
+                    RecorridoScreen(estado.perfil, estadoRecorrido, resumen = false,
+                        puedeConectar = redLocal, marcoLegadoAplicado = estado.progreso.marcoAplicado,
+                        onPermiso = { pedirRed.launch(permisoLan) },
+                        onAbrir = { recorrido.abrir { navController.navigate(AppDestination.SESION.route) { launchSingleTop = true } } },
+                        onActualizar = recorrido::recargar,
+                        onPerfil = { navController.navigate(AppDestination.PERFIL.route) { launchSingleTop = true } },
+                        onResumen = { navController.navigate(AppDestination.RESUMEN.route) { launchSingleTop = true } },
+                        onVolver = {}, onMarco = recorrido::cambiarMarco)
+                }
             }
         }
 
@@ -233,8 +232,8 @@ fun AppNavHost(
                 errorCaptura = estadoPerfil.errorCaptura,
                 errorGuardado = estadoPerfil.errorGuardado,
                 avatarPainter = rememberAvatarPainter(avatarRef),
-                marcoAplicado = (estadoApp as? AppUiState.ListoConPerfil)
-                    ?.progreso?.marcoAplicado ?: false
+                marcoAplicado = estadoRecorrido.info?.marcoAplicado ?: ((estadoApp as? AppUiState.ListoConPerfil)
+                    ?.progreso?.marcoAplicado ?: false)
             )
         }
 
@@ -257,118 +256,38 @@ fun AppNavHost(
                 }
                 is AppUiState.ListoConPerfil -> Unit
             }
-            val etapa = appViewModel.etapaActivaActual()
-
-            val sesionViewModel: SesionViewModel = viewModel(
-                key = "sesion_${etapa.id}",
-                factory = ViewModelFactories.sesion(
-                    repositorio = appContainer.repositorio,
-                    etapa = etapa,
-                    unidades = ContenidoUnidades.todas
-                )
-            )
-            val estadoSesion by sesionViewModel.estado.collectAsStateWithLifecycle()
-            val finalizada by sesionViewModel.etapaFinalizada.collectAsStateWithLifecycle()
-            val vista = LocalView.current
-            val haptica = remember(vista, sesionViewModel) { AnswerHaptics(vista) }
-
-            LaunchedEffect(finalizada) {
-                if (finalizada) {
-                    val primerCierre = sesionViewModel.estado.value.moduloCompletadoPorPrimeraVez
-                    sesionViewModel.finalizacionConsumida()
-                    if (primerCierre) {
+            // Restauración de proceso: sin cartas preparadas, volver a Inicio y consultar el activo.
+            val preparada = estadoRecorrido.preparada
+            if (preparada == null) {
+                LaunchedEffect(Unit) { navController.popBackStack(AppDestination.INICIO.route, false) }
+                CargandoScreen()
+            } else {
+                SesionRecorridoRoute(appContainer, recorrido, preparada,
+                    onInicio = { navController.popBackStack(AppDestination.INICIO.route, false) },
+                    onResumen = {
                         navController.navigate(AppDestination.RESUMEN.route) {
                             popUpTo(AppDestination.INICIO.route) { inclusive = false }
                             launchSingleTop = true
                         }
-                    } else {
-                        navController.popBackStack(AppDestination.INICIO.route, inclusive = false)
-                    }
-                }
+                    })
             }
-
-            BackHandler {
-                if (!estadoSesion.guardandoFinalizacion) {
-                    navController.popBackStack(AppDestination.INICIO.route, inclusive = false)
-                }
-            }
-
-            SesionScreen(
-                presentacion = MapeoPresentacion.sesionParaPresentacion(estadoSesion),
-                onVerAyuda = sesionViewModel::verAyuda,
-                onElegir = { opcionId ->
-                    val contadorAnterior = sesionViewModel.eleccionesAdmitidas.value
-                    sesionViewModel.elegir(opcionId)
-                    val contadorActual = sesionViewModel.eleccionesAdmitidas.value
-                    // Sólo responde a esta acción admitida, nunca a restaurar estado.
-                    if (contadorActual > contadorAnterior) {
-                        haptica.notificarEleccionAdmitida(contadorActual)
-                    }
-                },
-                onContinuar = sesionViewModel::continuar,
-                ilustracion = {
-                    IlustracionVocabulario(recurso = estadoSesion.recursoIlustracion)
-                }
-            )
         }
 
         composable(AppDestination.RESUMEN.route) {
-            val estadoApp = appState
-            val progreso = (estadoApp as? AppUiState.ListoConPerfil)?.progreso
-            val nick = (estadoApp as? AppUiState.ListoConPerfil)?.perfil?.nick.orEmpty()
-            val guardandoMarco by appViewModel.guardandoMarco.collectAsStateWithLifecycle()
-            val errorMarco by appViewModel.errorMarco.collectAsStateWithLifecycle()
-            val scope = rememberCoroutineScope()
-            var abriendoEtapa by remember { mutableStateOf(false) }
-            var errorApertura by remember { mutableStateOf<String?>(null) }
-
-            BackHandler(enabled = abriendoEtapa || guardandoMarco) { /* Esperar escritura. */ }
-
-            val presentacion = remember(progreso, guardandoMarco, errorMarco, nick) {
-                progreso?.let {
-                    MapeoPresentacion.resumenParaPresentacion(
-                        nick = nick,
-                        progreso = it,
-                        guardandoMarco = guardandoMarco,
-                        errorMarco = errorMarco
-                    )
-                }
-            }
-
-            presentacion?.let {
-                ResumenScreen(
-                    presentacion = it,
-                    onAccionPrincipal = {
-                        val etapa = progreso?.etapaParaContinuar
-                        if (etapa != null && !abriendoEtapa && !guardandoMarco) {
-                            abriendoEtapa = true
-                            errorApertura = null
-                            scope.launch {
-                                try {
-                                    when (val resultado = appViewModel.prepararEtapa(etapa)) {
-                                        is Resultado.Exito -> navController.navigate(AppDestination.SESION.route) {
-                                            // Resumen no queda detrás de la nueva sesión.
-                                            popUpTo(AppDestination.INICIO.route) { inclusive = false }
-                                            launchSingleTop = true
-                                        }
-                                        is Resultado.Fallo -> errorApertura = resultado.mensaje
-                                    }
-                                } finally {
-                                    abriendoEtapa = false
-                                }
-                            }
-                        }
-                    },
-                    onVolverInicio = {
-                        navController.popBackStack(AppDestination.INICIO.route, inclusive = false)
-                    },
-                    onCambiarMarco = appViewModel::cambiarMarcoAplicado,
-                    abriendoEtapa = abriendoEtapa,
-                    errorApertura = errorApertura,
-                    avatarPainter = rememberAvatarPainter(
-                        (estadoApp as? AppUiState.ListoConPerfil)?.perfil?.avatar
-                    )
-                )
+            val estadoApp = appState as? AppUiState.ListoConPerfil
+            LaunchedEffect(Unit) { if (redLocal) recorrido.recargar() }
+            if (estadoApp == null) CargandoScreen() else {
+                RecorridoScreen(estadoApp.perfil, estadoRecorrido, resumen = true,
+                    puedeConectar = redLocal, marcoLegadoAplicado = estadoApp.progreso.marcoAplicado,
+                    onPermiso = { pedirRed.launch(permisoLan) },
+                    onAbrir = { recorrido.abrir { navController.navigate(AppDestination.SESION.route) {
+                        popUpTo(AppDestination.INICIO.route) { inclusive = false }; launchSingleTop = true
+                    } } },
+                    onActualizar = recorrido::recargar,
+                    onPerfil = { navController.navigate(AppDestination.PERFIL.route) { launchSingleTop = true } },
+                    onResumen = {},
+                    onVolver = { navController.popBackStack(AppDestination.INICIO.route, false) },
+                    onMarco = recorrido::cambiarMarco)
             }
         }
     }

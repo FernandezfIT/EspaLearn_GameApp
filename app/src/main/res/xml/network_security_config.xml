@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Función: impedir HTTP global en la configuración principal y en release. -->
+<network-security-config>
+    <!-- Seguridad base: conservar comprobación TLS y certificados del sistema. -->
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

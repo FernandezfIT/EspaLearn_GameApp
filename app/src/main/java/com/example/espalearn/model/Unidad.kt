@@ -30,5 +30,7 @@ data class Unidad(
     val apoyoTurco: String,
     val recursoIlustracion: String,
     val opciones: List<OpcionUnidad>,
-    val respuestaEsperadaId: String
+    val respuestaEsperadaId: String,
+    // F2: explicación editorial; la UI sólo la presenta en Descubrir o después de elegir.
+    val explicacion: String? = null
 )

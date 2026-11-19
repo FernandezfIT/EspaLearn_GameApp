@@ -17,11 +17,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.espalearn.ui.components.PanelFeedback
 import com.example.espalearn.ui.components.TarjetaVocabulario
 import com.example.espalearn.ui.components.TarjetaDeslizable
 
+/** Función: presentar cartas y acciones sin conocer Retrofit, Room ni reglas de persistencia. */
+// Tipos de presentación: derivados del estado de la sesión, no de respuestas HTTP directas.
 data class OpcionRespuestaUi(
     val id: String,
     val texto: String
@@ -45,9 +48,11 @@ data class SesionPresentacion(
     val mostrarContinuar: Boolean = false,
     val continuarHabilitado: Boolean = true,
     val textoContinuar: String = "Continuar",
-    val errorOperacion: String? = null
+    val errorOperacion: String? = null,
+    val explicacion: String? = null
 )
 
+// Pantalla: mantiene swipe/botones equivalentes y Continuar manual tras feedback.
 @Composable
 fun SesionScreen(
     presentacion: SesionPresentacion,
@@ -108,6 +113,9 @@ fun SesionScreen(
                 )
             }
 
+            // Explicación ya filtrada por el mapper para no revelar soluciones en práctica.
+            presentacion.explicacion?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
+
             presentacion.opciones.forEachIndexed { indice, opcion ->
                 val textoBoton = when {
                     tieneDosOpciones && indice == 0 -> "← ${opcion.texto}"
@@ -118,7 +126,7 @@ fun SesionScreen(
                 OutlinedButton(
                     onClick = { onElegir(opcion.id) },
                     enabled = presentacion.eleccionHabilitada,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().testTag("opcion_$indice")
                 ) {
                     Text(text = textoBoton)
                 }
@@ -145,7 +153,7 @@ fun SesionScreen(
                 Button(
                     onClick = onContinuar,
                     enabled = presentacion.continuarHabilitado,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().testTag("sesion_continuar")
                 ) {
                     Text(text = presentacion.textoContinuar)
                 }

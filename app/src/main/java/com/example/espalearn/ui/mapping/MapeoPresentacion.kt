@@ -83,7 +83,9 @@ object MapeoPresentacion {
             mostrarContinuar = estado.continuarVisible,
             continuarHabilitado = !estado.guardandoFinalizacion,
             textoContinuar = if (estado.guardandoFinalizacion) "Guardando…" else "Continuar",
-            errorOperacion = estado.errorOperacion
+            errorOperacion = estado.errorOperacion,
+            // La explicación contiene la palabra correcta: nunca mostrarla antes de responder.
+            explicacion = estado.explicacion.takeIf { !esPractica || estado.feedbackVisible }
         )
     }
 

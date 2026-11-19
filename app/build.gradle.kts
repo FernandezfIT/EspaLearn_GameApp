@@ -1,3 +1,4 @@
+// Función: construir el cliente Compose/MVVM con red y contenido Room en F2.
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -17,9 +18,21 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Transporte: release no apunta a un servidor de demo sin configurar explícitamente.
+        buildConfigField("String", "API_BASE_URL", "\"https://example.invalid/\"")
+        // Room: entidades/DAO Java permiten procesamiento estándar sin introducir KSP.
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf("room.schemaLocation" to "$projectDir/schemas")
+            }
+        }
     }
 
+    // Demo controlada: HTTP sólo para el alias del PC en el emulador, nunca cleartext global.
     buildTypes {
+        debug {
+            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080/\"")
+        }
         release {
             optimization {
                 enable = false
@@ -32,10 +45,16 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
+// Dependencias: ViewModels no conocen Retrofit ni el DAO; se inyectan mediante repositorios.
 dependencies {
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
