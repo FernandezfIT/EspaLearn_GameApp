@@ -1,0 +1,5 @@
+# Función: habilitar explícitamente el catálogo sintético F1 en la base local de demostración.
+spring:
+  # Migraciones: esquema común más los tres identificadores; sin destruir datos al reiniciar.
+  flyway:
+    locations: classpath:db/migration,classpath:db/demo

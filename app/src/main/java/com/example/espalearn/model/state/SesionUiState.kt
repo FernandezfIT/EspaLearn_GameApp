@@ -44,5 +44,7 @@ data class SesionUiState(
     val etapaCompletada: Boolean = false,
     val errorOperacion: String? = null,
     val recursoIlustracion: String? = null,
-    val moduloCompletadoPorPrimeraVez: Boolean = false
+    val moduloCompletadoPorPrimeraVez: Boolean = false,
+    // Contenido editorial: no debe filtrar la solución antes de elegir en práctica.
+    val explicacion: String? = null
 )

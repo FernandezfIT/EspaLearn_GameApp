@@ -1,0 +1,26 @@
+# Función: configurar el servidor F1 y su conexión local a MySQL sin claves incrustadas.
+server:
+  # Acceso inicial desde el PC/emulador; no exponer esta demo sin autenticación a Internet.
+  address: ${SERVER_ADDRESS:127.0.0.1}
+  port: ${SERVER_PORT:8080}
+spring:
+  application:
+    name: espalearn-recorridos
+  # Persistencia: las credenciales llegan del entorno del proceso, no del APK.
+  datasource:
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3307/espalearn?connectionTimeZone=UTC}
+    username: ${DB_USER:espalearn}
+    password: ${MYSQL_PASSWORD}
+    hikari:
+      connection-timeout: 5000
+  # Esquema: Flyway migra; Hibernate sólo valida, nunca borra/recrea las tablas.
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+# Sin Groq, Room ni dependencia del build Android: pertenecen a fases posteriores.

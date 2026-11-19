@@ -51,6 +51,7 @@ fun IlustracionVocabulario(recurso: String?, modifier: Modifier = Modifier) {
                 IlustracionUnidadUi.DESPEDIDA -> dibujarEscena(llegando = false)
                 IlustracionUnidadUi.PIEZA_HORNEADA -> dibujarPan()
                 IlustracionUnidadUi.FRUTA_ROJA -> dibujarManzana()
+                IlustracionUnidadUi.FRUTA_VERDE -> dibujarPera()
             }
         }
     }
@@ -129,6 +130,22 @@ private fun DrawScope.dibujarPan() {
             drawLine(Color(0xFFFFE1A5), Offset(x + 13f, 80f), Offset(x - 5f, 110f), 9f, StrokeCap.Round)
         }
     }
+}
+
+// Dibujo F2: completar el lote inicial sin sustituir el estilo ni rediseñar el gesto.
+private fun DrawScope.dibujarPera() {
+    drawOval(Color(0xFFDCE3E9), Offset(100f, 170f), Size(120f, 12f))
+    val fruta = Path().apply {
+        moveTo(161f, 51f)
+        cubicTo(131f, 49f, 143f, 84f, 118f, 108f)
+        cubicTo(79f, 158f, 120f, 179f, 161f, 174f)
+        cubicTo(211f, 181f, 240f, 153f, 205f, 109f)
+        cubicTo(180f, 82f, 190f, 49f, 161f, 51f)
+        close()
+    }
+    drawPath(fruta, Color(0xFFA8C959))
+    drawPath(fruta, Color(0xFF597833), style = Stroke(3f))
+    drawLine(Color(0xFF795238), Offset(163f, 53f), Offset(174f, 29f), 7f, StrokeCap.Round)
 }
 
 private fun DrawScope.dibujarManzana() {

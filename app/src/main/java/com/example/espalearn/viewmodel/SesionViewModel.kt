@@ -2,6 +2,8 @@ package com.example.espalearn.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.espalearn.domain.ev3.ResultadoPalabra
+import com.example.espalearn.model.Progreso
 import com.example.espalearn.model.Etapa
 import com.example.espalearn.model.OpcionUnidad
 import com.example.espalearn.model.Unidad
@@ -34,7 +36,9 @@ class SesionViewModel(
     private val repositorio: AppRepository,
     private val etapa: Etapa,
     private val unidades: List<Unidad>,
-    idSesion: String = UUID.randomUUID().toString()
+    idSesion: String = UUID.randomUUID().toString(),
+    // F2 inyecta cierre remoto; las pruebas/previews EV2 conservan el contrato local por defecto.
+    private val confirmarCierre: (suspend (List<ResultadoPalabra>) -> Resultado<Progreso>)? = null
 ) : ViewModel() {
 
     // Instantánea previa al guardado: el estado global ya estará completado al finalizar.
@@ -42,6 +46,8 @@ class SesionViewModel(
         (repositorio.estadoAplicacion.value as? AppUiState.ListoConPerfil)?.progreso?.moduloCompletado == true
 
     private val pasos: List<Paso> = construirPasos(etapa, unidades)
+    // Resultados: orden de cartas fijo; un reintento de guardado conserva exactamente el mismo cuerpo.
+    private val resultados = linkedMapOf<String, ResultadoPalabra>()
 
     private val _estado = MutableStateFlow(
         SesionUiState(
@@ -106,6 +112,12 @@ class SesionViewModel(
 
         if (actual.fase == FaseSesion.PRACTICA && !actual.feedbackVisible) return
 
+        val pasoActual = pasos.firstOrNull { it.id == actual.idPaso }
+        pasoActual?.let {
+            resultados[it.unidad.id] = ResultadoPalabra(it.unidad.id,
+                if (actual.fase == FaseSesion.PRACTICA) actual.opcionElegidaId else null,
+                etapa == Etapa.MENOS_APOYO && actual.ayudaRevelada)
+        }
         val indiceActual = pasos.indexOfFirst { it.id == actual.idPaso }
         val siguiente = indiceActual + 1
 
@@ -121,7 +133,9 @@ class SesionViewModel(
         _estado.update { it.copy(guardandoFinalizacion = true, errorOperacion = null) }
 
         viewModelScope.launch {
-            when (val resultado = repositorio.finalizarEtapa(etapa)) {
+            val confirmacion = confirmarCierre?.invoke(resultados.values.toList())
+                ?: repositorio.finalizarEtapa(etapa)
+            when (val resultado = confirmacion) {
                 is Resultado.Exito -> {
                     // La etapa no se anuncia completada antes de confirmar el guardado.
                     _estado.update {
@@ -169,6 +183,7 @@ class SesionViewModel(
             posicionPaso = indice + 1,
             tituloEtapa = tituloDeEtapa(etapa),
             palabraEspanol = paso.unidad.textoEspanol,
+            explicacion = paso.unidad.explicacion,
             recursoIlustracion = paso.unidad.recursoIlustracion,
             apoyoTurco = paso.unidad.apoyoTurco,
             apoyoTurcoOculto = paso.apoyoTurcoOculto,

@@ -1,0 +1,57 @@
+{
+  "nota": "Ejemplos sintéticos de contrato; no son respuesta de un backend ni traducciones/arte revisados.",
+  "crearRecorrido": {
+    "solicitudId": "solicitud-prueba",
+    "tipo": "NORMAL",
+    "versionCatalogo": "prueba-3-v1"
+  },
+  "recorrido": {
+    "recorridoId": "recorrido-prueba",
+    "versionCatalogo": "prueba-3-v1",
+    "tipo": "NORMAL",
+    "estado": "ACTIVO",
+    "palabraIds": ["pan", "manzana", "pera"],
+    "etapasConfirmadas": []
+  },
+  "cierreDescubrir": {
+    "solicitudId": "cierre-descubrir-prueba",
+    "versionCatalogo": "prueba-3-v1",
+    "etapa": "descubrir",
+    "resultados": [
+      {"palabraId": "pan", "opcionElegidaId": null, "ayudaUsada": false},
+      {"palabraId": "manzana", "opcionElegidaId": null, "ayudaUsada": false},
+      {"palabraId": "pera", "opcionElegidaId": null, "ayudaUsada": false}
+    ]
+  },
+  "recorridoTrasDescubrir": {
+    "recorridoId": "recorrido-prueba",
+    "versionCatalogo": "prueba-3-v1",
+    "tipo": "NORMAL",
+    "estado": "ACTIVO",
+    "palabraIds": ["pan", "manzana", "pera"],
+    "etapasConfirmadas": ["descubrir"]
+  },
+  "progresoInicial": {
+    "completadasUnicas": 0,
+    "totalPalabras": 150,
+    "primerRecorridoCompletado": false
+  },
+  "solicitarFeedback": {"solicitudId": "feedback-descubrir-prueba"},
+  "feedbackGenerando": {
+    "estado": "GENERANDO",
+    "origen": null,
+    "mensaje": null,
+    "versionFeedback": "v1"
+  },
+  "feedbackAlternativo": {
+    "estado": "ALTERNATIVO",
+    "origen": "LOCAL",
+    "mensaje": "Has recorrido estas tres palabras. Puedes continuar y seguir practicando.",
+    "versionFeedback": "v1"
+  },
+  "errorConflicto": {
+    "codigo": "ETAPA_NO_DISPONIBLE",
+    "mensaje": "Debes completar la etapa anterior.",
+    "campos": {}
+  }
+}

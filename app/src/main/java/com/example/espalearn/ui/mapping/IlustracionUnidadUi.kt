@@ -17,6 +17,11 @@ enum class IlustracionUnidadUi(val recurso: String, val descripcion: String) {
     FRUTA_ROJA(
         "ilustracion_manzana",
         "Una fruta redonda roja, con tallo y una hoja verde."
+    ),
+    // F2: tercer sustantivo de la vertical, con dibujo propio sin añadir una API de imágenes.
+    FRUTA_VERDE(
+        "ilustracion_pera",
+        "Una fruta verde alargada arriba y ancha abajo, con un tallo marrón."
     );
 
     companion object {

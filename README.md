@@ -4,6 +4,17 @@ Aplicación Android educativa de demostración para el acercamiento inicial al e
 
 > El recorrido técnico está implementado y probado en el entorno indicado abajo. No se afirma validación lingüística/pedagógica, revisión del docente ni entrega académica completada. La consulta educativa del caso no se realizó; la propuesta de edad simulada 7–10 difiere del público escrito «menor de 10». Ver [alcance](docs/alcance-y-decisiones.md) y [matriz EV2](docs/matriz-ev2.md).
 
+## Desarrollo EV3 — corte 18/11/2026
+
+Felipe completa la funcionalidad; Claudio realiza mejora estética posterior sobre versión estable. Groq vía Spring sustituye Wikipedia; su aceptación como criterio de API externa fue confirmada por Felipe. No implica funcionalidad ya implementada ni colaboración EV3 acreditada.
+
+- [Plan operativo EV3 v2](docs/plan-ev3-v2-funcional-groq.md)
+- [Contratos F0 v2.1](docs/contratos-ev3-f0.md)
+- [Verificación F0 y pendientes](docs/f0-verificacion.md):114 unitarias y6instrumentadas aprobadas; lint0errores/18advertencias. Modelos EV3 aislados, sin backend/Room/Groq conectados todavía.
+- [Fixtures JSON sintéticos](docs/fixtures/ev3-f0.json)
+
+Los apartados siguientes describen el cierre histórico EV2; las referencias a publicación pendiente y conteos de advertencias de ese corte no son el estado Git ni el resultado de F0.
+
 ## Integrantes y aportes
 
 | Integrante | Ruta | Aportes |
